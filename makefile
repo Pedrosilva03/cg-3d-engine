@@ -1,0 +1,3 @@
+# DIRECTORIES
+
+OBJ_DIR := build
