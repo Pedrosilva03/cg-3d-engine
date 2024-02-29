@@ -1,46 +1,27 @@
 #include "ponto.hpp"
+#include <stdlib.h>
 #include <cmath>
 
-class Ponto {
+struct Ponto {
     float x;
     float y;
     float z;
-
-public:
-    Ponto(float x = 0, float y = 0, float z = 0) : x(x), y(y), z(z) {}
-
-    float getX() const {
-        return x;
-    }
-
-    float getY() const {
-        return y;
-    }
-
-    float getZ() const {
-        return z;
-    }
-
-    void setX(float x) {
-        this->x = x;
-    }
-
-    void setY(float y) {
-        this->y = y;
-    }
-
-    void setZ(float z) {
-        this->z = z;
-    }
-
-    float calcularDistanciaOrigem() const {
-        return sqrt(x * x + y * y + z * z);
-    }
-
-    float calcularDistancia(const Ponto& outroPonto) const {
-        float dx = x - outroPonto.x;
-        float dy = y - outroPonto.y;
-        float dz = z - outroPonto.z;
-        return sqrt(dx * dx + dy * dy + dz * dz);
-    }
 };
+
+Ponto novoPonto(float x, float y, float z) {
+    Ponto p = (Ponto)malloc(sizeof(struct Ponto));
+
+    p->x = x;
+    p->y = y;
+    p->z = z;
+
+    return p;
+}
+
+float calcularDistanciaOrigem(Ponto p) {
+    return sqrt(pow(p->x, 2) + pow(p->y, 2) + pow(p->z, 2));
+}
+
+float calcularDistanciaEntrePontos(Ponto p1, Ponto p2) {
+    return sqrt(pow(p2->x - p1->x, 2) + pow(p2->y - p1->y, 2) + pow(p2->z - p1->z, 2));
+}
