@@ -4,7 +4,9 @@
 
 typedef struct Figura* Figura;
 
-Figura novaFigura(Ponto *pontos);
+Figura novaFigura();
+
+Figura figura(Ponto *pontos, unsigned long length);
 
 void adicionarPonto(Figura f, Ponto novoPonto);
 

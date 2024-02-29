@@ -1,7 +1,7 @@
 cmake_minimum_required(VERSION 3.5)
 
 # Project Name
-PROJECT(fase1)
+PROJECT(FASE1)
 
 set_property(GLOBAL PROPERTY USE_FOLDERS ON)
 
@@ -16,8 +16,6 @@ add_library(
 	./utils/ponto.hpp
 	./utils/figura.cpp
 	./utils/figura.hpp
-	./utils/list.cpp
-	./utils/list.hpp
 )
 
 # Biblioteca de parsing de XML
@@ -34,8 +32,8 @@ add_library(
 # Biblioteca de configuração do engine.
 add_library(
 	config_lib
-	./engine/config.cpp
-	./engine/config.hpp
+	./leitor/leitor.cpp
+	./leitor/leitor.hpp
 )
 
 target_link_libraries(config_lib tinyXML)
