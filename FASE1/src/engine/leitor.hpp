@@ -1,6 +1,6 @@
 #ifndef LEITOR
 #define LEITOR
-#include "../tinyXML/tinyxml.h"
+#include "../tinyxml/tinyxml.h"
 #include <stdlib.h>
 
 typedef struct leitor* Leitor;
