@@ -8,7 +8,11 @@
 #include "../utils/ponto.hpp"
 #include "../tinyxml/tinyxml.h"
 #include "leitor.hpp"
-#include "math.h"
+#define _USE_MATH_DEFINES
+#include <math.h>
+#include <list>
+#include <string>
+#include <sstream>
 
 using namespace std;
 
@@ -25,6 +29,7 @@ float upX = 0.0f;
 float upY = 0.0f;
 float upZ = 0.0f;
 int mode = GL_LINE;
+std::list<std::string> figuras;
 
 Leitor leitor = NULL;
 
@@ -54,16 +59,45 @@ void changeSize(int w, int h)
     glMatrixMode(GL_MODELVIEW);
 }
 
-void drawFiguras(Leitor leitor)
+//Corrigir drawFiguras
+void drawFiguras(std::list<std::string> figuras)
 {
-    // TO DO usar std::list<std::string> file;
+    for (const auto& figura_str : figuras) {
+        // Parse the string to extract figure information
+        std::stringstream ss(figura_str);
+        std::string token;
+        unsigned long num_points;
+        ss >> num_points;
+
+        Figura figura;
+        figura.length = num_points;
+        figura.capacidade = num_points; // Assuming capacity is same as length for simplicity
+        figura.pontos = new Ponto[num_points];
+
+        // Extract each point from the string
+        for (unsigned long i = 0; i < num_points; ++i) {
+            std::getline(ss, token, ',');
+            std::stringstream point_ss(token);
+            point_ss >> figura.pontos[i].x >> figura.pontos[i].y >> figura.pontos[i].z;
+        }
+
+        // Now you have the figura object, you can draw it using OpenGL
+        glBegin(GL_LINE_LOOP); // Assuming you're drawing a line loop for each figure
+        for (unsigned long i = 0; i < figura.length; ++i) {
+            // Draw the point using OpenGL
+            glVertex3f(figura.pontos[i].x, figura.pontos[i].y, figura.pontos[i].z);
+        }
+        glEnd();
+
+        delete[] figura.pontos;
+    }
 }
 
-void renderScenes(void)
+void renderScene(void)
 {
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
     glLoadIdentity();
-    // gluLookAt(radius*cos(beta_)*sin(alpha), radius*sin(beta_), radius*cos(beta_)*cos(alpha),lookAtx,lookAty,lookAtz,upx,upy,upz); COPIAMOS?
+    gluLookAt(radius * cos(beta) * sin(alpha), radius * sin(beta), radius * cos(beta) * cos(alpha), lookAtX, lookAtY, lookAtZ, upX, upY, upZ);
 
     glBegin(GL_LINES);
     glColor3f(1.0f, 0.0f, 0.0f);
@@ -79,7 +113,10 @@ void renderScenes(void)
     glVertex3f(0.0f, 0.0f, 10.0f);
     glEnd();
 
-    // Tratar das figuras aqui
+    glPolygonMode(GL_FRONT_AND_BACK, mode);
+    glBegin(GL_TRIANGLES);
+    drawFiguras(figuras);
+    glEnd();
 
     glutSwapBuffers();
 }
@@ -88,17 +125,16 @@ void processSpecialKeys(int key, int x, int y)
 {
     switch (key)
     {
-    case GLUT_KEY_UP:
-        cameraPosY += 1.0f;
-        break;
-    case GLUT_KEY_DOWN:
-        cameraPosY -= 1.0f;
-        break;
-    default:
-        break;
+        case GLUT_KEY_UP:
+            cameraPosY += 1.0f;
+            break;
+        case GLUT_KEY_DOWN:
+            cameraPosY -= 1.0f;
+            break;
+        default:
+            break;
     }
 
-    // ver melhor isto
     gluLookAt(cameraPosX, cameraPosY, cameraPosZ,
               0.0, 0.0, 0.0,
               0.0, 1.0, 0.0);
@@ -110,48 +146,47 @@ void processKeys(unsigned char key, int x, int y)
 {
     switch (key)
     {
-    case 27: // Escape key
-        exit(0);
-        break;
-    case 'w':
-    case 'W':
-        cameraPosZ -= 1.0f; // Move the camera forward
-        break;
-    case 's':
-    case 'S':
-        cameraPosZ += 1.0f; // Move the camera backward
-        break;
-    case 'a':
-    case 'A':
-        cameraPosX -= 1.0f; // Move the camera left (along the x-axis)
-        break;
-    case 'd':
-    case 'D':
-        cameraPosX += 1.0f; // Move the camera right (along the x-axis)
-        break;
-    case 'q':
-    case 'Q':
-        cameraPosY += 1.0f; // Move the camera up (along the y-axis)
-        break;
-    case 'z':
-    case 'Z':
-        cameraPosY -= 1.0f; // Move the camera down (along the y-axis)
-        break;
-    case 'f':
-    case 'F':
-        mode = GL_FILL;
-        break;
-    case 'l':
-    case 'L':
-        mode = GL_LINE;
-        break;
-    case 'p':
-    case 'P':
-        mode = GL_POINT;
-        break;
+        case 27: // Escape key
+            exit(0);
+            break;
+        case 'w':
+        case 'W':
+            cameraPosZ -= 1.0f; // Move the camera forward
+            break;
+        case 's':
+        case 'S':
+            cameraPosZ += 1.0f; // Move the camera backward
+            break;
+        case 'a':
+        case 'A':
+            cameraPosX -= 1.0f; // Move the camera left (along the x-axis)
+            break;
+        case 'd':
+        case 'D':
+            cameraPosX += 1.0f; // Move the camera right (along the x-axis)
+            break;
+        case 'q':
+        case 'Q':
+            cameraPosY += 1.0f; // Move the camera up (along the y-axis)
+            break;
+        case 'z':
+        case 'Z':
+            cameraPosY -= 1.0f; // Move the camera down (along the y-axis)
+            break;
+        case 'f':
+        case 'F':
+            mode = GL_FILL;
+            break;
+        case 'l':
+        case 'L':
+            mode = GL_LINE;
+            break;
+        case 'p':
+        case 'P':
+            mode = GL_POINT;
+            break;
     }
 
-    // Ver melhor isto
     gluLookAt(cameraPosX, cameraPosY, cameraPosZ,
               0.0, 0.0, 0.0,
               0.0, 1.0, 0.0);
@@ -163,10 +198,9 @@ void processKeys(unsigned char key, int x, int y)
 int main(int argc, char **argv)
 {
     leitor = extrair_XML(argv[1]);
-    std::list<std::string> figuras = getFiles(leitor)
-        // n sei se é isto
+    figuras = getFiles(leitor);
 
-        cameraPosX = getXPosCam(leitor);
+    cameraPosX = getXPosCam(leitor);
     cameraPosY = getYPosCam(leitor);
     cameraPosZ = getZPosCam(leitor);
     radius = sqrt(cameraPosX * cameraPosX + cameraPosY * cameraPosY + cameraPosZ * cameraPosZ);

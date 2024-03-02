@@ -2,6 +2,8 @@
 #define LEITOR
 #include "../tinyxml/tinyxml.h"
 #include <stdlib.h>
+#include <list>
+#include <string>
 
 typedef struct leitor* Leitor;
 

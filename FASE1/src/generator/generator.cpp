@@ -9,9 +9,11 @@
 
 using namespace std;
 
-Figura generatePlane(int length, int divisions, char axis1, char axis2, float h = 0.0f, int reverse = 0) {
+Figura generatePlane(int length, int divisions, char axis1, char axis2, float h = 0.0f, int reverse = 0)
+{
     Figura plano = novaFigura();
-    if (!plano) {
+    if (!plano)
+    {
         cout << "Erro na construção da figura!" << endl;
         return NULL;
     }
@@ -19,12 +21,15 @@ Figura generatePlane(int length, int divisions, char axis1, char axis2, float h 
     float divisionSize = (float)length / divisions;
 
     // Calculate vertex positions
-    for (int row = 0; row < divisions; ++row) {
-        for (int col = 0; col < divisions; ++col) {
+    for (int row = 0; row < divisions; ++row)
+    {
+        for (int col = 0; col < divisions; ++col)
+        {
             float x1, y1, z1, x2, y2, z2, x3, y3, z3, x4, y4, z4;
 
             // Calculate coordinates for the vertices of the current square based on the specified axes
-            if (axis1 == 'x' && axis2 == 'y') {
+            if (axis1 == 'x' && axis2 == 'y')
+            {
                 x1 = -length / 2 + col * divisionSize;
                 y1 = -length / 2 + row * divisionSize;
                 x2 = x1 + divisionSize;
@@ -34,7 +39,9 @@ Figura generatePlane(int length, int divisions, char axis1, char axis2, float h 
                 x4 = x2;
                 y4 = y3;
                 z1 = z2 = z3 = z4 = h;
-            } else if (axis1 == 'x' && axis2 == 'z') {
+            }
+            else if (axis1 == 'x' && axis2 == 'z')
+            {
                 x1 = -length / 2 + col * divisionSize;
                 z1 = -length / 2 + row * divisionSize;
                 x2 = x1 + divisionSize;
@@ -44,7 +51,9 @@ Figura generatePlane(int length, int divisions, char axis1, char axis2, float h 
                 x4 = x2;
                 z4 = z3;
                 y1 = y2 = y3 = y4 = h;
-            } else if (axis1 == 'y' && axis2 == 'z') {
+            }
+            else if (axis1 == 'y' && axis2 == 'z')
+            {
                 y1 = -length / 2 + col * divisionSize;
                 z1 = -length / 2 + row * divisionSize;
                 y2 = y1 + divisionSize;
@@ -57,10 +66,13 @@ Figura generatePlane(int length, int divisions, char axis1, char axis2, float h 
             }
 
             // Adjust positions if reverse is set
-            if (reverse == 1 && axis1 != 'y' && axis2 != 'z') {
+            if (reverse == 1 && axis1 != 'y' && axis2 != 'z')
+            {
                 swap(y1, y3);
                 swap(y2, y4);
-            } else if (reverse == 1 && axis1 == 'y' && axis2 == 'z') {
+            }
+            else if (reverse == 1 && axis1 == 'y' && axis2 == 'z')
+            {
                 swap(x1, x3);
                 swap(x2, x4);
             }
@@ -78,19 +90,30 @@ Figura generatePlane(int length, int divisions, char axis1, char axis2, float h 
     return plano;
 }
 
-int main(int argc, char *argv[]){
-    if (argc >= 5){
+// TO DO Generate Box
+
+// TO DO Generate Sphere
+
+// TO DO Generate Cone
+
+//TO DO Completar main
+int main(int argc, char *argv[])
+{
+    if (argc >= 5)
+    {
         Figura figura;
         const char *file_path;
-        if (strcmp(argv[1], "plane") == 0){
+        if (strcmp(argv[1], "plane") == 0)
+        {
             int length = atoi(argv[2]);
-            int divisions = atoi(argv[3]); 
+            int divisions = atoi(argv[3]);
             file_path = argv[4];
 
-            figura = generatePlane(length, divisions,'x','z');
+            figura = generatePlane(length, divisions, 'x', 'z');
         }
     }
-    else{
+    else
+    {
         printf("Número de argumentos inválido.\n");
         return 1;
     }

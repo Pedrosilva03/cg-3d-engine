@@ -11,7 +11,7 @@ add_executable(generator.exe ./generator/generator.cpp)
 
 # Biblioteca das figuras e dos pontos
 add_library(
-	utils_lib
+	utils
 	./utils/ponto.cpp
 	./utils/ponto.hpp
 	./utils/figura.cpp
@@ -20,27 +20,33 @@ add_library(
 
 # Biblioteca de parsing de XML
 add_library(
-	tinyXML
-	./tinyXML/tinystr.cpp
-	./tinyXML/tinyxmlerror.cpp
-	./tinyXML/tinyxmlparser.cpp
-	./tinyXML/tinystr.h
-	./tinyXML/tinyxml.h
-	./tinyXML/tinyxml.cpp
+	tinyxml
+	./tinyxml/tinystr.cpp
+	./tinyxml/tinyxmlerror.cpp
+	./tinyxml/tinyxmlparser.cpp
+	./tinyxml/tinystr.h
+	./tinyxml/tinyxml.h
+	./tinyxml/tinyxml.cpp
 )
 
 # Biblioteca de configuração do engine.
 add_library(
-	config_lib
-	./leitor/leitor.cpp
-	./leitor/leitor.hpp
+	engine
+	./engine/engine.cpp
+	./engine/leitor.cpp
+	./engine/leitor.hpp
 )
 
-target_link_libraries(config_lib tinyXML)
+add_library(
+	generator
+	./generator/generator.cpp
+)
+
+target_link_libraries(engine tinyxml)
 
 # Associa a biblioteca das figuras e dos pontos aos executáveis
-target_link_libraries(generator.exe utils_lib)
-target_link_libraries(engine.exe utils_lib tinyXML config_lib)
+target_link_libraries(generator.exe utils)
+target_link_libraries(engine.exe utils tinyxml engine)
 
 find_package(OpenGL REQUIRED)
 include_directories(${OpenGL_INCLUDE_DIRS})
