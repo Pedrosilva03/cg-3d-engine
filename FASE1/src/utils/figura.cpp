@@ -62,3 +62,40 @@ void adicionarPonto(Figura f, Ponto novoPonto) {
         }
     }
 }
+
+void criarFile(Figura f, const char* path) {
+    FILE* file = fopen(path, "w");
+    if (file) {
+        fprintf(file, "%lu\n", f->length); 
+        for (unsigned long i = 0; i < f->length; i++) {
+            Ponto p = f->pontos[i]; 
+            fprintf(file, "%g,%g,%g\n", getX(p), getY(p), getZ(p));
+        }
+        fclose(file);
+    }
+}
+
+Figura criarFigura(const char* path) {
+    Figura f = novaFigura();
+    FILE* file = fopen(path, "r");
+    if (f && file) {
+        int vertices;
+        fscanf(file, "%d", &vertices);
+        float x, y, z;
+        for (int i = 0; i < vertices; i++) {
+            fscanf(file, "%f,%f,%f", &x, &y, &z);
+            addPonto(f, newPonto(x, y, z));
+        }
+        fclose(file);
+    }
+    return f;
+}
+
+void apagarFigura(Figura f) {
+    if (f) {
+        if (f->pontos) {
+            free(f->pontos); // Liberar memória alocada para os pontos
+        }
+        free(f); // Liberar memória alocada para a estrutura Figura
+    }
+}

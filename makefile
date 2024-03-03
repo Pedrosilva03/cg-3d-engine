@@ -6,9 +6,9 @@ fase1:
 	cmake --build build/
 
 3dFase1: fase1
-	./build/generator.exe cone 1 2 4 3 ./FASE1/out/cone_1_2_4_3.3d
-	./build/generator.exe sphere 1 10 10 ./FASE1/out/sphere_1_10_10.3d 
-	./build/generator.exe box 2 3 ./FASE1/out/box_2_3.3d
+	#./build/generator.exe cone 1 2 4 3 ./FASE1/out/cone_1_2_4_3.3d
+	#./build/generator.exe sphere 1 10 10 ./FASE1/out/sphere_1_10_10.3d 
+	#./build/generator.exe box 2 3 ./FASE1/out/box_2_3.3d
 	./build/generator.exe plane 2 3 ./FASE1/out/plane_2_3.3d
 
 test_1_1:

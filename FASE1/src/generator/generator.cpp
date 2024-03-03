@@ -117,5 +117,8 @@ int main(int argc, char *argv[])
         printf("Número de argumentos inválido.\n");
         return 1;
     }
+
+    criarFile(figura, file_path);
+    apagarFigura(figura);
     return 0;
 }

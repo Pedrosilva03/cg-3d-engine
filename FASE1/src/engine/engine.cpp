@@ -31,7 +31,7 @@ float upZ = 0.0f;
 int mode = GL_LINE;
 std::list<std::string> figuras;
 
-Leitor leitor = NULL;
+Leitor leitor = nullptr;
 
 void changeSize(int w, int h)
 {
@@ -59,37 +59,38 @@ void changeSize(int w, int h)
     glMatrixMode(GL_MODELVIEW);
 }
 
-//Corrigir drawFiguras
-void drawFiguras(std::list<std::string> figuras)
-{
-    for (const auto& figura_str : figuras) {
-        // Parse the string to extract figure information
+void drawFiguras(std::list<std::string> f) {
+    for (const auto& figura_str : f) {
+        // Parse a string para extrair informações da figura
         std::stringstream ss(figura_str);
         std::string token;
         unsigned long num_points;
         ss >> num_points;
 
-        Figura figura;
-        figura.length = num_points;
-        figura.capacidade = num_points; // Assuming capacity is same as length for simplicity
-        figura.pontos = new Ponto[num_points];
+        Figura figura = novaFigura();
+        if (!figura) {
+            cout << "Erro na construção da figura!" << endl;
+            return;
+        }
 
-        // Extract each point from the string
+        // Extrai cada ponto da string
         for (unsigned long i = 0; i < num_points; ++i) {
             std::getline(ss, token, ',');
             std::stringstream point_ss(token);
-            point_ss >> figura.pontos[i].x >> figura.pontos[i].y >> figura.pontos[i].z;
+            float x, y, z;
+            point_ss >> x >> y >> z;
+            adicionarPonto(figura, novoPonto(x, y, z));
         }
 
-        // Now you have the figura object, you can draw it using OpenGL
-        glBegin(GL_LINE_LOOP); // Assuming you're drawing a line loop for each figure
-        for (unsigned long i = 0; i < figura.length; ++i) {
-            // Draw the point using OpenGL
-            glVertex3f(figura.pontos[i].x, figura.pontos[i].y, figura.pontos[i].z);
+        // Agora você tem o objeto de figura, pode desenhá-lo usando OpenGL
+        glBegin(GL_LINE_LOOP); // Assumindo que você está desenhando um loop de linha para cada figura
+        for (unsigned long i = 0; i < figura->length; ++i) {
+            // Desenha o ponto usando OpenGL
+            glVertex3f(figura->pontos[i].x, figura->pontos[i].y, figura->pontos[i].z);
         }
         glEnd();
 
-        delete[] figura.pontos;
+        deleteFigura(figura);
     }
 }
 
@@ -146,9 +147,10 @@ void processKeys(unsigned char key, int x, int y)
 {
     switch (key)
     {
-        case 27: // Escape key
+        case 27: // Tecla Esc
+            deleteLeitor(leitor); // Libera a memória alocada para o leitor
             exit(0);
-            break;
+        break;
         case 'w':
         case 'W':
             cameraPosZ -= 1.0f; // Move the camera forward
@@ -198,7 +200,14 @@ void processKeys(unsigned char key, int x, int y)
 int main(int argc, char **argv)
 {
     leitor = extrair_XML(argv[1]);
-    figuras = getFiles(leitor);
+    listafiguras = getFiles(leitor);
+    std::list<std::string> figuras;
+
+    for (auto it = listafiguras.begin(); it != listafiguras.end(); ++it) {
+        const char* modelPath = (*it).c_str();
+        Figura figura = criarFigura(modelPath);
+        figuras.push_back(figura);
+    }
 
     cameraPosX = getXPosCam(leitor);
     cameraPosY = getYPosCam(leitor);
@@ -235,5 +244,10 @@ int main(int argc, char **argv)
     // enter GLUT's main cycle
     glutMainLoop();
 
+    figuras.clear();
+    deleteLeitor(leitor);
+
     return 1;
 }
+
+
