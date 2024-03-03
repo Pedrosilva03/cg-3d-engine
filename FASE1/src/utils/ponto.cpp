@@ -18,6 +18,18 @@ Ponto novoPonto(float x, float y, float z) {
     return p;
 }
 
+float getX(Ponto p){
+    return p->x;
+}
+
+float getY(Ponto p){
+    return p->y;
+}
+
+float getZ(Ponto p){
+    return p->z;
+}
+
 float calcularDistanciaOrigem(Ponto p) {
     return sqrt(pow(p->x, 2) + pow(p->y, 2) + pow(p->z, 2));
 }

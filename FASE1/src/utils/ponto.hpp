@@ -7,6 +7,12 @@ typedef struct Ponto* Ponto;
 
 Ponto novoPonto(float x, float y, float z);
 
+float getX(Ponto p);
+
+float getY(Ponto p);
+
+float getZ(Ponto p);
+
 float calcularDistanciaOrigem(Ponto p);
 
 float calcularDistanciaEntrePontos(Ponto p1, Ponto p2);

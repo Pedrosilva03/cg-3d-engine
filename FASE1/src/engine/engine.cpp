@@ -10,6 +10,7 @@
 #include "leitor.hpp"
 #define _USE_MATH_DEFINES
 #include <math.h>
+#include <iostream>
 #include <list>
 #include <string>
 #include <sstream>
@@ -90,7 +91,7 @@ void drawFiguras(std::list<std::string> f) {
         }
         glEnd();
 
-        deleteFigura(figura);
+        apagarFigura(figura);
     }
 }
 

@@ -1,4 +1,5 @@
 #include "figura.hpp"
+#include "ponto.hpp"
 #include <stdlib.h>
 #include <iostream>
 
@@ -84,7 +85,7 @@ Figura criarFigura(const char* path) {
         float x, y, z;
         for (int i = 0; i < vertices; i++) {
             fscanf(file, "%f,%f,%f", &x, &y, &z);
-            addPonto(f, newPonto(x, y, z));
+            adicionarPonto(f, novoPonto(x, y, z));
         }
         fclose(file);
     }
