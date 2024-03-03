@@ -2,18 +2,29 @@
 #define FIGURA
 #include "ponto.hpp"
 
+using namespace std;
+
 typedef struct Figura* Figura;
+
+#include "figura.hpp"
+#include "ponto.hpp"
+#include <iostream>
+#include <list>
+
+using namespace std;
+
+list<Ponto> getPontos(Figura f);
 
 Figura novaFigura();
 
-Figura figura(Ponto *pontos, unsigned long length);
+void adicionarPonto(Figura f, const Ponto novoPonto);
+
+void criarFile(const Figura f, const char* path);
 
 Figura criarFigura(const char* path);
 
-void criarFile(Figura f, const char* path);
-
-void adicionarPonto(Figura f, Ponto novoPonto);
-
 void apagarFigura(Figura f);
+
+list<Figura> criarListaFiguras(const list<string>& paths);
 
 #endif

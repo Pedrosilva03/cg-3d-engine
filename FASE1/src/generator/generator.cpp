@@ -99,9 +99,11 @@ Figura generatePlane(int length, int divisions, char axis1, char axis2, float h 
 //TO DO Completar main
 int main(int argc, char *argv[])
 {
+    Figura figura = novaFigura();
+    const char* file_path = nullptr;
+
     if (argc >= 5)
     {
-        Figura figura;
         const char *file_path;
         if (strcmp(argv[1], "plane") == 0)
         {

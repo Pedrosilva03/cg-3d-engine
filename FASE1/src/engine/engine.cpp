@@ -30,7 +30,7 @@ float upX = 0.0f;
 float upY = 0.0f;
 float upZ = 0.0f;
 int mode = GL_LINE;
-std::list<std::string> figuras;
+list<Figura> figuras;
 
 Leitor leitor = nullptr;
 
@@ -60,38 +60,14 @@ void changeSize(int w, int h)
     glMatrixMode(GL_MODELVIEW);
 }
 
-void drawFiguras(std::list<std::string> f) {
-    for (const auto& figura_str : f) {
-        // Parse a string para extrair informações da figura
-        std::stringstream ss(figura_str);
-        std::string token;
-        unsigned long num_points;
-        ss >> num_points;
-
-        Figura figura = novaFigura();
-        if (!figura) {
-            cout << "Erro na construção da figura!" << endl;
-            return;
+void drawFiguras(const list<Figura>& lista) {
+    for (const auto& figura : lista) {
+        list<Ponto> pontos = getPontos(figura);
+        for (const auto& ponto : pontos) {
+            glBegin(GL_POINTS);
+            glVertex3f(getX(ponto), getY(ponto), getZ(ponto));
+            glEnd();
         }
-
-        // Extrai cada ponto da string
-        for (unsigned long i = 0; i < num_points; ++i) {
-            std::getline(ss, token, ',');
-            std::stringstream point_ss(token);
-            float x, y, z;
-            point_ss >> x >> y >> z;
-            adicionarPonto(figura, novoPonto(x, y, z));
-        }
-
-        // Agora você tem o objeto de figura, pode desenhá-lo usando OpenGL
-        glBegin(GL_LINE_LOOP); // Assumindo que você está desenhando um loop de linha para cada figura
-        for (unsigned long i = 0; i < figura->length; ++i) {
-            // Desenha o ponto usando OpenGL
-            glVertex3f(figura->pontos[i].x, figura->pontos[i].y, figura->pontos[i].z);
-        }
-        glEnd();
-
-        apagarFigura(figura);
     }
 }
 
@@ -201,14 +177,8 @@ void processKeys(unsigned char key, int x, int y)
 int main(int argc, char **argv)
 {
     leitor = extrair_XML(argv[1]);
-    listafiguras = getFiles(leitor);
-    std::list<std::string> figuras;
-
-    for (auto it = listafiguras.begin(); it != listafiguras.end(); ++it) {
-        const char* modelPath = (*it).c_str();
-        Figura figura = criarFigura(modelPath);
-        figuras.push_back(figura);
-    }
+    std::list<std::string> listafiguras = getFiles(leitor);
+    figuras = criarListaFiguras(listafiguras);
 
     cameraPosX = getXPosCam(leitor);
     cameraPosY = getYPosCam(leitor);
