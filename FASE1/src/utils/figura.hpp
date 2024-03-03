@@ -19,6 +19,8 @@ Figura novaFigura();
 
 void adicionarPonto(Figura f, const Ponto novoPonto);
 
+void adicionarVariosPontos(Figura f, Figura f2);
+
 void criarFile(const Figura f, const char* path);
 
 Figura criarFigura(const char* path);

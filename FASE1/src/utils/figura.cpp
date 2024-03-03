@@ -22,6 +22,12 @@ void adicionarPonto(Figura f, const Ponto novoPonto) {
     f->pontos.push_back(novoPonto); // Adiciona o novo ponto à lista de pontos da figura
 }
 
+void adicionarVariosPontos(Figura f, Figura f2) {
+    for (const auto& ponto : f2->pontos) {
+        f->pontos.push_back(ponto); // Adiciona o novo ponto à lista de pontos da figura
+    }
+}
+
 void criarFile(const Figura f, const char* path) {
     FILE* file = fopen(path, "w");
     if (file) {
