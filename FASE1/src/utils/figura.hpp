@@ -1,17 +1,12 @@
-#ifndef FIGURA
-#define FIGURA
 #include "ponto.hpp"
-
-using namespace std;
-
-typedef struct Figura* Figura;
-
-#include "figura.hpp"
-#include "ponto.hpp"
-#include <iostream>
 #include <list>
+#include <string> 
+#ifndef FIGURA_HPP
+#define FIGURA_HPP
 
 using namespace std;
+
+typedef struct figura* Figura;
 
 list<Ponto> getPontos(Figura f);
 

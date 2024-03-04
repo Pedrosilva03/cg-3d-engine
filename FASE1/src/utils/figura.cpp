@@ -1,11 +1,13 @@
 #include "figura.hpp"
 #include "ponto.hpp"
 #include <iostream>
+#include <cstdio>
+#include <string> 
 #include <list>
 
 using namespace std;
 
-struct Figura {
+struct figura {
     list<Ponto> pontos;
 };
 
@@ -14,7 +16,7 @@ list<Ponto> getPontos(Figura f) {
 }
 
 Figura novaFigura() {
-    Figura f;
+    Figura f = new struct figura;
     return f; // Retorna uma nova instância de Figura vazia
 }
 
@@ -40,7 +42,7 @@ void criarFile(const Figura f, const char* path) {
 }
 
 Figura criarFigura(const char* path) {
-    Figura f;
+    Figura f = novaFigura();
 
     FILE* file = fopen(path, "r");
     if (file) {

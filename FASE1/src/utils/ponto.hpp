@@ -3,7 +3,7 @@
 
 #include <cmath>
 
-typedef struct Ponto* Ponto;
+typedef struct ponto* Ponto;
 
 Ponto novoPonto(float x, float y, float z);
 

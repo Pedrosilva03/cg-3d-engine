@@ -1,7 +1,6 @@
 #include "../utils/figura.hpp"
 #include "../utils/ponto.hpp"
 #include <string.h>
-#include <stdlib.h>
 
 #define _USE_MATH_DEFINES
 #include <math.h>
@@ -234,7 +233,6 @@ int main(int argc, char *argv[])
 
     if (argc >= 5)
     {
-        const char *file_path;
         if (strcmp(argv[1], "plane") == 0)
         {
             int length = atoi(argv[2]);
@@ -273,6 +271,8 @@ int main(int argc, char *argv[])
 
             figura = generateCone(radius, height, slices, stacks);
         }
+        criarFile(figura, file_path);
+        apagarFigura(figura);
     }
     else
     {
@@ -280,7 +280,5 @@ int main(int argc, char *argv[])
         return 1;
     }
 
-    criarFile(figura, file_path);
-    apagarFigura(figura);
     return 0;
 }

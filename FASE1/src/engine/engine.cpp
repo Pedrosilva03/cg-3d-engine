@@ -1,3 +1,4 @@
+#include <stdlib.h>
 #ifdef __APPLE__
 #include <GLUT/glut.h>
 #else
@@ -122,53 +123,48 @@ void processSpecialKeys(int key, int x, int y)
 
 void processKeys(unsigned char key, int x, int y)
 {
-    switch (key)
-    {
-        case 27: // Tecla Esc
-            deleteLeitor(leitor); // Libera a memória alocada para o leitor
-            exit(0);
+    switch (key) {
+    case 'w':
+    case 'W':
+        cameraPosZ -= 1.0f; // Move the camera forward
         break;
-        case 'w':
-        case 'W':
-            cameraPosZ -= 1.0f; // Move the camera forward
-            break;
-        case 's':
-        case 'S':
-            cameraPosZ += 1.0f; // Move the camera backward
-            break;
-        case 'a':
-        case 'A':
-            cameraPosX -= 1.0f; // Move the camera left (along the x-axis)
-            break;
-        case 'd':
-        case 'D':
-            cameraPosX += 1.0f; // Move the camera right (along the x-axis)
-            break;
-        case 'q':
-        case 'Q':
-            cameraPosY += 1.0f; // Move the camera up (along the y-axis)
-            break;
-        case 'z':
-        case 'Z':
-            cameraPosY -= 1.0f; // Move the camera down (along the y-axis)
-            break;
-        case 'f':
-        case 'F':
-            mode = GL_FILL;
-            break;
-        case 'l':
-        case 'L':
-            mode = GL_LINE;
-            break;
-        case 'p':
-        case 'P':
-            mode = GL_POINT;
-            break;
+    case 's':
+    case 'S':
+        cameraPosZ += 1.0f; // Move the camera backward
+        break;
+    case 'a':
+    case 'A':
+        cameraPosX -= 1.0f; // Move the camera left (along the x-axis)
+        break;
+    case 'd':
+    case 'D':
+        cameraPosX += 1.0f; // Move the camera right (along the x-axis)
+        break;
+    case 'q':
+    case 'Q':
+        cameraPosY += 1.0f; // Move the camera up (along the y-axis)
+        break;
+    case 'z':
+    case 'Z':
+        cameraPosY -= 1.0f; // Move the camera down (along the y-axis)
+        break;
+    case 'f':
+    case 'F':
+        mode = GL_FILL;
+        break;
+    case 'l':
+    case 'L':
+        mode = GL_LINE;
+        break;
+    case 'p':
+    case 'P':
+        mode = GL_POINT;
+        break;
     }
 
     gluLookAt(cameraPosX, cameraPosY, cameraPosZ,
-              0.0, 0.0, 0.0,
-              0.0, 1.0, 0.0);
+        0.0, 0.0, 0.0,
+        0.0, 1.0, 0.0);
 
     // Request redraw
     glutPostRedisplay();
@@ -220,5 +216,3 @@ int main(int argc, char **argv)
 
     return 1;
 }
-
-
