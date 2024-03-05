@@ -1,3 +1,6 @@
+#ifndef M_PI
+#define M_PI 3.14159265358979323846
+#endif
 #include "../utils/figura.hpp"
 #include "../utils/ponto.hpp"
 #include <string.h>
@@ -228,11 +231,11 @@ Figura generateCone(float radius, float height, int slices, int stacks)
 
 int main(int argc, char *argv[])
 {
-    Figura figura = novaFigura();
-    const char* file_path = nullptr;
-
     if (argc >= 5)
     {
+        Figura figura = novaFigura();
+        const char *file_path = nullptr;
+
         if (strcmp(argv[1], "plane") == 0)
         {
             int length = atoi(argv[2]);
@@ -240,6 +243,8 @@ int main(int argc, char *argv[])
             file_path = argv[4];
 
             figura = generatePlane(length, divisions, 'x', 'z');
+            criarFile(figura, file_path);
+            apagarFigura(figura);
         }
 
         else if (strcmp(argv[1], "box") == 0)
@@ -249,6 +254,8 @@ int main(int argc, char *argv[])
             file_path = argv[4];
 
             figura = generateBox(dim, div);
+            criarFile(figura, file_path);
+            apagarFigura(figura);
         }
 
         else if (strcmp(argv[1], "sphere") == 0)
@@ -259,6 +266,8 @@ int main(int argc, char *argv[])
             file_path = argv[5];
 
             figura = generateSphere(radius, slices, stacks);
+            criarFile(figura, file_path);
+            apagarFigura(figura);
         }
 
         else if (strcmp(argv[1], "cone") == 0)
@@ -270,9 +279,9 @@ int main(int argc, char *argv[])
             file_path = argv[6];
 
             figura = generateCone(radius, height, slices, stacks);
+            criarFile(figura, file_path);
+            apagarFigura(figura);
         }
-        criarFile(figura, file_path);
-        apagarFigura(figura);
     }
     else
     {
