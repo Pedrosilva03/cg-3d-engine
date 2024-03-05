@@ -1,4 +1,5 @@
 #include "leitor.hpp"
+#include "../tinyxml/tinyxml.h"
 #include <iostream>
 #include <list>
 #include <string>

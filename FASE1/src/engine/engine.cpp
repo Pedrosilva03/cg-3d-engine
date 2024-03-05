@@ -19,7 +19,7 @@
 using namespace std;
 
 float alpha = M_PI / 4;
-float beta = M_PI / 4;
+float beta1 = M_PI / 4;
 float radius = 5.0f;
 float cameraPosX = 5.0f;
 float cameraPosY = 5.0f;
@@ -76,7 +76,7 @@ void renderScene(void)
 {
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
     glLoadIdentity();
-    gluLookAt(radius * cos(beta) * sin(alpha), radius * sin(beta), radius * cos(beta) * cos(alpha), lookAtX, lookAtY, lookAtZ, upX, upY, upZ);
+    gluLookAt(radius * cos(beta1) * sin(alpha), radius * sin(beta1), radius * cos(beta1) * cos(alpha), lookAtX, lookAtY, lookAtZ, upX, upY, upZ);
 
     glBegin(GL_LINES);
     glColor3f(1.0f, 0.0f, 0.0f);
@@ -187,7 +187,7 @@ int main(int argc, char **argv)
     upY = getYUp(leitor);
     upZ = getZUp(leitor);
     alpha = acos(cameraPosZ / sqrt(cameraPosX * cameraPosX + cameraPosZ * cameraPosZ));
-    beta = asin(cameraPosY / radius);
+    beta1 = asin(cameraPosY / radius);
 
     // init GLUT and the window
     glutInit(&argc, argv);
