@@ -14,7 +14,7 @@ struct leitor {
 };
 
 Leitor novoLeitor() {
-    Leitor l = (Leitor)malloc(sizeof(struct leitor));
+    Leitor l = new struct leitor;
 
     if (l) {
         for (int i = 0; i < 3; ++i) {

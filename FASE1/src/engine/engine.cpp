@@ -64,11 +64,12 @@ void changeSize(int w, int h)
 void drawFiguras(const list<Figura>& lista) {
     for (const auto& figura : lista) {
         list<Ponto> pontos = getPontos(figura);
+        glBegin(GL_TRIANGLES);
         for (const auto& ponto : pontos) {
-            glBegin(GL_POINTS);
+            //cout << "(" << getX(ponto) << "," << getY(ponto) << "," << getZ(ponto) << ")";
             glVertex3f(getX(ponto), getY(ponto), getZ(ponto));
-            glEnd();
         }
+        glEnd();
     }
 }
 
@@ -93,9 +94,7 @@ void renderScene(void)
     glEnd();
 
     glPolygonMode(GL_FRONT_AND_BACK, mode);
-    glBegin(GL_TRIANGLES);
     drawFiguras(figuras);
-    glEnd();
 
     glutSwapBuffers();
 }
