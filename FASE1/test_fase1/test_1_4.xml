@@ -8,7 +8,7 @@
     </camera>
 	<group> 
   		<models> 
-			<model file="C:/Users/Admin/cg-3d-engine/FASE1/out/box_2_3.3d" /> <!-- generator box 2 3 box_2_3.3d -->
+			<model file="../out/box_2_3.3d" /> <!-- generator box 2 3 box_2_3.3d -->
  		</models>
  	</group>
 </world>

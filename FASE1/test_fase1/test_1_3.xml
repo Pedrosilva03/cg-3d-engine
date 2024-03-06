@@ -8,7 +8,7 @@
     </camera>
 	<group> 
   		<models> 
-			<model file="C:/Users/Admin/cg-3d-engine/FASE1/out/sphere_1_10_10.3d" /> <!-- generator sphere 1 10 10 sphere_1_10_10.3d -->
+			<model file="../out/sphere_1_10_10.3d" /> <!-- generator sphere 1 10 10 sphere_1_10_10.3d -->
  		</models>
  	</group>
 </world>

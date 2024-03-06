@@ -62,7 +62,8 @@ endif(NOT OPENGL_FOUND)
 
 if  (WIN32)
 
-    set(TOOLKITS_FOLDER "C:/Users/Admin/cg-3d-engine/FASE1/toolkits" CACHE PATH "Path to Toolkits folder")
+    # mudar para o teu caminho
+    #set(TOOLKITS_FOLDER "C:/Users/anton/Desktop/TUDO/UNI/3 ANO/CG/cg-3d-engine/FASE1/toolkits" CACHE PATH "Path to Toolkits folder")
     message(STATUS "Toolkits_DIR set to: " ${TOOLKITS_FOLDER})
     
     if (NOT EXISTS "${TOOLKITS_FOLDER}/glut/GL/glut.h" OR NOT EXISTS "${TOOLKITS_FOLDER}/glut/glut32.lib")
