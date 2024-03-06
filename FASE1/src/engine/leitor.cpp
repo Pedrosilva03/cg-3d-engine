@@ -106,6 +106,18 @@ float getZUp(Leitor l){
     return l->up[2];
 }
 
+float getFov(Leitor l){
+    return l->projection[0];
+}
+
+float getNear(Leitor l){
+    return l->projection[1];
+}
+
+float getFar(Leitor l){
+    return l->projection[2];
+}
+
 void setPosition(Leitor l, float x, float y, float z){
     if(l){
         l->posicao[0] = x;

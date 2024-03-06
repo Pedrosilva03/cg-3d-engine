@@ -28,6 +28,12 @@ float getYUp(Leitor l);
 
 float getZUp(Leitor l);
 
+float getFov(Leitor l);
+
+float getNear(Leitor l);
+
+float getFar(Leitor l);
+
 void setPosition(Leitor l, float x, float y, float z);
 
 void setLookAt(Leitor l, float x, float y, float z);

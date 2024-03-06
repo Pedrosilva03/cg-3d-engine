@@ -30,6 +30,9 @@ float lookAtZ = 0.0f;
 float upX = 0.0f;
 float upY = 0.0f;
 float upZ = 0.0f;
+float fov = 60.0f;
+float near = 1.0f;
+float far = 1000.0f;
 int mode = GL_LINE;
 list<Figura> figuras;
 
@@ -55,7 +58,7 @@ void changeSize(int w, int h)
     glViewport(0, 0, w, h);
 
     // Set perspective
-    gluPerspective(45.0f, ratio, 1.0f, 1000.0f);
+    gluPerspective(fov, ratio, near, far);
 
     // return to the model view matrix mode
     glMatrixMode(GL_MODELVIEW);
@@ -106,70 +109,65 @@ void processSpecialKeys(int key, int x, int y)
     switch (key)
     {
         case GLUT_KEY_UP:
-            cameraPosY += 1.0f;
+            beta1 -= 1.0f;
             break;
+            
         case GLUT_KEY_DOWN:
-            cameraPosY -= 1.0f;
+            beta1 += 1.0f;
             break;
+
+        case GLUT_KEY_LEFT:
+            alpha -= 1.0f;
+            break;
+
+        case GLUT_KEY_RIGHT:
+            alpha += 1.0f;
+            break;
+
         default:
             break;
     }
-
-    gluLookAt(cameraPosX, cameraPosY, cameraPosZ,
-              0.0, 0.0, 0.0,
-              0.0, 1.0, 0.0);
 
     glutPostRedisplay();
 }
 
 void processKeys(unsigned char key, int x, int y)
 {
-    switch (key) {
-    case 'w':
-    case 'W':
-        cameraPosZ -= 1.0f; // Move the camera forward
-        break;
-    case 's':
-    case 'S':
-        cameraPosZ += 1.0f; // Move the camera backward
-        break;
-    case 'a':
-    case 'A':
-        cameraPosX -= 1.0f; // Move the camera left (along the x-axis)
-        break;
-    case 'd':
-    case 'D':
-        cameraPosX += 1.0f; // Move the camera right (along the x-axis)
-        break;
-    case 'q':
-    case 'Q':
-        cameraPosY += 1.0f; // Move the camera up (along the y-axis)
-        break;
-    case 'z':
-    case 'Z':
-        cameraPosY -= 1.0f; // Move the camera down (along the y-axis)
-        break;
-    case 'f':
-    case 'F':
-        mode = GL_FILL;
-        break;
-    case 'l':
-    case 'L':
-        mode = GL_LINE;
-        break;
-    case 'p':
-    case 'P':
-        mode = GL_POINT;
-        break;
-    }
+    switch (key) 
+    {
+        case 'w':
+            beta1 -= 1.0f; // Move the camera forward
+            break;
 
-    gluLookAt(cameraPosX, cameraPosY, cameraPosZ,
-        0.0, 0.0, 0.0,
-        0.0, 1.0, 0.0);
+        case 's':
+            beta1 += 1.0f; // Move the camera backward
+            break;
+
+        case 'a':
+            alpha -= 1.0f; // Move the camera left (along the x-axis)
+            break;
+
+        case 'd':
+            alpha += 1.0f; // Move the camera right (along the x-axis)
+            break;
+
+        case 'f':
+            mode = GL_FILL;
+            break;
+            
+        case 'l':
+            mode = GL_LINE;
+            break;
+
+        case 'p':
+            mode = GL_POINT;
+            break;
+    }
 
     // Request redraw
     glutPostRedisplay();
 }
+
 
 int main(int argc, char **argv)
 {
@@ -189,6 +187,9 @@ int main(int argc, char **argv)
     upZ = getZUp(leitor);
     alpha = acos(cameraPosZ / sqrt(cameraPosX * cameraPosX + cameraPosZ * cameraPosZ));
     beta1 = asin(cameraPosY / radius);
+    fov = getFov(leitor);
+    near = getNear(leitor);
+    far = getFar(leitor);
 
     // init GLUT and the window
     glutInit(&argc, argv);
