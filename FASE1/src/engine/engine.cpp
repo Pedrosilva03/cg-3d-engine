@@ -62,6 +62,8 @@ void changeSize(int w, int h)
 }
 
 void drawFiguras(const list<Figura>& lista) {
+    glColor3f(1.0f, 1.0f, 1.0f);
+    
     for (const auto& figura : lista) {
         list<Ponto> pontos = getPontos(figura);
         glBegin(GL_TRIANGLES);
@@ -81,16 +83,16 @@ void renderScene(void)
 
     glBegin(GL_LINES);
     glColor3f(1.0f, 0.0f, 0.0f);
-    glVertex3f(-10.0f, 0.0f, 0.0f);
-    glVertex3f(10.0f, 0.0f, 0.0f);
+    glVertex3f(-100.0f, 0.0f, 0.0f);
+    glVertex3f(100.0f, 0.0f, 0.0f);
 
-    glColor3f(1.0f, 1.0f, 1.0f);
-    glVertex3f(0.0f, -10.0f, 0.0f);
-    glVertex3f(0.0f, 10.0f, 0.0f);
+    glColor3f(0.0f, 1.0f, 0.0f);
+    glVertex3f(0.0f, -100.0f, 0.0f);
+    glVertex3f(0.0f, 100.0f, 0.0f);
 
-    glColor3f(1.0f, 1.0f, 1.0f);
-    glVertex3f(0.0f, 0.0f, -10.0f);
-    glVertex3f(0.0f, 0.0f, 10.0f);
+    glColor3f(0.0f, 0.0f, 1.0f);
+    glVertex3f(0.0f, 0.0f, -100.0f);
+    glVertex3f(0.0f, 0.0f, 100.0f);
     glEnd();
 
     glPolygonMode(GL_FRONT_AND_BACK, mode);

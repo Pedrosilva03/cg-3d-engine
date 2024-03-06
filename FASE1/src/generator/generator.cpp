@@ -204,22 +204,25 @@ Figura generateCone(float radius, float height, int slices, int stacks)
 
             // Calculate coordinates for the vertices of the current slice
             x1 = radius * (1 - stackHeight1 / height) * cos(sliceAngle1);
-            y1 = radius * (1 - stackHeight1 / height) * sin(sliceAngle1);
-            z1 = stackHeight1;
+            y1 = stackHeight1;
+            z1 = radius * (1 - stackHeight1 / height) * sin(sliceAngle1);
+
             x2 = radius * (1 - stackHeight1 / height) * cos(sliceAngle2);
-            y2 = radius * (1 - stackHeight1 / height) * sin(sliceAngle2);
-            z2 = stackHeight1;
+            y2 = stackHeight1;
+            z2 = radius * (1 - stackHeight1 / height) * sin(sliceAngle2);
+
             x3 = radius * (1 - stackHeight2 / height) * cos(sliceAngle1);
-            y3 = radius * (1 - stackHeight2 / height) * sin(sliceAngle1);
-            z3 = stackHeight2;
+            y3 = stackHeight2;
+            z3 = radius * (1 - stackHeight2 / height) * sin(sliceAngle1);
+
             x4 = radius * (1 - stackHeight2 / height) * cos(sliceAngle2);
-            y4 = radius * (1 - stackHeight2 / height) * sin(sliceAngle2);
-            z4 = stackHeight2;
+            y4 = stackHeight2;
+            z4 = radius * (1 - stackHeight2 / height) * sin(sliceAngle2);
 
             // Add vertices to the figure
             adicionarPonto(cone, novoPonto(x1, y1, z1));
-            adicionarPonto(cone, novoPonto(x2, y2, z2));
             adicionarPonto(cone, novoPonto(x3, y3, z3));
+            adicionarPonto(cone, novoPonto(x2, y2, z2));
             adicionarPonto(cone, novoPonto(x2, y2, z2));
             adicionarPonto(cone, novoPonto(x3, y3, z3));
             adicionarPonto(cone, novoPonto(x4, y4, z4));
