@@ -59,9 +59,11 @@ Leitor extrair_XML(const char* filePath) {
             l->projection[2] = atof(camera->FirstChildElement("projection")->Attribute("far"));
 
             // Extrair o nome do arquivo do modelo
-            TiXmlElement* model_node = root->FirstChildElement("group")->FirstChildElement("models")->FirstChildElement("model");
-            std::string file_name = model_node->Attribute("file");
-            l->file.push_back(file_name);
+            TiXmlElement* model_node = root->FirstChildElement("group")->FirstChildElement("models");
+            for(TiXmlElement* models = model_node->FirstChildElement(); models; models = models->NextSiblingElement()){
+                std::string file_name = models->Attribute("file");
+                l->file.push_back(file_name);
+            }
         } else {
             std::cout << "Erro ao carregar o arquivo XML." << std::endl;
         }
