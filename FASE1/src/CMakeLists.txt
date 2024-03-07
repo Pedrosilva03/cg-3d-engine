@@ -63,7 +63,7 @@ endif(NOT OPENGL_FOUND)
 if  (WIN32)
 
     # mudar para o teu caminho
-    #set(TOOLKITS_FOLDER "C:/Users/anton/Desktop/TUDO/UNI/3 ANO/CG/cg-3d-engine/FASE1/toolkits" CACHE PATH "Path to Toolkits folder")
+    set(TOOLKITS_FOLDER "C:/Users/anton/Desktop/TUDO/UNI/3 ANO/CG/cg-3d-engine/FASE1/toolkits" CACHE PATH "Path to Toolkits folder")
     #set(TOOLKITS_FOLDER "C:/Users/Admin/cg-3d-engine/FASE1/toolkits" CACHE PATH "Path to Toolkits folder")
     #set(TOOLKITS_FOLDER "C:/Users/Diogo Barros/OneDrive - Universidade do Minho/Ambiente de Trabalho/3ºANO/2_Semestre/CG/cg-3d-engine/FASE1/toolkits" CACHE PATH "Path to Toolkits folder")
     #set(TOOLKITS_FOLDER "C:/Users/Pedro/Desktop/PEDRO/escuela/3 ano/cg/cg-3d-engine/FASE1/toolkits" CACHE PATH "Path to Toolkits folder")

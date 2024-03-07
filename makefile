@@ -2,7 +2,7 @@ build_f1:
 	cmake -B FASE1/build -S FASE1/src -A Win32
 	cmake --build FASE1/build/ --config Release
 	@echo "Build FASE1 done"
-	./FASE1/build/Release/generator.exe plane 1 3 FASE1/out/plane.3d
+	./FASE1/build/Release/generator.exe plane 2 3 FASE1/out/plane_2_3.3d
 	@echo "Plane done"
 	./FASE1/build/Release/generator.exe box 2 3 FASE1/out/box_2_3.3d
 	@echo "Box done"

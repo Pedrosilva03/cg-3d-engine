@@ -162,6 +162,14 @@ void processKeys(unsigned char key, int x, int y)
         case 'p':
             mode = GL_POINT;
             break;
+        
+        case '+':
+            radius -= 0.1f; // Zoom in
+            break;
+
+        case '-':
+            radius += 0.1f; // Zoom out
+            break;
     }
 
     // Request redraw

@@ -52,13 +52,15 @@ Figura generatePlane(int length, int divisions, char axis1, char axis2, float x 
 
                 // Add the vertices of the first triangle
                 adicionarPonto(plane, novoPonto(x1, z1, z));
-                adicionarPonto(plane, novoPonto(x2, z2, z));
                 adicionarPonto(plane, novoPonto(x3, z3, z));
+                adicionarPonto(plane, novoPonto(x2, z2, z));
+                
 
                 // Add the vertices of the second triangle
                 adicionarPonto(plane, novoPonto(x2, z2, z));
-                adicionarPonto(plane, novoPonto(x1 + divisionSize, z1 + divisionSize, z));
                 adicionarPonto(plane, novoPonto(x3, z3, z));
+                adicionarPonto(plane, novoPonto(x1 + divisionSize, z1 + divisionSize, z));
+                
             }
             else if (axis1 == 'x' && axis2 == 'z')
             {
@@ -78,13 +80,15 @@ Figura generatePlane(int length, int divisions, char axis1, char axis2, float x 
 
                 // Add the vertices of the first triangle
                 adicionarPonto(plane, novoPonto(x1, y, z1));
-                adicionarPonto(plane, novoPonto(x2, y, z2));
                 adicionarPonto(plane, novoPonto(x3, y, z3));
+                adicionarPonto(plane, novoPonto(x2, y, z2));
+                
 
                 // Add the vertices of the second triangle
                 adicionarPonto(plane, novoPonto(x2, y, z2));
-                adicionarPonto(plane, novoPonto(x1 + divisionSize, y, z1 + divisionSize));
                 adicionarPonto(plane, novoPonto(x3, y, z3));
+                adicionarPonto(plane, novoPonto(x1 + divisionSize, y, z1 + divisionSize));
+                
             }
             else if (axis1 == 'y' && axis2 == 'z')
             {
@@ -107,13 +111,15 @@ Figura generatePlane(int length, int divisions, char axis1, char axis2, float x 
 
                 // Add the vertices of the first triangle
                 adicionarPonto(plane, novoPonto(x, y1, z1));
-                adicionarPonto(plane, novoPonto(x, y2, z2));
                 adicionarPonto(plane, novoPonto(x, y3, z3));
+                adicionarPonto(plane, novoPonto(x, y2, z2));
+                
 
                 // Add the vertices of the second triangle
                 adicionarPonto(plane, novoPonto(x, y2, z2));
-                adicionarPonto(plane, novoPonto(x, y1 + divisionSize, z1 + divisionSize));
                 adicionarPonto(plane, novoPonto(x, y3, z3));
+                adicionarPonto(plane, novoPonto(x, y1 + divisionSize, z1 + divisionSize));
+                
             }
         }
     }
@@ -258,6 +264,31 @@ Figura generateCone(float radius, float height, int slices, int stacks)
             adicionarPonto(cone, novoPonto(x4, y4, z4));
         }
     }
+
+         for (int j = 0; j < slices; ++j)
+    {
+        float sliceAngle1 = j * sliceAngle;
+        float sliceAngle2 = (j + 1) * sliceAngle;
+
+        float x1 = 0;
+        float y1 = 0;
+        float z1 = 0;
+
+        float x2 = radius * cos(sliceAngle1);
+        float y2 = 0;
+        float z2 = radius * sin(sliceAngle1);
+
+        float x3 = radius * cos(sliceAngle2);
+        float y3 = 0;
+        float z3 = radius * sin(sliceAngle2);
+
+        // Add vertices to the figure for the base
+        adicionarPonto(cone, novoPonto(x1, y1, z1));
+        adicionarPonto(cone, novoPonto(x2, y2, z2));
+        adicionarPonto(cone, novoPonto(x3, y3, z3));
+    }
+
+
 
     return cone;
 }
