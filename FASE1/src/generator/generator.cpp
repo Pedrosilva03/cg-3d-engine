@@ -52,8 +52,8 @@ Figura generatePlane(int length, int divisions, char axis1, char axis2, float x 
 
                 // Add the vertices of the first triangle
                 adicionarPonto(plane, novoPonto(x1, z1, z));
-                adicionarPonto(plane, novoPonto(x3, z3, z));
                 adicionarPonto(plane, novoPonto(x2, z2, z));
+                adicionarPonto(plane, novoPonto(x3, z3, z));
                 
 
                 // Add the vertices of the second triangle
@@ -80,8 +80,8 @@ Figura generatePlane(int length, int divisions, char axis1, char axis2, float x 
 
                 // Add the vertices of the first triangle
                 adicionarPonto(plane, novoPonto(x1, y, z1));
-                adicionarPonto(plane, novoPonto(x3, y, z3));
                 adicionarPonto(plane, novoPonto(x2, y, z2));
+                adicionarPonto(plane, novoPonto(x3, y, z3));
                 
 
                 // Add the vertices of the second triangle
@@ -111,8 +111,8 @@ Figura generatePlane(int length, int divisions, char axis1, char axis2, float x 
 
                 // Add the vertices of the first triangle
                 adicionarPonto(plane, novoPonto(x, y1, z1));
-                adicionarPonto(plane, novoPonto(x, y3, z3));
                 adicionarPonto(plane, novoPonto(x, y2, z2));
+                adicionarPonto(plane, novoPonto(x, y3, z3));
                 
 
                 // Add the vertices of the second triangle
