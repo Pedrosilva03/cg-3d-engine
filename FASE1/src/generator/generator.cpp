@@ -130,12 +130,19 @@ Figura generateBox(int length, int divisions)
         return NULL;
     }
 
-    Figura planeTopo = generatePlane(length, divisions, 'x', 'z', (float)length / 2, 0, 0, 0);
-    Figura planeBaixo = generatePlane(length, divisions, 'x', 'z', -(float)length / 2, 0, 0, 1);
-    Figura planeFrente = generatePlane(length, divisions, 'x', 'y', 0, (float)length / 2, 0, 0);
-    Figura planeTras = generatePlane(length, divisions, 'x', 'y', 0, -(float)length / 2, 0, 1);
-    Figura planeEsquerda = generatePlane(length, divisions, 'y', 'z', 0, 0, (float)length / 2, 0);
-    Figura planeDireita = generatePlane(length, divisions, 'y', 'z', 0, 0, (float)-length / 2, 1);
+    Figura planeTopo = generatePlane(length, divisions, 'x', 'z', 0, (float)length / 2, 0, 0);
+    Figura planeBaixo = generatePlane(length, divisions, 'x', 'z', 0, -(float)length / 2, 0, 1);
+    Figura planeFrente = generatePlane(length, divisions, 'x', 'y', 0, 0, (float)length / 2, 0);
+    Figura planeTras = generatePlane(length, divisions, 'x', 'y', 0, 0, -(float)length / 2, 1);
+    Figura planeEsquerda = generatePlane(length, divisions, 'y', 'z', (float)length / 2, 0, 0, 0);
+    Figura planeDireita = generatePlane(length, divisions, 'y', 'z', -(float)length / 2, 0, 0, 1);
+
+    adicionarVariosPontos(box, planeTopo);
+    adicionarVariosPontos(box, planeBaixo);
+    adicionarVariosPontos(box, planeFrente);
+    adicionarVariosPontos(box, planeTras);
+    adicionarVariosPontos(box, planeEsquerda);
+    adicionarVariosPontos(box, planeDireita);
 
     apagarFigura(planeTopo);
     apagarFigura(planeBaixo);
