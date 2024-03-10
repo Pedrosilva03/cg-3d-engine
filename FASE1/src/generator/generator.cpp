@@ -20,106 +20,58 @@ Figura generatePlane(int length, int divisions, char axis1, char axis2, float x 
         return NULL;
     }
 
+    float startPos = -(length/2);
+
+    float a1, a2;
+    float b1, b2;
+    float c1, c2;
+
     float divisionSize = (float)length / divisions;
-    float start_x = -(length / 2.0f); // Calculate the starting x-coordinate
-    float start_z = -(length / 2.0f); // Calculate the starting z-coordinate
-    float start_y = -(length / 2.0f); // Calculate the starting y-coordinate
 
-    // Calculate vertex positions
-    for (int linha = 0; linha < divisions; ++linha)
-    {
-        for (int coluna = 0; coluna < divisions; ++coluna)
-        {
-            // Calculate coordinates for the vertices of the current square based on the specified axes
-            if (axis1 == 'x' && axis2 == 'y')
-            {
-                float x1 = start_x + coluna * divisionSize; // Calculate x-coordinate of first vertex
-                float z1 = start_z + linha * divisionSize; // Calculate z-coordinate of first vertex
-                float x2 = x1 + divisionSize; // Calculate x-coordinate of second vertex
-                float z2 = z1; // Second vertex shares the same z-coordinate
-                float x3 = x1; // Third vertex shares the same x-coordinate
-                float z3 = z1 + divisionSize; // Calculate z-coordinate of third vertex
+    for(int linha = 0; linha < divisions; ++linha){
+        for(int coluna = 0; coluna < divisions; ++coluna){
+            a1 = startPos + coluna * divisionSize;
+            a2 = startPos + linha * divisionSize;
+            b1 = a1;
+            b2 = a2 + divisionSize;
+            c1 = a1 + divisionSize;
+            c2 = a2;
 
-                // If 'inverte' flag is set, swap vertices to inverte triangle orientation
-                if (inverte == 1) {
-                    float temp_x = x2;
-                    float temp_z = z2;
-                    x2 = x3;
-                    z2 = z3;
-                    x3 = temp_x;
-                    z3 = temp_z;
-                }
-
-                // Add the vertices of the first triangle
-                adicionarPonto(plane, novoPonto(x1, z1, z));
-                adicionarPonto(plane, novoPonto(x2, z2, z));
-                adicionarPonto(plane, novoPonto(x3, z3, z));
-                
-
-                // Add the vertices of the second triangle
-                adicionarPonto(plane, novoPonto(x2, z2, z));
-                adicionarPonto(plane, novoPonto(x3, z3, z));
-                adicionarPonto(plane, novoPonto(x1 + divisionSize, z1 + divisionSize, z));
-                
+            if(inverte == 1){
+                float temp_1 = b1;
+                float temp_2 = b2;
+                b1 = c1;
+                b2 = c2;
+                c1 = temp_1;
+                c2 = temp_2;
             }
-            else if (axis1 == 'x' && axis2 == 'z')
-            {
-                float x1 = start_x + coluna * divisionSize; // Calculate x-coordinate of first vertex
-                float z1 = start_z + linha * divisionSize; // Calculate z-coordinate of first vertex
-                float x2 = x1 + divisionSize; // Calculate x-coordinate of second vertex
-                float z2 = z1; // Second vertex shares the same z-coordinate
-                float x3 = x1; // Third vertex shares the same x-coordinate
-                float z3 = z1 + divisionSize; // Calculate z-coordinate of third vertex
 
-                // If 'inverte' flag is set, adjust the vertices for the bottom orientation
-                if (inverte == 1) {
-                    x2 = x1;
-                    x3 = x1 + divisionSize;
-                    z3 = z1;
-                }
+            if(axis1 == 'x' && axis2 == 'y'){
+                adicionarPonto(plane, novoPonto(a1, a2, z));
+                adicionarPonto(plane, novoPonto(c1, c2, z));
+                adicionarPonto(plane, novoPonto(b1, b2, z));
 
-                // Add the vertices of the first triangle
-                adicionarPonto(plane, novoPonto(x1, y, z1));
-                adicionarPonto(plane, novoPonto(x2, y, z2));
-                adicionarPonto(plane, novoPonto(x3, y, z3));
-                
-
-                // Add the vertices of the second triangle
-                adicionarPonto(plane, novoPonto(x2, y, z2));
-                adicionarPonto(plane, novoPonto(x3, y, z3));
-                adicionarPonto(plane, novoPonto(x1 + divisionSize, y, z1 + divisionSize));
-                
+                adicionarPonto(plane, novoPonto(b1, b2, z));
+                adicionarPonto(plane, novoPonto(c1, c2, z));
+                adicionarPonto(plane, novoPonto(a1 + divisionSize, a2 + divisionSize, z));
             }
-            else if (axis1 == 'y' && axis2 == 'z')
-            {
-                float y1 = start_y + coluna * divisionSize; // Calculate y-coordinate of first vertex
-                float z1 = start_z + linha * divisionSize; // Calculate z-coordinate of first vertex
-                float y2 = y1; // Second vertex shares the same y-coordinate
-                float z2 = z1 + divisionSize; // Calculate z-coordinate of second vertex
-                float y3 = y1 + divisionSize; // Calculate y-coordinate of third vertex
-                float z3 = z1; // Third vertex shares the same z-coordinate
-
-                // If 'inverte' flag is set, swap vertices to inverte triangle orientation
-                if (inverte == 1) {
-                    float temp_y = y2;
-                    float temp_z = z2;
-                    y2 = y3;
-                    z2 = z3;
-                    y3 = temp_y;
-                    z3 = temp_z;
-                }
-
-                // Add the vertices of the first triangle
-                adicionarPonto(plane, novoPonto(x, y1, z1));
-                adicionarPonto(plane, novoPonto(x, y2, z2));
-                adicionarPonto(plane, novoPonto(x, y3, z3));
+            else if(axis1 == 'x' && axis2 == 'z'){
+                adicionarPonto(plane, novoPonto(a1, y, a2));
+                adicionarPonto(plane, novoPonto(b1, y, b2));
+                adicionarPonto(plane, novoPonto(c1, y, c2));
                 
+                adicionarPonto(plane, novoPonto(b1, y, b2));
+                adicionarPonto(plane, novoPonto(a1 + divisionSize, y, a2 + divisionSize));
+                adicionarPonto(plane, novoPonto(c1, y, c2));
+            }
+            else{
+                adicionarPonto(plane, novoPonto(x, a1, a2));
+                adicionarPonto(plane, novoPonto(x, c1, c2));
+                adicionarPonto(plane, novoPonto(x, b1, b2));
 
-                // Add the vertices of the second triangle
-                adicionarPonto(plane, novoPonto(x, y2, z2));
-                adicionarPonto(plane, novoPonto(x, y3, z3));
-                adicionarPonto(plane, novoPonto(x, y1 + divisionSize, z1 + divisionSize));
-                
+                adicionarPonto(plane, novoPonto(x, b1, b2));
+                adicionarPonto(plane, novoPonto(x, c1, c2));
+                adicionarPonto(plane, novoPonto(x, a1 + divisionSize, a2 + divisionSize));
             }
         }
     }
@@ -307,6 +259,7 @@ int main(int argc, char *argv[])
             file_path = argv[4];
 
             figura = generatePlane(length, divisions, 'x', 'z');
+            adicionarVariosPontos(figura, generatePlane(length, divisions, 'x', 'z', 0, 0, 0, 1));
             criarFile(figura, file_path);
             apagarFigura(figura);
         }
