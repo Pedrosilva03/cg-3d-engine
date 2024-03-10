@@ -154,8 +154,8 @@ Figura generateSphere(float radius, int slices, int stacks)
 
             // Add vertices to the figure
             adicionarPonto(sphere, novoPonto(x1, y1, z1));
-            adicionarPonto(sphere, novoPonto(x2, y2, z2));
             adicionarPonto(sphere, novoPonto(x3, y3, z3));
+            adicionarPonto(sphere, novoPonto(x2, y2, z2));
             adicionarPonto(sphere, novoPonto(x2, y2, z2));
             adicionarPonto(sphere, novoPonto(x3, y3, z3));
             adicionarPonto(sphere, novoPonto(x4, y4, z4));
