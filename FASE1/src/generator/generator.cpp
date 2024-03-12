@@ -112,8 +112,8 @@ Figura generateBox(int length, int divisions)
     return box;
 }
 
-
-Figura generateSphere(float radius, int slices, int stacks)
+/*ANTIGO SPHERE*/
+/*Figura generateSphere(float radius, int slices, int stacks)
 {
     Figura sphere = novaFigura();
     if (!sphere)
@@ -163,7 +163,66 @@ Figura generateSphere(float radius, int slices, int stacks)
     }
 
     return sphere;
+}*/
+
+/*NOVO SPHERE*/
+Figura generateSphere(float radius, int slices, int stacks)
+{
+    Figura sphere = novaFigura();
+    if (!sphere)
+    {
+        cout << "Erro na construção da figura!" << endl;
+        return NULL;
+    }
+
+    float sliceAngle = 2 * M_PI / slices;
+    float stackAngle = M_PI / stacks;
+
+    // Calculate vertex positions
+    for (int i = 0; i < stacks; ++i)
+    {
+        float stackAngle1 = i * stackAngle;
+        float stackAngle2 = (i + 1) * stackAngle;
+
+        for (int j = 0; j < slices; ++j)
+        {
+            float sliceAngle1 = j * sliceAngle;
+            float sliceAngle2 = (j + 1) * sliceAngle;
+
+            float x1, y1, z1, x2, y2, z2, x3, y3, z3, x4, y4, z4;
+
+            // Calculate coordinates for the vertices of the current slice
+            x1 = radius * sin(stackAngle1) * cos(sliceAngle1);
+            y1 = radius * cos(stackAngle1);
+            z1 = radius * sin(stackAngle1) * sin(sliceAngle1);
+
+            x2 = radius * sin(stackAngle1) * cos(sliceAngle2);
+            y2 = radius * cos(stackAngle1);
+            z2 = radius * sin(stackAngle1) * sin(sliceAngle2);
+
+            x3 = radius * sin(stackAngle2) * cos(sliceAngle1);
+            y3 = radius * cos(stackAngle2);
+            z3 = radius * sin(stackAngle2) * sin(sliceAngle1);
+
+            x4 = radius * sin(stackAngle2) * cos(sliceAngle2);
+            y4 = radius * cos(stackAngle2);
+            z4 = radius * sin(stackAngle2) * sin(sliceAngle2);
+
+            // Add vertices to the figure
+            adicionarPonto(sphere, novoPonto(x1, y1, z1));
+            adicionarPonto(sphere, novoPonto(x2, y2, z2));
+            adicionarPonto(sphere, novoPonto(x3, y3, z3));
+
+            adicionarPonto(sphere, novoPonto(x2, y2, z2));
+            adicionarPonto(sphere, novoPonto(x4, y4, z4));
+            adicionarPonto(sphere, novoPonto(x3, y3, z3));
+        }
+    }
+
+    return sphere;
 }
+
+
 
 Figura generateCone(float radius, float height, int slices, int stacks)
 {
