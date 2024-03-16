@@ -10,3 +10,9 @@ build_f1:
 	@echo "Cone done"
 	./FASE1/build/Release/generator.exe sphere 1 10 10 FASE1/out/sphere_1_10_10.3d
 	@echo "Sphere done"
+
+build_f2:
+	cmake -B FASE2/build -S FASE2/src -A Win32
+	cmake --build FASE2/build/ --config Release
+	@echo "Build FASE2 done"
+	
