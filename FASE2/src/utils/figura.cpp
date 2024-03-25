@@ -107,9 +107,8 @@ std::list<Figura> criarListaFiguras(Group group)
     {
         Figura figura = criarFigura(path.c_str()); // Cria uma figura a partir do arquivo
         listaFiguras.push_back(figura);            // Adiciona a figura à lista
-        applyTransforms(listaFiguras, transforms);
     }
-
+    applyTransforms(listaFiguras, transforms);
     return listaFiguras;
 }
 

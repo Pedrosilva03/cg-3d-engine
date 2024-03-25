@@ -61,9 +61,11 @@ void extrair_grupo(TiXmlElement* group_element, Group node){
     }
 
     TiXmlElement* transform_element = group_element->FirstChildElement("transform");
-    std::list<Transform> transform_node = std::list<Transform>();
-    extrair_transform(transform_element, transform_node);
-    add_transform(node, transform_node);
+    if(transform_element){
+        std::list<Transform> transform_node = std::list<Transform>();
+        extrair_transform(transform_element, transform_node);
+        add_transform(node, transform_node);
+    }
 
     TiXmlElement* model_element = group_element->FirstChildElement("models");
     if(model_element){

@@ -17,7 +17,7 @@ struct transform{
     float z;
 };
 
-typedef enum class TransformType{
+enum class TransformType{
     SCALE,
     TRANSLATE,
     ROTATE
