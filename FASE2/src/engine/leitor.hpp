@@ -1,14 +1,11 @@
 #ifndef LEITOR
 #define LEITOR
 #include "../tinyxml/tinyxml.h"
+#include "../utils/groups.hpp"
 #include <list>
 #include <string>
 
 typedef struct leitor* Leitor;
-
-typedef struct group* Nodo;
-
-typedef struct transformation* Transformation;
 
 Leitor novoLeitor();
 
@@ -46,7 +43,7 @@ void setUp(Leitor l, float x, float y, float z);
 
 void setProjection(Leitor l, float x, float y, float z);
 
-std::list<std::string> getFiles(Leitor l);
+Group getNode(Leitor l);
 
 void deleteLeitor(Leitor l);
 

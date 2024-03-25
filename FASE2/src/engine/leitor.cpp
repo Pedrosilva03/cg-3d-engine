@@ -1,4 +1,5 @@
 #include "leitor.hpp"
+#include "../utils/groups.hpp"
 #include "../tinyxml/tinyxml.h"
 #include <iostream>
 #include <list>
@@ -10,7 +11,7 @@ struct leitor {
     float lookAt[3];
     float up[3];
     float projection[3]; // fov, near, far
-    std::list<std::string> file;
+    Group group;
 };
 
 Leitor novoLeitor() {
@@ -24,12 +25,53 @@ Leitor novoLeitor() {
             l->projection[i] = 0.0f;
         }
 
-        l->file = std::list<std::string>();
+        l->group = novoGrupo();
     } else {
         std::cout << "Erro na construção do leitor!" << std::endl;
     }
 
     return l;
+}
+
+void extrair_transform(TiXmlElement* transform_element, std::list<Transform>& transform_node){
+    for(TiXmlElement* transform_attribute = transform_element->FirstChildElement(); transform_attribute; transform_attribute = transform_attribute->NextSiblingElement()){
+        Transform t = novoTransform();
+        if(strcmp(transform_attribute->Value(), "scale") == 0){
+            add_transformType(t, "scale");
+        }
+        else if(strcmp(transform_attribute->Value(), "translate") == 0){
+            add_transformType(t, "translate");
+        }
+        else if(strcmp(transform_attribute->Value(), "rotate") == 0){
+            add_transformType(t, "rotate");
+            add_transformAngle(t, atof(transform_attribute->Attribute("angle")));
+        }
+        add_transformX(t, atof(transform_attribute->Attribute("x")));
+        add_transformY(t, atof(transform_attribute->Attribute("y")));
+        add_transformZ(t, atof(transform_attribute->Attribute("z")));
+        transform_node.push_back(t);
+    }
+}
+
+void extrair_grupo(TiXmlElement* group_element, Group node){
+    for(TiXmlElement* group_child_element = group_element->FirstChildElement("group"); group_child_element; group_child_element = group_child_element->NextSiblingElement("group")){
+        Group child_node = novoGrupo();
+        extrair_grupo(group_child_element, child_node);
+        add_node(node, child_node);
+    }
+
+    TiXmlElement* transform_element = group_element->FirstChildElement("transform");
+    std::list<Transform> transform_node = std::list<Transform>();
+    extrair_transform(transform_element, transform_node);
+    add_transform(node, transform_node);
+
+    TiXmlElement* model_element = group_element->FirstChildElement("models");
+    if(model_element){
+        for(TiXmlElement* models = model_element->FirstChildElement(); models; models = models->NextSiblingElement()){
+            std::string file_name = models->Attribute("file");
+            push_file(node, file_name);
+        }
+    }
 }
 
 Leitor extrair_XML(const char* filePath) {
@@ -59,11 +101,9 @@ Leitor extrair_XML(const char* filePath) {
             l->projection[2] = atof(camera->FirstChildElement("projection")->Attribute("far"));
 
             // Extrair o nome do arquivo do modelo
-            TiXmlElement* model_node = root->FirstChildElement("group")->FirstChildElement("models");
-            for(TiXmlElement* models = model_node->FirstChildElement(); models; models = models->NextSiblingElement()){
-                std::string file_name = models->Attribute("file");
-                l->file.push_back(file_name);
-            }
+            TiXmlElement* main_node = root->FirstChildElement("group");
+            extrair_grupo(main_node, l->group);
+            
         } else {
             std::cout << "Erro ao carregar o arquivo XML." << std::endl;
         }
@@ -152,13 +192,13 @@ void setProjection(Leitor l, float x, float y, float z){
     }
 }
 
-std::list<std::string> getFiles(Leitor l) {
+Group getNode(Leitor l) {
     if (l) {
-        std::list<std::string> files = l->file;
+        Group files = l->group;
         return files;
     } else {
         std::cout << "Leitor inválido!" << std::endl;
-        return std::list<std::string>(); // Retorna uma lista vazia se o leitor for inválido
+        return nullptr; // Retorna uma lista vazia se o leitor for inválido
     }
 }
 

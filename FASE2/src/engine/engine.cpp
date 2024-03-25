@@ -7,6 +7,7 @@
 
 #include "../utils/figura.hpp"
 #include "../utils/ponto.hpp"
+#include "../utils/groups.hpp"
 #include "../tinyxml/tinyxml.h"
 #include "leitor.hpp"
 #define _USE_MATH_DEFINES
@@ -180,8 +181,9 @@ void processKeys(unsigned char key, int x, int y)
 int main(int argc, char **argv)
 {
     leitor = extrair_XML(argv[1]);
-    std::list<std::string> listafiguras = getFiles(leitor);
-    figuras = criarListaFiguras(listafiguras);
+    Group listafiguras = getNode(leitor);
+    
+    if(listafiguras) figuras = criarListaFiguras(listafiguras);
 
     cameraPosX = getXPosCam(leitor);
     cameraPosY = getYPosCam(leitor);

@@ -1,14 +1,13 @@
 #include "ponto.hpp"
+#include "groups.hpp"
 #include <list>
 #include <string> 
 #ifndef FIGURA_HPP
 #define FIGURA_HPP
 
-using namespace std;
-
 typedef struct figura* Figura;
 
-list<Ponto> getPontos(Figura f);
+std::list<Ponto> getPontos(Figura f);
 
 Figura novaFigura();
 
@@ -22,6 +21,8 @@ Figura criarFigura(const char* path);
 
 void apagarFigura(Figura f);
 
-list<Figura> criarListaFiguras(const list<string>& paths);
+std::list<Figura> criarListaFiguras(Group group);
+
+void applyTransforms(std::list<Figura>& figuras, std::list<Transform>& transforms);
 
 #endif
