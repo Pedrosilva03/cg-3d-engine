@@ -61,20 +61,55 @@ float calcularDistanciaEntrePontos(Ponto p1, Ponto p2)
 }
 
 void rodarPonto(Ponto p, float angle, float x, float y, float z){
-    float rad = angle * M_PI/180;
-    float cosA = cos(rad);
-    float sinA = sin(rad);
+    float angleRad = angle * M_PI/180;
+    float pontox = getX(p);
+    float pontoy = getY(p);
+    float pontoz = getZ(p);
+
+    float pontoRotX, pontoRotY, pontoRotZ;
 
     if(x > 0){
-        setY(p, getY(p) * cosA - getZ(p) * sinA);
-        setZ(p, getY(p) * sinA - getZ(p) * cosA);
+        pontoRotX = x;
+        pontoRotY = pontoRotZ = 0;
     }
-    if(y > 0){
-        setX(p, getX(p) * cosA + getZ(p) * sinA);
-        setZ(p, -getX(p) * sinA + getZ(p) * cosA);
+    else if(y > 0){
+        pontoRotY = y;
+        pontoRotX = pontoRotZ = 0;
     }
-    if(z > 0){
-        setX(p, getX(p) * cosA - getY(p) * sinA);
-        setY(p, getX(p) * sinA + getY(p) * cosA);
+    else if(z > 0){
+        pontoRotZ = z;
+        pontoRotX = pontoRotY = 0;
     }
+
+    float vecX = pontox - pontoRotX;
+    float vecY = pontoy - pontoRotY;
+    float vecZ = pontoz - pontoRotZ;
+
+    float vecRotX, vecRotY, vecRotZ;
+
+    if(x > 0){
+        vecRotX = vecX;
+        vecRotY = vecY * cos(angleRad) - vecZ * sin(angleRad);
+        vecRotZ = vecY * sin(angleRad) + vecZ * cos(angleRad);
+    } 
+    else if(y > 0){
+        vecRotX = vecX * cos(angleRad) + vecZ * sin(angleRad);
+        vecRotY = vecY;
+        vecRotZ = -vecX * sin(angleRad) + vecZ * cos(angleRad);
+    }
+    else if(z > 0){
+        vecRotX = vecX * cos(angleRad) - vecY * sin(angleRad);
+        vecRotY = vecX * sin(angleRad) + vecY * cos(angleRad);
+        vecRotZ = vecZ;
+    }
+
+    float newPontoX, newPontoY, newPontoZ;
+
+    newPontoX = vecRotX + pontoRotX;
+    newPontoY = vecRotY + pontoRotY;
+    newPontoZ = vecRotZ + pontoRotZ;
+
+    setX(p, newPontoX);
+    setY(p, newPontoY);
+    setZ(p, newPontoZ);
 }
