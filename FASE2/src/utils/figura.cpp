@@ -5,7 +5,6 @@
 #include <cstdio>
 #include <string>
 #include <list>
-#include <GL/glut.h>
 
 struct figura
 {
