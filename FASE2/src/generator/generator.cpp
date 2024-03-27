@@ -11,6 +11,51 @@
 
 using namespace std;
 
+Figura generateRing(float innerRadius, float outerRadius, int divisions){
+    Figura ring = novaFigura();
+    if(!ring){
+        cout << "Erro na construção da figura!" << endl;
+        return NULL;
+    }
+
+    float angle = 2 * M_PI / divisions;
+
+    for (int i = 0; i < divisions; i++){
+        float currentAngle = angle * i;
+
+        float x1 = innerRadius * cos(currentAngle);
+        float z1 = innerRadius * sin(currentAngle);
+        float x2 = outerRadius * cos(currentAngle);
+        float z2 = outerRadius * sin(currentAngle);
+
+        currentAngle = (i + 1) * angle;
+
+        // Calcular as coordenadas x e z para o próximo ponto
+        float x3 = innerRadius * cos(currentAngle);
+        float z3 = innerRadius * sin(currentAngle);
+        float x4 = outerRadius * cos(currentAngle);
+        float z4 = outerRadius * sin(currentAngle);
+
+        // Adicionar pontos ao vetor de pontos para formar o segmento do anel
+        adicionarPonto(ring, novoPonto(x3, 0, z3)); // Ponto interior
+        adicionarPonto(ring, novoPonto(x1, 0, z1)); // Ponto interior
+        adicionarPonto(ring, novoPonto(x2, 0, z2)); // Ponto exterior
+
+        adicionarPonto(ring, novoPonto(x3, 0, z3)); // Ponto interior
+        adicionarPonto(ring, novoPonto(x2, 0, z2)); // Ponto exterior
+        adicionarPonto(ring, novoPonto(x4, 0, z4)); // Ponto interior
+
+        adicionarPonto(ring, novoPonto(x2, 0, z2)); // Ponto exterior
+        adicionarPonto(ring, novoPonto(x1, 0, z1)); // Ponto interior
+        adicionarPonto(ring, novoPonto(x3, 0, z3)); // Ponto interior
+
+        adicionarPonto(ring, novoPonto(x4, 0, z4)); // Ponto interior
+        adicionarPonto(ring, novoPonto(x2, 0, z2)); // Ponto exterior
+        adicionarPonto(ring, novoPonto(x3, 0, z3)); // Ponto interior
+    }
+    return ring;
+}
+
 Figura generatePlane(int length, int divisions, char axis1, char axis2, float x = 0.0f, float y = 0.0f, float z = 0.0f, int inverte = 0)
 {
     Figura plane = novaFigura();
@@ -257,6 +302,16 @@ int main(int argc, char *argv[])
         Figura figura = novaFigura();
         const char *file_path = nullptr;
 
+        if(strcmp(argv[1], "ring") == 0){
+            float innerRadius = atof(argv[2]);
+            float outerRadius = atof(argv[3]);
+            float divisions = atof(argv[4]);
+            file_path = argv[5];
+
+            figura = generateRing(innerRadius, outerRadius, divisions);
+            criarFile(figura, file_path);
+            apagarFigura(figura);
+        }
         if (strcmp(argv[1], "plane") == 0)
         {
             int length = atoi(argv[2]);

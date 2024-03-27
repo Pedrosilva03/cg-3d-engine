@@ -66,19 +66,18 @@ void rodarPonto(Ponto p, float angle, float x, float y, float z){
     float pontoy = getY(p);
     float pontoz = getZ(p);
 
-    float pontoRotX, pontoRotY, pontoRotZ;
+    float pontoRotX = 0;
+    float pontoRotY = 0;
+    float pontoRotZ = 0;
 
     if(x > 0){
         pontoRotX = x;
-        pontoRotY = pontoRotZ = 0;
     }
-    else if(y > 0){
+    if(y > 0){
         pontoRotY = y;
-        pontoRotX = pontoRotZ = 0;
     }
-    else if(z > 0){
+    if(z > 0){
         pontoRotZ = z;
-        pontoRotX = pontoRotY = 0;
     }
 
     float vecX = pontox - pontoRotX;
