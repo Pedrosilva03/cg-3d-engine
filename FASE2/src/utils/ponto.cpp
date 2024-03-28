@@ -73,10 +73,10 @@ void rodarPonto(Ponto p, float angle, float x, float y, float z){
     if(x > 0){
         pontoRotX = x;
     }
-    if(y > 0){
+    else if(y > 0){
         pontoRotY = y;
     }
-    if(z > 0){
+    else if(z > 0){
         pontoRotZ = z;
     }
 
@@ -90,16 +90,19 @@ void rodarPonto(Ponto p, float angle, float x, float y, float z){
         vecRotX = vecX;
         vecRotY = vecY * cos(angleRad) - vecZ * sin(angleRad);
         vecRotZ = vecY * sin(angleRad) + vecZ * cos(angleRad);
+        x = 0;
     } 
     else if(y > 0){
         vecRotX = vecX * cos(angleRad) + vecZ * sin(angleRad);
         vecRotY = vecY;
         vecRotZ = -vecX * sin(angleRad) + vecZ * cos(angleRad);
+        y = 0;
     }
     else if(z > 0){
         vecRotX = vecX * cos(angleRad) - vecY * sin(angleRad);
         vecRotY = vecX * sin(angleRad) + vecY * cos(angleRad);
         vecRotZ = vecZ;
+        z = 0;
     }
 
     float newPontoX, newPontoY, newPontoZ;
@@ -111,4 +114,8 @@ void rodarPonto(Ponto p, float angle, float x, float y, float z){
     setX(p, newPontoX);
     setY(p, newPontoY);
     setZ(p, newPontoZ);
+
+    if(x != 0 || y != 0 || z != 0){
+        rodarPonto(p, angle, x, y, z);
+    }
 }
