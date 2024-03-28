@@ -13,7 +13,7 @@
         <!--Sol-->
         <group>
             <models>
-                <model file="../out/sphere_1_8_8.3d" />
+                <model file="../out/planet.3d" />
             </models>
         </group>
 
@@ -25,7 +25,7 @@
                 <rotate angle="21" x="0" y="1" z="0" />
             </transform>
             <models>
-                <model file="../out/sphere_1_8_8.3d" /> <!-- generator sphere 1 8 8 sphere_1_8_8.3d -->
+                <model file="../out/planet.3d" /> <!-- generator sphere 1 25 25 planet.3d -->
             </models>
         </group>
 
@@ -37,7 +37,7 @@
                 <rotate angle="225" x="0" y="1" z="0" />
             </transform>
             <models>
-                <model file="../out/sphere_1_8_8.3d" /> <!-- generator sphere 1 8 8 sphere_1_8_8.3d -->
+                <model file="../out/planet.3d" /> <!-- generator sphere 1 25 25 planet.3d -->
             </models>
         </group>
 
@@ -48,8 +48,21 @@
                 <translate x="1.75" y="0" z="0" />
                 <rotate angle="320" x="0" y="1" z="0" />
             </transform>
+            
             <models>
-                <model file="../out/sphere_1_8_8.3d" /> <!-- generator sphere 1 8 8 sphere_1_8_8.3d -->
+                <model file="../out/planet.3d" /> <!-- generator sphere 1 25 25 planet.3d -->
+            </models>
+        </group>
+
+        <!--Lua-->
+        <group>
+            <transform>
+                <scale x="0.005" y="0.005" z="0.005" />
+                <translate x="1.9" y="0" z="0" />
+                <rotate angle="320" x="0" y="1" z="0" />
+            </transform>
+            <models>
+                <model file="../out/planet.3d" /> <!-- generator sphere 1 25 25 planet.3d -->
             </models>
         </group>
 
@@ -61,7 +74,7 @@
                 <rotate angle="343" x="0" y="1" z="0" />
             </transform>
             <models>
-                <model file="../out/sphere_1_8_8.3d" /> <!-- generator sphere 1 8 8 sphere_1_8_8.3d -->
+                <model file="../out/planet.3d" /> <!-- generator sphere 1 25 25 planet.3d -->
             </models>
         </group>
 
@@ -73,7 +86,7 @@
                 <rotate angle="259" x="0" y="1" z="0" />
             </transform>
             <models>
-                <model file="../out/sphere_1_8_8.3d" /> <!-- generator sphere 1 8 8 sphere_1_8_8.3d -->
+                <model file="../out/planet.3d" /> <!-- generator sphere 1 25 25 planet.3d -->
             </models>
         </group>
 
@@ -86,7 +99,7 @@
             </transform>
             <group>
                 <models>
-                    <model file="../out/sphere_1_8_8.3d" /> <!-- generator sphere 1 8 8 sphere_1_8_8.3d -->
+                    <model file="../out/planet.3d" /> <!-- generator sphere 1 25 25 planet.3d -->
                 </models>
             </group>
             <group>
@@ -94,7 +107,7 @@
                     <rotate angle="217" x="0" y="1" z="0" />
                 </transform>
                 <models>
-                    <model file="../out/ring_2_3.3d" /> <!-- generator ring 1 1.5 40 ../out/ring_2_3.3d -->
+                    <model file="../out/ring.3d" /> <!-- generator ring 1.5 2 40 ../out/ring.3d -->
                 </models>
             </group>
         </group>
@@ -108,7 +121,7 @@
             </transform>
             <group>
                 <models>
-                    <model file="../out/sphere_1_8_8.3d" /> <!-- generator sphere 1 8 8 sphere_1_8_8.3d -->
+                    <model file="../out/planet.3d" /> <!-- generator sphere 1 25 25 planet.3d -->
                 </models>
             </group>
             <group>
@@ -116,7 +129,7 @@
                     <rotate angle="93" x="0" y="0" z="1" />
                 </transform>
                 <models>
-                    <model file="../out/ring_2_3.3d" /> <!-- generator ring 1 1.5 40 ../out/ring_2_3.3d -->
+                    <model file="../out/ring.3d" /> <!-- generator ring 1.5 2 40 ../out/ring.3d -->
                 </models>
             </group>
         </group>
@@ -129,7 +142,7 @@
                 <rotate angle="100" x="0" y="1" z="0" />
             </transform>
             <models>
-                <model file="../out/sphere_1_8_8.3d" /> <!-- generator sphere 1 8 8 sphere_1_8_8.3d -->
+                <model file="../out/planet.3d" /> <!-- generator sphere 1 25 25 planet.3d -->
             </models>
         </group>
     </group>
