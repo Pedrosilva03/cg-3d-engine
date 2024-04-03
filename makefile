@@ -15,6 +15,8 @@ build_f2:
 	cmake -B FASE2/build -S FASE2/src -A Win32
 	cmake --build FASE2/build/ --config Release
 	@echo "Build FASE2 done"
+	./FASE2/build/Release/generator.exe sphere 1 8 8 FASE2/out/sphere_1_8_8.3d
+	@echo "Sphere_1_8_8 done"
 	./FASE2/build/Release/generator.exe sphere 1 25 25 FASE2/out/planet.3d
 	@echo "Planet done"
 	./FASE2/build/Release/generator.exe ring 1.5 2 40 FASE2/out/ring.3d

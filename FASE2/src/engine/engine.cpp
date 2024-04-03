@@ -206,7 +206,7 @@ int main(int argc, char **argv)
     glutInitDisplayMode(GLUT_DEPTH | GLUT_DOUBLE | GLUT_RGBA);
     glutInitWindowPosition(100, 100);
     glutInitWindowSize(800, 800);
-    glutCreateWindow("Fase 1");
+    glutCreateWindow("Fase 2 - Transformacoes Geometricas");
 
     // Required callback registry
     glutDisplayFunc(renderScene);
