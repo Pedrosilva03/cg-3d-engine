@@ -22,4 +22,9 @@ build_f2:
 	./FASE2/build/Release/generator.exe ring 1.5 2 40 FASE2/out/ring.3d
 	@echo "Ring done"
 
+build_f3:
+	cmake -B FASE3/build -S FASE3/src -A Win32
+	cmake --build FASE3/build/ --config Release
+	@echo "Build FASE3 done"
+
 	
