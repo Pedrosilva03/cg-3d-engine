@@ -11,6 +11,76 @@
 
 using namespace std;
 
+//Geradores de patches----------------------------------------------------------------------
+
+std::list<Ponto> getPatchPontos(const char* patchFile){
+    std::list<Ponto> controlPoints = std::list<Ponto>();
+    FILE* patchF = fopen(patchFile, "r");
+    if(patchF){
+        // Salta as linhas dos patches
+        char skipline[BUFSIZ];
+        fgets(skipline, BUFSIZ, patchF);
+        int numPatches = stoi(skipline);
+        for(int i = 0; i < numPatches; i++){
+            fgets(skipline, BUFSIZ, patchF);
+        }
+
+        // Parse dos pontos
+        char firstLine[BUFSIZ];
+        fgets(firstLine, BUFSIZ, patchF);
+        int numPoints = stoi(firstLine);
+        for(int i = 0; i < numPoints; i++){
+            char points[BUFSIZ];
+            float x, y, z;
+            fgets(points, BUFSIZ, patchF);
+            sscanf(points, "%f,%f,%f", &x, &y, &z);
+            Ponto p = novoPonto(x, y, z);
+            controlPoints.push_back(p);
+        }
+    }
+    return controlPoints;
+}
+
+std::list<std::list<int>> getPatches(const char* patchFile){
+    std::list<std::list<int>> patches = std::list<std::list<int>>();
+    FILE* patchF = fopen(patchFile, "r");
+    if(patchF){
+        char firstLine[BUFSIZ];
+        fgets(firstLine, BUFSIZ, patchF); //Salta a primeira linha
+        int numPatches = stoi(firstLine);
+
+        for(int i = 1; i <= numPatches; i++){
+            std::list<int> indices = std::list<int>();
+            char patchLine[BUFSIZ];
+            fgets(patchLine, BUFSIZ, patchF);
+            for(char* indiceChar = strtok(patchLine, ", "); indiceChar; indiceChar = strtok(NULL, ", ")){
+                int indice = atoi(indiceChar);
+                indices.push_back(indice);
+            }
+            patches.push_back(indices);
+        }
+    }
+    else{
+        cout << "Erro ao abrir ficheiro de patches!" << endl;
+    }    
+    return patches;
+}
+
+Figura generateFromPatch(const char* patchFile, int tesselation){
+    Figura patch = novaFigura();
+    if(!patch){
+        cout << "Erro na construção da figura!" << endl;
+        return NULL;
+    }
+    
+    std::list<std::list<int>> patches = getPatches(patchFile);
+    std::list<Ponto> controlPoints = getPatchPontos(patchFile);
+
+    return patch;
+}
+
+//Geradores de primitivas----------------------------------------------------------------------
+
 Figura generateRing(float innerRadius, float outerRadius, int divisions){
     Figura ring = novaFigura();
     if(!ring){
@@ -302,7 +372,17 @@ int main(int argc, char *argv[])
         Figura figura = novaFigura();
         const char *file_path = nullptr;
 
-        if(strcmp(argv[1], "ring") == 0){
+        if(strcmp(argv[1], "patch") == 0){
+            const char* patchFile = argv[2];
+            int tesselation = atoi(argv[3]);
+            file_path = argv[4];
+
+            figura = generateFromPatch(patchFile, tesselation);
+            criarFile(figura, file_path);
+            apagarFigura(figura);
+        }
+
+        else if(strcmp(argv[1], "ring") == 0){
             float innerRadius = atof(argv[2]);
             float outerRadius = atof(argv[3]);
             float divisions = atof(argv[4]);
@@ -312,7 +392,8 @@ int main(int argc, char *argv[])
             criarFile(figura, file_path);
             apagarFigura(figura);
         }
-        if (strcmp(argv[1], "plane") == 0)
+
+        else if (strcmp(argv[1], "plane") == 0)
         {
             int length = atoi(argv[2]);
             int divisions = atoi(argv[3]);
@@ -358,6 +439,10 @@ int main(int argc, char *argv[])
             figura = generateCone(radius, height, slices, stacks);
             criarFile(figura, file_path);
             apagarFigura(figura);
+        }
+        else{
+            printf("Modelo pedido inválido. Nada foi gerado.");
+            return 1;
         }
     }
     else
