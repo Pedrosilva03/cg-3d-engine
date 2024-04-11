@@ -16,6 +16,8 @@ add_library(
     ./utils/ponto.hpp
     ./utils/figura.cpp
     ./utils/figura.hpp
+    ./utils/bezier.cpp
+    ./utils/bezier.hpp
 )
 
 # Biblioteca de parsing de XML

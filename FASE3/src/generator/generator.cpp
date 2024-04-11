@@ -3,11 +3,13 @@
 #endif
 #include "../utils/figura.hpp"
 #include "../utils/ponto.hpp"
+#include "../utils/bezier.hpp"
 #include <string.h>
 
 #define _USE_MATH_DEFINES
 #include <math.h>
 #include <iostream>
+#include <vector>
 
 using namespace std;
 
@@ -66,6 +68,20 @@ std::list<std::list<int>> getPatches(const char* patchFile){
     return patches;
 }
 
+std::list<std::list<Ponto>> getPontosFromPatches(std::list<std::list<int>> patches, std::list<Ponto> controlPoints){
+    std::list<std::list<Ponto>> pontos = std::list<std::list<Ponto>>();
+    for(std::list<int> patch: patches){
+        std::list<Ponto> pontosPatch = std::list<Ponto>();
+        for(int i: patch){
+            auto it = controlPoints.begin();
+            std::advance(it, i);
+            pontosPatch.push_back(*it);
+        }
+        pontos.push_back(pontosPatch);
+    }
+    return pontos;
+}
+
 Figura generateFromPatch(const char* patchFile, int tesselation){
     Figura patch = novaFigura();
     if(!patch){
@@ -75,6 +91,36 @@ Figura generateFromPatch(const char* patchFile, int tesselation){
     
     std::list<std::list<int>> patches = getPatches(patchFile);
     std::list<Ponto> controlPoints = getPatchPontos(patchFile);
+
+    std::list<std::list<Ponto>> pointsCalculated = getPontosFromPatches(patches, controlPoints);
+
+    for(std::list<Ponto> patchPointsCalculated: pointsCalculated){
+        std::vector<Ponto> patchPointsCalculatedVector(patchPointsCalculated.begin(), patchPointsCalculated.end()); // Troca para vector para facilitar o acesso
+
+
+        float divisionSize = 1.0f/tesselation;
+        for(int i = 0; i < tesselation; i++){
+            float u0 = (float)i / tesselation;
+            float u1 = (float)(i + 1) / tesselation;
+            for(int j = 0; j < tesselation; j++){
+                float v0 = (float)j / tesselation;
+                float v1 = (float)(j + 1)/ tesselation;
+
+                Ponto p00 = calculateBezierPoint(patchPointsCalculatedVector, u0, v0);
+                Ponto p10 = calculateBezierPoint(patchPointsCalculatedVector, u1, v0);
+                Ponto p01 = calculateBezierPoint(patchPointsCalculatedVector, u0, v1);
+                Ponto p11 = calculateBezierPoint(patchPointsCalculatedVector, u1, v1);
+
+                adicionarPonto(patch, p00);
+                adicionarPonto(patch, p10);
+                adicionarPonto(patch, p11);
+
+                adicionarPonto(patch, p00);
+                adicionarPonto(patch, p11);
+                adicionarPonto(patch, p01);
+            }
+        }
+    }
 
     return patch;
 }
