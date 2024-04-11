@@ -101,23 +101,16 @@ Figura generateFromPatch(const char* patchFile, int tesselation){
         float divisionSize = 1.0f/tesselation;
         for(int i = 0; i < tesselation; i++){
             float u0 = (float)i / tesselation;
-            float u1 = (float)(i + 1) / tesselation;
             for(int j = 0; j < tesselation; j++){
                 float v0 = (float)j / tesselation;
-                float v1 = (float)(j + 1)/ tesselation;
 
-                Ponto p00 = calculateBezierPoint(patchPointsCalculatedVector, u0, v0);
-                Ponto p10 = calculateBezierPoint(patchPointsCalculatedVector, u1, v0);
-                Ponto p01 = calculateBezierPoint(patchPointsCalculatedVector, u0, v1);
-                Ponto p11 = calculateBezierPoint(patchPointsCalculatedVector, u1, v1);
+                adicionarPonto(patch, calculateBezierPoint(patchPointsCalculatedVector, u0, v0));
+                adicionarPonto(patch, calculateBezierPoint(patchPointsCalculatedVector, u0 + divisionSize, v0));
+                adicionarPonto(patch, calculateBezierPoint(patchPointsCalculatedVector, u0 + divisionSize, v0 + divisionSize));
 
-                adicionarPonto(patch, p00);
-                adicionarPonto(patch, p10);
-                adicionarPonto(patch, p11);
-
-                adicionarPonto(patch, p00);
-                adicionarPonto(patch, p11);
-                adicionarPonto(patch, p01);
+                adicionarPonto(patch, calculateBezierPoint(patchPointsCalculatedVector, u0, v0));
+                adicionarPonto(patch, calculateBezierPoint(patchPointsCalculatedVector, u0 + divisionSize, v0 + divisionSize));
+                adicionarPonto(patch, calculateBezierPoint(patchPointsCalculatedVector, u0, v0 + divisionSize));
             }
         }
     }
