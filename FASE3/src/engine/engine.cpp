@@ -16,6 +16,7 @@
 #include <list>
 #include <string>
 #include <sstream>
+#include <chrono>
 
 using namespace std;
 
@@ -35,9 +36,15 @@ float fov = 60.0f;
 float near = 1.0f;
 float far = 1000.0f;
 int mode = GL_LINE;
+Group listafiguras;
 list<Figura> figuras;
 
 Leitor leitor = nullptr;
+
+// FPS counter variables
+std::chrono::time_point<std::chrono::steady_clock> lastTime;
+int frameCount = 0;
+float fps = 0.0f;
 
 void changeSize(int w, int h)
 {
@@ -79,6 +86,18 @@ void drawFiguras(const list<Figura>& lista) {
     }
 }
 
+void fpsCounter(void){
+    frameCount++;
+    auto currentTime = std::chrono::steady_clock::now();
+    auto elapsedTime = std::chrono::duration_cast<std::chrono::milliseconds>(currentTime - lastTime).count() / 1000.0;
+    if (elapsedTime >= 1.0) {
+        fps = frameCount / elapsedTime;
+        std::cout << "FPS: " << fps << std::endl;
+        frameCount = 0;
+        lastTime = currentTime;
+    }
+}
+
 void renderScene(void)
 {
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
@@ -101,6 +120,8 @@ void renderScene(void)
 
     glPolygonMode(GL_FRONT_AND_BACK, mode);
     drawFiguras(figuras);
+
+    fpsCounter();
 
     glutSwapBuffers();
 }
@@ -181,7 +202,7 @@ void processKeys(unsigned char key, int x, int y)
 int main(int argc, char **argv)
 {
     leitor = extrair_XML(argv[1]);
-    Group listafiguras = getNode(leitor);
+    listafiguras = getNode(leitor);
     
     if(listafiguras) figuras = criarListaFiguras(listafiguras);
 
@@ -211,6 +232,7 @@ int main(int argc, char **argv)
     // Required callback registry
     glutDisplayFunc(renderScene);
     glutReshapeFunc(changeSize);
+    glutIdleFunc(renderScene);
 
     // Callback registration for keyboard processing
     glutKeyboardFunc(processKeys);
