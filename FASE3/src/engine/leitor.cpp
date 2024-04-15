@@ -38,17 +38,42 @@ void extrair_transform(TiXmlElement* transform_element, std::list<Transform>& tr
         Transform t = novoTransform();
         if(strcmp(transform_attribute->Value(), "scale") == 0){
             add_transformType(t, "scale");
+            add_transformX(t, atof(transform_attribute->Attribute("x")));
+            add_transformY(t, atof(transform_attribute->Attribute("y")));
+            add_transformZ(t, atof(transform_attribute->Attribute("z")));
         }
         else if(strcmp(transform_attribute->Value(), "translate") == 0){
             add_transformType(t, "translate");
+            const char* atTime = transform_attribute->Attribute("time");
+            if(atTime){
+                add_time(t, atof(atTime));
+                add_align(t, transform_attribute->Attribute("align")); // Dar fix a isto pq wtf porque e que nao da
+                std::list<Ponto> pontos = std::list<Ponto>();
+                for(TiXmlElement* pointElement = transform_attribute->FirstChildElement("point"); pointElement; pointElement = pointElement->NextSiblingElement("point")){
+                    Ponto p = novoPonto(atof(pointElement->Attribute("x")), atof(pointElement->Attribute("y")), atof(pointElement->Attribute("z")));
+                    pontos.push_back(p);
+                }
+                add_pontosCat(t, pontos);
+            }
+            else{
+                add_transformX(t, atof(transform_attribute->Attribute("x")));
+                add_transformY(t, atof(transform_attribute->Attribute("y")));
+                add_transformZ(t, atof(transform_attribute->Attribute("z")));
+            }
         }
         else if(strcmp(transform_attribute->Value(), "rotate") == 0){
             add_transformType(t, "rotate");
-            add_transformAngle(t, atof(transform_attribute->Attribute("angle")));
+            const char* rotationTime = transform_attribute->Attribute("time");
+            if(!rotationTime){
+                add_transformAngle(t, atof(transform_attribute->Attribute("angle")));
+            }
+            else{
+                add_time(t, atof(rotationTime));
+            }
+            add_transformX(t, atof(transform_attribute->Attribute("x")));
+            add_transformY(t, atof(transform_attribute->Attribute("y")));
+            add_transformZ(t, atof(transform_attribute->Attribute("z")));
         }
-        add_transformX(t, atof(transform_attribute->Attribute("x")));
-        add_transformY(t, atof(transform_attribute->Attribute("y")));
-        add_transformZ(t, atof(transform_attribute->Attribute("z")));
         transform_node.push_back(t);
     }
 }

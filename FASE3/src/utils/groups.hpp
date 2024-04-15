@@ -1,5 +1,6 @@
 #include <list>
 #include <string>
+#include "ponto.hpp"
 #ifndef GROUPS_HPP
 #define GROUPS_HPP
 
@@ -26,5 +27,10 @@ void add_transformAngle(Transform t, float angle);
 void add_transformX(Transform t, float x);
 void add_transformY(Transform t, float y);
 void add_transformZ(Transform t, float z);
+void add_time(Transform t, float time);
+void add_align(Transform t, const char* align);
+float get_time(Transform t);
+bool get_align(Transform t);
+void add_pontosCat(Transform t, std::list<Ponto> pontos);
 
 #endif

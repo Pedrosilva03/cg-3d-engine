@@ -1,4 +1,5 @@
 #include "groups.hpp"
+#include "ponto.hpp"
 #include <list>
 #include <string>
 #include <iostream>
@@ -11,6 +12,9 @@ struct group{
 
 struct transform{
     TransformType type;
+    float time;
+    const char* align;
+    std::list<Ponto> points; // Pontos usados para catmull só no translate
     float angle;
     float x;
     float y;
@@ -85,4 +89,24 @@ void add_transformY(Transform t, float y){
 
 void add_transformZ(Transform t, float z){
     t->z = z;
+}
+
+void add_time(Transform t, float time){
+    t->time = time;
+}
+
+void add_align(Transform t, const char* align){
+    t->align = align;
+}
+
+float get_time(Transform t){
+    return t->time;
+}
+
+bool get_align(Transform t){
+    return t->align;
+}
+
+void add_pontosCat(Transform t, std::list<Ponto> pontos){
+    t->points = pontos;
 }
