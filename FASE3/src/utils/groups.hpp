@@ -15,10 +15,10 @@ Group novoGrupo();
 
 Group getChild(Group g, int i);
 std::list<Transform> getTransform(Group g);
-std::list<std::string> getFiles(Group g);
+std::list<void*> getFiles(Group g);
 void add_transform(Group node, std::list<Transform> transfrom_node);
 void add_node(Group node, Group child_node);
-void push_file(Group group, std::string file);
+void push_file(Group group, void* file);
 
 Transform novoTransform();
 

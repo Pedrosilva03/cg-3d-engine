@@ -100,6 +100,8 @@ void fpsCounter(void){
 
 void renderScene(void)
 {
+    int elapsedTime = glutGet(GLUT_ELAPSED_TIME);
+
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
     glLoadIdentity();
     gluLookAt(radius * cos(beta1) * sin(alpha), radius * sin(beta1), radius * cos(beta1) * cos(alpha), lookAtX, lookAtY, lookAtZ, upX, upY, upZ);
@@ -119,6 +121,8 @@ void renderScene(void)
     glEnd();
 
     glPolygonMode(GL_FRONT_AND_BACK, mode);
+
+    figuras = criarListaFiguras(listafiguras, elapsedTime);
     drawFiguras(figuras);
 
     fpsCounter();
@@ -204,7 +208,7 @@ int main(int argc, char **argv)
     leitor = extrair_XML(argv[1]);
     listafiguras = getNode(leitor);
     
-    if(listafiguras) figuras = criarListaFiguras(listafiguras);
+    if(listafiguras) figuras = criarListaFiguras(listafiguras, 0);
 
     cameraPosX = getXPosCam(leitor);
     cameraPosY = getYPosCam(leitor);
@@ -227,7 +231,7 @@ int main(int argc, char **argv)
     glutInitDisplayMode(GLUT_DEPTH | GLUT_DOUBLE | GLUT_RGBA);
     glutInitWindowPosition(100, 100);
     glutInitWindowSize(800, 800);
-    glutCreateWindow("Fase 3 - Curvas, superfícies e VBO's");
+    glutCreateWindow("Fase 3 - Curvas, superficies e VBOs");
 
     // Required callback registry
     glutDisplayFunc(renderScene);

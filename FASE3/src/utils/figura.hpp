@@ -21,8 +21,8 @@ Figura criarFigura(const char* path);
 
 void apagarFigura(Figura f);
 
-std::list<Figura> criarListaFiguras(Group group);
+std::list<Figura> criarListaFiguras(Group group, int elapsedTime);
 
-void applyTransforms(std::list<Figura>& figuras, std::list<Transform>& transforms);
+void applyTransforms(std::list<Figura>& figuras, std::list<Transform>& transforms, int elapsedTime);
 
 #endif

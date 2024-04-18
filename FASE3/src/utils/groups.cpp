@@ -7,7 +7,7 @@
 struct group{
     std::list<Transform> transform;
     std::list<Group> childs;
-    std::list<std::string> files;
+    std::list<void*> files;
 };
 
 struct transform{
@@ -47,7 +47,7 @@ std::list<Transform> getTransform(Group g){
     return g->transform;
 }
 
-std::list<std::string> getFiles(Group g){
+std::list<void*> getFiles(Group g){
     return g->files;
 }
 
@@ -59,7 +59,7 @@ void add_node(Group node, Group child_node){
     node->childs.push_back(child_node);
 }
 
-void push_file(Group group, std::string file){
+void push_file(Group group, void* file){
     group->files.push_back(file);
 }
 

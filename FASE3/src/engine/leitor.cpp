@@ -1,5 +1,6 @@
 #include "leitor.hpp"
 #include "../utils/groups.hpp"
+#include "../utils/figura.hpp"
 #include "../tinyxml/tinyxml.h"
 #include <iostream>
 #include <list>
@@ -36,6 +37,7 @@ Leitor novoLeitor() {
 void extrair_transform(TiXmlElement* transform_element, std::list<Transform>& transform_node){
     for(TiXmlElement* transform_attribute = transform_element->FirstChildElement(); transform_attribute; transform_attribute = transform_attribute->NextSiblingElement()){
         Transform t = novoTransform();
+        add_time(t, 0.0f);
         if(strcmp(transform_attribute->Value(), "scale") == 0){
             add_transformType(t, "scale");
             add_transformX(t, atof(transform_attribute->Attribute("x")));
@@ -95,8 +97,9 @@ void extrair_grupo(TiXmlElement* group_element, Group node){
     TiXmlElement* model_element = group_element->FirstChildElement("models");
     if(model_element){
         for(TiXmlElement* models = model_element->FirstChildElement(); models; models = models->NextSiblingElement()){
-            std::string file_name = models->Attribute("file");
-            push_file(node, file_name);
+            const char* file_name = models->Attribute("file");
+            Figura f = criarFigura(file_name);
+            push_file(node, (void*)f);
         }
     }
 }

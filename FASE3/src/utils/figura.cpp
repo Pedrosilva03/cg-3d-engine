@@ -6,6 +6,8 @@
 #include <string>
 #include <list>
 
+int instantBefore = 0;
+
 struct figura
 {
     std::list<Ponto> pontos;
@@ -91,70 +93,82 @@ void apagarFigura(Figura f)
     f->pontos.clear(); // Limpa a lista de pontos da figura
 }
 
-std::list<Figura> criarListaFiguras(Group group)
+std::list<Figura> criarListaFiguras(Group group, int elapsedTime)
 {
     std::list<Figura> listaFiguras; // Cria uma lista de figuras vazia
     
     int i = 0;
     for(Group child = getChild(group, i); child; child = getChild(group, i)){
-        listaFiguras.splice(listaFiguras.end(), criarListaFiguras(child));
+        listaFiguras.splice(listaFiguras.end(), criarListaFiguras(child, elapsedTime));
         i++;
     }
     std::list<Transform> transforms = getTransform(group);
-    std::list<std::string> files = getFiles(group);
+    std::list<void*> files = getFiles(group);
 
-    for (const auto &path : files)
+    for (void* f: files)
     {
-        Figura figura = criarFigura(path.c_str()); // Cria uma figura a partir do arquivo
-        listaFiguras.push_back(figura);            // Adiciona a figura à lista
+        listaFiguras.push_back((Figura)f);            // Adiciona a figura à lista
     }
-    applyTransforms(listaFiguras, transforms);
+    applyTransforms(listaFiguras, transforms, elapsedTime);
     return listaFiguras;
 }
 
-void applyTransforms(std::list<Figura>& figuras, std::list<Transform>& transforms){
+void applyTransforms(std::list<Figura>& figuras, std::list<Transform>& transforms, int elapsedTime){
     for(Figura figura: figuras){
         int rotated = 0; // Marca se a figura foi rodada anteriormente ou não
         Transform rotation; // Rotação feita
         std::list<Ponto> pontos = getPontos(figura);
         for(Transform t: transforms){
             if(t->type == TransformType::SCALE){
-                for(Ponto p: pontos){
-                    if(rotated == 0){
-                        setX(p, getX(p) * t->x);
-                        setY(p, getY(p) * t->y);
-                        setZ(p, getZ(p) * t->z);
-                    }
-                    else{
-                        Ponto aux = novoPonto(t->x, t->y, t->z);
-                        rodarPonto(aux, rotation->angle, rotation->x, rotation->y, rotation->z);
-                        setX(p, getX(p) * getX(aux));
-                        setY(p, getY(p) * getY(aux));
-                        setZ(p, getZ(p) * getZ(aux));
+                if(elapsedTime == 0 && t->time == 0){ // Escalas estáticas
+                    for(Ponto p: pontos){
+                        if(rotated == 0){
+                            setX(p, getX(p) * t->x);
+                            setY(p, getY(p) * t->y);
+                            setZ(p, getZ(p) * t->z);
+                        }
+                        else{
+                            Ponto aux = novoPonto(t->x, t->y, t->z);
+                            rodarPonto(aux, rotation->angle, rotation->x, rotation->y, rotation->z);
+                            setX(p, getX(p) * getX(aux));
+                            setY(p, getY(p) * getY(aux));
+                            setZ(p, getZ(p) * getZ(aux));
+                        }
                     }
                 }
             }
             else if(t->type == TransformType::TRANSLATE){
-                for(Ponto p: pontos){
-                    if(rotated == 0){
-                        setX(p, getX(p) + t->x);
-                        setY(p, getY(p) + t->y);
-                        setZ(p, getZ(p) + t->z);
-                    }
-                    else{
-                        Ponto aux = novoPonto(t->x, t->y, t->z);
-                        rodarPonto(aux, rotation->angle, rotation->x, rotation->y, rotation->z);
-                        setX(p, getX(p) + getX(aux));
-                        setY(p, getY(p) + getY(aux));
-                        setZ(p, getZ(p) + getZ(aux));
+                if(elapsedTime == 0 && t->time == 0){ // Translações estáticas
+                    for(Ponto p: pontos){
+                        if(rotated == 0){
+                            setX(p, getX(p) + t->x);
+                            setY(p, getY(p) + t->y);
+                            setZ(p, getZ(p) + t->z);
+                        }
+                        else{
+                            Ponto aux = novoPonto(t->x, t->y, t->z);
+                            rodarPonto(aux, rotation->angle, rotation->x, rotation->y, rotation->z);
+                            setX(p, getX(p) + getX(aux));
+                            setY(p, getY(p) + getY(aux));
+                            setZ(p, getZ(p) + getZ(aux));
+                        }
                     }
                 }
             }
             else if(t->type == TransformType::ROTATE){
-                rotated = 1;
-                rotation = t;
-                for(Ponto p: pontos){
-                    rodarPonto(p, t->angle, t->x, t->y, t->z);
+                if(elapsedTime == 0 && t->time == 0){ // Rotações estáticas
+                    rotated = 1;
+                    rotation = t;
+                    for(Ponto p: pontos){
+                        rodarPonto(p, t->angle, t->x, t->y, t->z);
+                    }
+                }
+                else if(t->time != 0 && (float)elapsedTime / 1000.0f < t->time){ // Rotações dinâmicas
+                    float angleTime = ((float)(elapsedTime - instantBefore)) * (360.0f / (t->time * 1000.0f));
+                    instantBefore = elapsedTime;
+                    for(Ponto p: pontos){
+                        rodarPonto(p, angleTime, t->x, t->y, t->z);
+                    }
                 }
             }
         }
