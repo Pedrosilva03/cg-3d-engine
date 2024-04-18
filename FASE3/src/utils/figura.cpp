@@ -6,8 +6,6 @@
 #include <string>
 #include <list>
 
-int instantBefore = 0;
-
 struct figura
 {
     std::list<Ponto> pontos;
@@ -93,13 +91,13 @@ void apagarFigura(Figura f)
     f->pontos.clear(); // Limpa a lista de pontos da figura
 }
 
-std::list<Figura> criarListaFiguras(Group group, int elapsedTime)
+std::list<Figura> criarListaFiguras(Group group, int elapsedTime, int instantBefore)
 {
     std::list<Figura> listaFiguras; // Cria uma lista de figuras vazia
     
     int i = 0;
     for(Group child = getChild(group, i); child; child = getChild(group, i)){
-        listaFiguras.splice(listaFiguras.end(), criarListaFiguras(child, elapsedTime));
+        listaFiguras.splice(listaFiguras.end(), criarListaFiguras(child, elapsedTime, instantBefore));
         i++;
     }
     std::list<Transform> transforms = getTransform(group);
@@ -109,11 +107,11 @@ std::list<Figura> criarListaFiguras(Group group, int elapsedTime)
     {
         listaFiguras.push_back((Figura)f);            // Adiciona a figura à lista
     }
-    applyTransforms(listaFiguras, transforms, elapsedTime);
+    applyTransforms(listaFiguras, transforms, elapsedTime, instantBefore);
     return listaFiguras;
 }
 
-void applyTransforms(std::list<Figura>& figuras, std::list<Transform>& transforms, int elapsedTime){
+void applyTransforms(std::list<Figura>& figuras, std::list<Transform>& transforms, int elapsedTime, int instantBefore){
     for(Figura figura: figuras){
         int rotated = 0; // Marca se a figura foi rodada anteriormente ou não
         Transform rotation; // Rotação feita
@@ -163,9 +161,8 @@ void applyTransforms(std::list<Figura>& figuras, std::list<Transform>& transform
                         rodarPonto(p, t->angle, t->x, t->y, t->z);
                     }
                 }
-                else if(t->time != 0 && (float)elapsedTime / 1000.0f < t->time){ // Rotações dinâmicas
+                else if(t->time != 0 /*&& (float)elapsedTime / 1000.0f < t->time*/){ // Rotações dinâmicas
                     float angleTime = ((float)(elapsedTime - instantBefore)) * (360.0f / (t->time * 1000.0f));
-                    instantBefore = elapsedTime;
                     for(Ponto p: pontos){
                         rodarPonto(p, angleTime, t->x, t->y, t->z);
                     }

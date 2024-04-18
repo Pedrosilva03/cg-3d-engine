@@ -46,6 +46,8 @@ std::chrono::time_point<std::chrono::steady_clock> lastTime;
 int frameCount = 0;
 float fps = 0.0f;
 
+int instantBefore = 0;
+
 void changeSize(int w, int h)
 {
 
@@ -122,7 +124,8 @@ void renderScene(void)
 
     glPolygonMode(GL_FRONT_AND_BACK, mode);
 
-    figuras = criarListaFiguras(listafiguras, elapsedTime);
+    figuras = criarListaFiguras(listafiguras, elapsedTime, instantBefore);
+    instantBefore = elapsedTime;
     drawFiguras(figuras);
 
     fpsCounter();
@@ -208,7 +211,7 @@ int main(int argc, char **argv)
     leitor = extrair_XML(argv[1]);
     listafiguras = getNode(leitor);
     
-    if(listafiguras) figuras = criarListaFiguras(listafiguras, 0);
+    if(listafiguras) figuras = criarListaFiguras(listafiguras, 0, instantBefore);
 
     cameraPosX = getXPosCam(leitor);
     cameraPosY = getYPosCam(leitor);

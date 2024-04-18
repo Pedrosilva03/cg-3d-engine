@@ -7,7 +7,7 @@
 struct group{
     std::list<Transform> transform;
     std::list<Group> childs;
-    std::list<void*> files;
+    std::list<void*> files; // void* são Figura para fugir ao problema de incluir o header das figuras que causava muitos erros
 };
 
 struct transform{
