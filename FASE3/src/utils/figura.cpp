@@ -1,6 +1,6 @@
 #include "figura.hpp"
 #include "ponto.hpp"
-#include "groups.cpp"
+#include "groups.hpp"
 #include <iostream>
 #include <cstdio>
 #include <string>
@@ -117,17 +117,17 @@ void applyTransforms(std::list<Figura>& figuras, std::list<Transform>& transform
         Transform rotation; // Rotação feita
         std::list<Ponto> pontos = getPontos(figura);
         for(Transform t: transforms){
-            if(t->type == TransformType::SCALE){
-                if(elapsedTime == 0 && t->time == 0){ // Escalas estáticas
+            if(strcmp(get_transformType(t), "scale") == 0){
+                if(elapsedTime == 0 && get_time(t) == 0){ // Escalas estáticas
                     for(Ponto p: pontos){
                         if(rotated == 0){
-                            setX(p, getX(p) * t->x);
-                            setY(p, getY(p) * t->y);
-                            setZ(p, getZ(p) * t->z);
+                            setX(p, getX(p) * get_transformX(t));
+                            setY(p, getY(p) * get_transformY(t));
+                            setZ(p, getZ(p) * get_transformZ(t));
                         }
                         else{
-                            Ponto aux = novoPonto(t->x, t->y, t->z);
-                            rodarPonto(aux, rotation->angle, rotation->x, rotation->y, rotation->z);
+                            Ponto aux = novoPonto(get_transformX(t), get_transformY(t), get_transformZ(t));
+                            rodarPonto(aux, get_transformAngle(rotation), get_transformX(rotation), get_transformY(rotation), get_transformZ(rotation));
                             setX(p, getX(p) * getX(aux));
                             setY(p, getY(p) * getY(aux));
                             setZ(p, getZ(p) * getZ(aux));
@@ -135,36 +135,39 @@ void applyTransforms(std::list<Figura>& figuras, std::list<Transform>& transform
                     }
                 }
             }
-            else if(t->type == TransformType::TRANSLATE){
-                if(elapsedTime == 0 && t->time == 0){ // Translações estáticas
+            else if(strcmp(get_transformType(t), "translate") == 0){
+                if(elapsedTime == 0 && get_time(t) == 0){ // Translações estáticas
                     for(Ponto p: pontos){
                         if(rotated == 0){
-                            setX(p, getX(p) + t->x);
-                            setY(p, getY(p) + t->y);
-                            setZ(p, getZ(p) + t->z);
+                            setX(p, getX(p) + get_transformX(t));
+                            setY(p, getY(p) + get_transformY(t));
+                            setZ(p, getZ(p) + get_transformZ(t));
                         }
                         else{
-                            Ponto aux = novoPonto(t->x, t->y, t->z);
-                            rodarPonto(aux, rotation->angle, rotation->x, rotation->y, rotation->z);
+                            Ponto aux = novoPonto(get_transformX(t), get_transformY(t), get_transformZ(t));
+                            rodarPonto(aux, get_transformAngle(rotation), get_transformX(rotation), get_transformY(rotation), get_transformZ(rotation));
                             setX(p, getX(p) + getX(aux));
                             setY(p, getY(p) + getY(aux));
                             setZ(p, getZ(p) + getZ(aux));
                         }
                     }
                 }
+                else if(get_time(t) != 0){
+                    
+                }
             }
-            else if(t->type == TransformType::ROTATE){
-                if(elapsedTime == 0 && t->time == 0){ // Rotações estáticas
+            else if(strcmp(get_transformType(t), "rotate") == 0){
+                if(elapsedTime == 0 && get_time(t) == 0){ // Rotações estáticas
                     rotated = 1;
                     rotation = t;
                     for(Ponto p: pontos){
-                        rodarPonto(p, t->angle, t->x, t->y, t->z);
+                        rodarPonto(p, get_transformAngle(t), get_transformX(t), get_transformY(t), get_transformZ(t));
                     }
                 }
-                else if(t->time != 0 /*&& (float)elapsedTime / 1000.0f < t->time*/){ // Rotações dinâmicas
-                    float angleTime = ((float)(elapsedTime - instantBefore)) * (360.0f / (t->time * 1000.0f));
+                else if(get_time(t) != 0 /*&& (float)elapsedTime / 1000.0f < t->time*/){ // Rotações dinâmicas
+                    float angleTime = ((float)(elapsedTime - instantBefore)) * (360.0f / (get_time(t) * 1000.0f));
                     for(Ponto p: pontos){
-                        rodarPonto(p, angleTime, t->x, t->y, t->z);
+                        rodarPonto(p, angleTime, get_transformX(t), get_transformY(t), get_transformZ(t));
                     }
                 }
             }

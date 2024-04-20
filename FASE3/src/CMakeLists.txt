@@ -18,6 +18,8 @@ add_library(
     ./utils/figura.hpp
     ./utils/bezier.cpp
     ./utils/bezier.hpp
+    ./utils/groups.cpp
+    ./utils/groups.hpp
 )
 
 # Biblioteca de parsing de XML

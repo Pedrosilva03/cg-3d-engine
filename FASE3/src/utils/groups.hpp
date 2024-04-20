@@ -23,10 +23,15 @@ void push_file(Group group, void* file);
 Transform novoTransform();
 
 void add_transformType(Transform t, const char* type);
+const char* get_transformType(Transform t);
 void add_transformAngle(Transform t, float angle);
+float get_transformAngle(Transform t);
 void add_transformX(Transform t, float x);
 void add_transformY(Transform t, float y);
 void add_transformZ(Transform t, float z);
+float get_transformX(Transform t);
+float get_transformY(Transform t);
+float get_transformZ(Transform t);
 void add_time(Transform t, float time);
 void add_align(Transform t, const char* align);
 float get_time(Transform t);

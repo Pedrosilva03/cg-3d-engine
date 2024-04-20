@@ -75,8 +75,19 @@ void add_transformType(Transform t, const char* type){
     else if(strcmp(type, "rotate") == 0) t->type = TransformType::ROTATE;
 }
 
+const char* get_transformType(Transform t){
+    const char* tipo = (const char*)malloc(7);
+    if(t->type == TransformType::SCALE) return tipo = "scale";
+    else if(t->type == TransformType::TRANSLATE) return tipo = "translate";
+    else if(t->type == TransformType::ROTATE) return tipo = "rotate";
+}
+
 void add_transformAngle(Transform t, float angle){
     t->angle = angle;
+}
+
+float get_transformAngle(Transform t){
+    return t->angle;
 }
 
 void add_transformX(Transform t, float x){
@@ -89,6 +100,18 @@ void add_transformY(Transform t, float y){
 
 void add_transformZ(Transform t, float z){
     t->z = z;
+}
+
+float get_transformX(Transform t){
+    return t->x;
+}
+
+float get_transformY(Transform t){
+    return t->y;
+}
+
+float get_transformZ(Transform t){
+    return t->z;
 }
 
 void add_time(Transform t, float time){
