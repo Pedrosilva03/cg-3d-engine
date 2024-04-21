@@ -20,6 +20,8 @@ add_library(
     ./utils/bezier.hpp
     ./utils/groups.cpp
     ./utils/groups.hpp
+    ./utils/catmull.cpp
+    ./utils/catmull.hpp
 )
 
 # Biblioteca de parsing de XML

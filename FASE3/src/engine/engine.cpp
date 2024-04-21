@@ -8,6 +8,7 @@
 #include "../utils/figura.hpp"
 #include "../utils/ponto.hpp"
 #include "../utils/groups.hpp"
+#include "../utils/catmull.hpp"
 #include "../tinyxml/tinyxml.h"
 #include "leitor.hpp"
 #define _USE_MATH_DEFINES
@@ -88,6 +89,19 @@ void drawFiguras(const list<Figura>& lista) {
     }
 }
 
+//Debug
+void drawCatmullCurve(){
+    std::list<Ponto> pontosControl = {novoPonto(0,0,4), novoPonto(4,0,0), novoPonto(0,0,-4), novoPonto(-4,10,0)};
+    Ponto p;
+	glBegin(GL_LINE_LOOP);
+	float t = 0.0f;
+	for (int i = 0; i <= 100; i++, t+= 0.01f) {
+		p = getCatmullRomPoint(t, pontosControl);
+		glVertex3f(getX(p), getY(p), getZ(p));
+	}
+	glEnd();
+}
+
 void fpsCounter(void){
     frameCount++;
     auto currentTime = std::chrono::steady_clock::now();
@@ -127,6 +141,7 @@ void renderScene(void)
     figuras = criarListaFiguras(listafiguras, elapsedTime, instantBefore);
     instantBefore = elapsedTime;
     drawFiguras(figuras);
+    //drawCatmullCurve();
 
     fpsCounter();
 

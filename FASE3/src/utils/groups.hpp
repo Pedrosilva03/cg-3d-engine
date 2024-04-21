@@ -37,5 +37,6 @@ void add_align(Transform t, const char* align);
 float get_time(Transform t);
 bool get_align(Transform t);
 void add_pontosCat(Transform t, std::list<Ponto> pontos);
+std::list<Ponto> get_pontosCat(Transform t);
 
 #endif

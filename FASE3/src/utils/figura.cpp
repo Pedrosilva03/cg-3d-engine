@@ -1,6 +1,7 @@
 #include "figura.hpp"
 #include "ponto.hpp"
 #include "groups.hpp"
+#include "catmull.hpp"
 #include <iostream>
 #include <cstdio>
 #include <string>
@@ -152,8 +153,23 @@ void applyTransforms(std::list<Figura>& figuras, std::list<Transform>& transform
                         }
                     }
                 }
-                else if(get_time(t) != 0){
+                else if(get_time(t) != 0 && get_pontosCat(t).size() > 0 && (float)elapsedTime / 1000.0f < get_time(t)){ // Translações de Catmull-Rom
+                    std::list<Ponto> pontosCat = get_pontosCat(t);
+                    float tNormalized = ((float)elapsedTime) / (get_time(t) * 1000.0f);
+                    Ponto catmullAtual = getCatmullRomPoint(tNormalized, pontosCat);
+
+                    // Guarda o primeiro ponto para determinar a direção para ser aplicada aos outros pontos
+                    std::list<Ponto>::iterator it = pontos.begin();
+                    Ponto pivo = *it;
+                    float difX = getX(catmullAtual) - getX(pivo); 
+                    float difY = getY(catmullAtual) - getY(pivo);
+                    float difZ = getZ(catmullAtual) - getZ(pivo);
                     
+                    for(Ponto p: pontos){
+                        setX(p, getX(p) + difX);
+                        setY(p, getY(p) + difY);
+                        setZ(p, getZ(p) + difZ);
+                    }
                 }
             }
             else if(strcmp(get_transformType(t), "rotate") == 0){

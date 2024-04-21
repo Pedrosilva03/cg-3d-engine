@@ -133,3 +133,7 @@ bool get_align(Transform t){
 void add_pontosCat(Transform t, std::list<Ponto> pontos){
     t->points = pontos;
 }
+
+std::list<Ponto> get_pontosCat(Transform t){
+    return t->points;
+}
