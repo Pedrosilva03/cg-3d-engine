@@ -1,6 +1,7 @@
 #include "leitor.hpp"
 #include "../utils/groups.hpp"
 #include "../utils/figura.hpp"
+#include "../utils/catmull.hpp"
 #include "../tinyxml/tinyxml.h"
 #include <iostream>
 #include <list>
@@ -34,7 +35,7 @@ Leitor novoLeitor() {
     return l;
 }
 
-void extrair_transform(TiXmlElement* transform_element, std::list<Transform>& transform_node){
+void extrair_transform(Group node, TiXmlElement* transform_element, std::list<Transform>& transform_node){
     for(TiXmlElement* transform_attribute = transform_element->FirstChildElement(); transform_attribute; transform_attribute = transform_attribute->NextSiblingElement()){
         Transform t = novoTransform();
         add_time(t, 0.0f);
@@ -55,7 +56,20 @@ void extrair_transform(TiXmlElement* transform_element, std::list<Transform>& tr
                     Ponto p = novoPonto(atof(pointElement->Attribute("x")), atof(pointElement->Attribute("y")), atof(pointElement->Attribute("z")));
                     pontos.push_back(p);
                 }
-                add_pontosCat(t, pontos);
+                // Calcula os pontos de Catmull-Rom previamente no parse como uma figura para poder aplicar transforms
+                std::list<Ponto> pontosCatCalc = std::list<Ponto>();
+                float tt = 0.0f;
+                for(int i = 0; i < 1000; i++, tt+=0.001){
+                    Ponto pCat = getCatmullRomPoint(tt, pontos);
+                    pontosCatCalc.push_back(pCat);
+                }
+                Figura f = novaFigura();
+                setCurva(f, true);
+                for(Ponto p: pontosCatCalc){
+                    adicionarPonto(f, p);
+                }
+                push_file(node, f);
+                add_pontosCat(t, pontosCatCalc);
             }
             else{
                 add_transformX(t, atof(transform_attribute->Attribute("x")));
@@ -90,7 +104,7 @@ void extrair_grupo(TiXmlElement* group_element, Group node){
     TiXmlElement* transform_element = group_element->FirstChildElement("transform");
     if(transform_element){
         std::list<Transform> transform_node = std::list<Transform>();
-        extrair_transform(transform_element, transform_node);
+        extrair_transform(node, transform_element, transform_node);
         add_transform(node, transform_node);
     }
 
@@ -99,6 +113,7 @@ void extrair_grupo(TiXmlElement* group_element, Group node){
         for(TiXmlElement* models = model_element->FirstChildElement(); models; models = models->NextSiblingElement()){
             const char* file_name = models->Attribute("file");
             Figura f = criarFigura(file_name);
+            setCurva(f, false);
             push_file(node, (void*)f);
         }
     }

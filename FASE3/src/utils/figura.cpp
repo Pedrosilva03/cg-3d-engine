@@ -9,8 +9,17 @@
 
 struct figura
 {
+    bool curva; // Indica se uma figura é uma curva de Catmull-Rom
     std::list<Ponto> pontos;
 };
+
+bool getCurva(Figura f){
+    return f->curva;
+}
+
+void setCurva(Figura f, bool curva){
+    f->curva = curva;
+}
 
 std::list<Ponto> getPontos(Figura f)
 {
@@ -119,7 +128,7 @@ void applyTransforms(std::list<Figura>& figuras, std::list<Transform>& transform
         std::list<Ponto> pontos = getPontos(figura);
         for(Transform t: transforms){
             if(strcmp(get_transformType(t), "scale") == 0){
-                if(elapsedTime == 0 && get_time(t) == 0){ // Escalas estáticas
+                if(elapsedTime == 0 && get_time(t) == 0 && !getCurva(figura)){ // Escalas estáticas
                     for(Ponto p: pontos){
                         if(rotated == 0){
                             setX(p, getX(p) * get_transformX(t));
@@ -137,7 +146,7 @@ void applyTransforms(std::list<Figura>& figuras, std::list<Transform>& transform
                 }
             }
             else if(strcmp(get_transformType(t), "translate") == 0){
-                if(elapsedTime == 0 && get_time(t) == 0){ // Translações estáticas
+                if(elapsedTime == 0 && get_time(t) == 0 && !getCurva(figura)){ // Translações estáticas
                     for(Ponto p: pontos){
                         if(rotated == 0){
                             setX(p, getX(p) + get_transformX(t));
@@ -153,14 +162,18 @@ void applyTransforms(std::list<Figura>& figuras, std::list<Transform>& transform
                         }
                     }
                 }
-                else if(get_time(t) != 0 && get_pontosCat(t).size() > 0 && (float)elapsedTime / 1000.0f < get_time(t)){ // Translações de Catmull-Rom
+                else if(get_time(t) != 0 && get_pontosCat(t).size() > 0 /*&& (float)elapsedTime / 1000.0f < get_time(t)*/ && !getCurva(figura)){ // Translações de Catmull-Rom
                     std::list<Ponto> pontosCat = get_pontosCat(t);
                     float tNormalized = ((float)elapsedTime) / (get_time(t) * 1000.0f);
-                    Ponto catmullAtual = getCatmullRomPoint(tNormalized, pontosCat);
 
                     // Guarda o primeiro ponto para determinar a direção para ser aplicada aos outros pontos
                     std::list<Ponto>::iterator it = pontos.begin();
                     Ponto pivo = *it;
+
+                    // Vai buscar o ponto de Catmull atual
+                    std::list<Ponto>::iterator itCat = pontosCat.begin();
+                    std::advance(itCat, tNormalized * 1000);
+                    Ponto catmullAtual = *itCat;
                     float difX = getX(catmullAtual) - getX(pivo); 
                     float difY = getY(catmullAtual) - getY(pivo);
                     float difZ = getZ(catmullAtual) - getZ(pivo);
@@ -173,14 +186,14 @@ void applyTransforms(std::list<Figura>& figuras, std::list<Transform>& transform
                 }
             }
             else if(strcmp(get_transformType(t), "rotate") == 0){
-                if(elapsedTime == 0 && get_time(t) == 0){ // Rotações estáticas
+                if(elapsedTime == 0 && get_time(t) == 0 && !getCurva(figura)){ // Rotações estáticas
                     rotated = 1;
                     rotation = t;
                     for(Ponto p: pontos){
                         rodarPonto(p, get_transformAngle(t), get_transformX(t), get_transformY(t), get_transformZ(t));
                     }
                 }
-                else if(get_time(t) != 0 && (float)elapsedTime / 1000.0f < get_time(t)){ // Rotações dinâmicas
+                else if(get_time(t) != 0 /*&& (float)elapsedTime / 1000.0f < get_time(t)*/){ // Rotações dinâmicas
                     float angleTime = ((float)(elapsedTime - instantBefore)) * (360.0f / (get_time(t) * 1000.0f));
                     for(Ponto p: pontos){
                         rodarPonto(p, angleTime, get_transformX(t), get_transformY(t), get_transformZ(t));

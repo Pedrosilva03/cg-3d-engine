@@ -7,6 +7,10 @@
 
 typedef struct figura* Figura;
 
+bool getCurva(Figura f);
+
+void setCurva(Figura f, bool curva);
+
 std::list<Ponto> getPontos(Figura f);
 
 Figura novaFigura();
