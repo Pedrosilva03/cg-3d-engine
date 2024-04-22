@@ -180,7 +180,7 @@ void applyTransforms(std::list<Figura>& figuras, std::list<Transform>& transform
                         rodarPonto(p, get_transformAngle(t), get_transformX(t), get_transformY(t), get_transformZ(t));
                     }
                 }
-                else if(get_time(t) != 0 /*&& (float)elapsedTime / 1000.0f < t->time*/){ // Rotações dinâmicas
+                else if(get_time(t) != 0 && (float)elapsedTime / 1000.0f < get_time(t)){ // Rotações dinâmicas
                     float angleTime = ((float)(elapsedTime - instantBefore)) * (360.0f / (get_time(t) * 1000.0f));
                     for(Ponto p: pontos){
                         rodarPonto(p, angleTime, get_transformX(t), get_transformY(t), get_transformZ(t));

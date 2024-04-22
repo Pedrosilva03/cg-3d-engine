@@ -77,18 +77,29 @@ if  (WIN32)
     
     if (NOT EXISTS "${TOOLKITS_FOLDER}/glut/GL/glut.h" OR NOT EXISTS "${TOOLKITS_FOLDER}/glut/glut32.lib")
         message(ERROR ": GLUT not found")
-    endif (NOT EXISTS "${TOOLKITS_FOLDER}/glut/GL/glut.h" OR NOT EXISTS "${TOOLKITS_FOLDER}/glut/glut32.lib")    
+    endif (NOT EXISTS "${TOOLKITS_FOLDER}/glut/GL/glut.h" OR NOT EXISTS "${TOOLKITS_FOLDER}/glut/glut32.lib")
+    
+    if (NOT EXISTS "${TOOLKITS_FOLDER}/glew/GL/glew.h" OR NOT EXISTS "${TOOLKITS_FOLDER}/glew/glew32.lib")
+        message(ERROR ": GLEW not found")
+    endif (NOT EXISTS "${TOOLKITS_FOLDER}/glew/GL/glew.h" OR NOT EXISTS "${TOOLKITS_FOLDER}/glew/glew32.lib")  
     
     
     include_directories(${TOOLKITS_FOLDER}/glut )
+    include_directories(${TOOLKITS_FOLDER}/glew )
     target_link_libraries(generator ${OPENGL_LIBRARIES} 
                                           ${TOOLKITS_FOLDER}/glut/glut32.lib)
     target_link_libraries(engine ${OPENGL_LIBRARIES} 
                                           ${TOOLKITS_FOLDER}/glut/glut32.lib)
+    target_link_libraries(engine ${OPENGL_LIBRARIES} 
+                                          ${TOOLKITS_FOLDER}/glew/glew32.lib)
     
     if (EXISTS "${TOOLKITS_FOLDER}/glut/glut32.dll" )
         file(COPY ${TOOLKITS_FOLDER}/glut/glut32.dll DESTINATION ${CMAKE_BINARY_DIR})
     endif(EXISTS "${TOOLKITS_FOLDER}/glut/glut32.dll" )    
+
+    if (EXISTS "${TOOLKITS_FOLDER}/glew/glew32.dll" )
+        file(COPY ${TOOLKITS_FOLDER}/glew/glew32.dll DESTINATION ${CMAKE_BINARY_DIR})
+    endif(EXISTS "${TOOLKITS_FOLDER}/glew/glew32.dll" )  
     
     set_property(DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR} PROPERTY VS_STARTUP_PROJECT engine)
     set_property(DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR} PROPERTY VS_STARTUP_PROJECT generator)

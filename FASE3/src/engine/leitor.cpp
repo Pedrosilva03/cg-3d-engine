@@ -47,9 +47,9 @@ void extrair_transform(TiXmlElement* transform_element, std::list<Transform>& tr
         else if(strcmp(transform_attribute->Value(), "translate") == 0){
             add_transformType(t, "translate");
             const char* atTime = transform_attribute->Attribute("time");
-            if(atTime){
+            if(atTime){ // Sabemos que é uma curva de catmull-rom
                 add_time(t, atof(atTime));
-                add_align(t, transform_attribute->Attribute("align")); // Dar fix a isto pq wtf porque e que nao da
+                add_align(t, transform_attribute->Attribute("align"));
                 std::list<Ponto> pontos = std::list<Ponto>();
                 for(TiXmlElement* pointElement = transform_attribute->FirstChildElement("point"); pointElement; pointElement = pointElement->NextSiblingElement("point")){
                     Ponto p = novoPonto(atof(pointElement->Attribute("x")), atof(pointElement->Attribute("y")), atof(pointElement->Attribute("z")));
