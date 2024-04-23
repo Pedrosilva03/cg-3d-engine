@@ -13,7 +13,8 @@ struct group{
 struct transform{
     TransformType type;
     float time;
-    const char* align;
+    bool align;
+    std::list<Ponto> controlPoints;
     std::list<Ponto> points; // Pontos usados para catmull só no translate
     float angle;
     float x;
@@ -119,7 +120,8 @@ void add_time(Transform t, float time){
 }
 
 void add_align(Transform t, const char* align){
-    t->align = align;
+    if(strcmp(align, "true") == 0) t->align = true;
+    else t->align = false;
 }
 
 float get_time(Transform t){
@@ -136,4 +138,12 @@ void add_pontosCat(Transform t, std::list<Ponto> pontos){
 
 std::list<Ponto> get_pontosCat(Transform t){
     return t->points;
+}
+
+void add_pontosControlCat(Transform t, std::list<Ponto> pontos){
+    t->controlPoints = pontos;
+}
+
+std::list<Ponto> get_pontosControlCat(Transform t){
+    return t->controlPoints;
 }

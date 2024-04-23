@@ -1,6 +1,8 @@
 #ifndef PONTO_HPP
 #define PONTO_HPP
 
+#define M_PI 3.14159265358979323846
+
 #include <cmath>
 
 typedef struct ponto* Ponto;
@@ -24,5 +26,11 @@ float calcularDistanciaOrigem(Ponto p);
 float calcularDistanciaEntrePontos(Ponto p1, Ponto p2);
 
 void rodarPonto(Ponto p, float angle, float x = 0.0f, float y = 0.0f, float z = 0.0f);
+
+Ponto normalize(Ponto a);
+
+float innerProduct(Ponto a, Ponto b);
+
+Ponto cross(Ponto a, Ponto b);
 
 #endif

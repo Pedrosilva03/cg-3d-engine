@@ -1,7 +1,6 @@
 #include "ponto.hpp"
 #include <cmath>
-
-#define M_PI 3.14159265358979323846
+#include <iostream>
 
 struct ponto
 {
@@ -66,19 +65,9 @@ void rodarPonto(Ponto p, float angle, float x, float y, float z){
     float pontoy = getY(p);
     float pontoz = getZ(p);
 
-    float pontoRotX = 0;
-    float pontoRotY = 0;
-    float pontoRotZ = 0;
-
-    if(x > 0){
-        pontoRotX = x;
-    }
-    else if(y > 0){
-        pontoRotY = y;
-    }
-    else if(z > 0){
-        pontoRotZ = z;
-    }
+    float pontoRotX = x;
+    float pontoRotY = y;
+    float pontoRotZ = z;
 
     float vecX = pontox - pontoRotX;
     float vecY = pontoy - pontoRotY;
@@ -86,19 +75,19 @@ void rodarPonto(Ponto p, float angle, float x, float y, float z){
 
     float vecRotX, vecRotY, vecRotZ;
 
-    if(x > 0){
+    if(x != 0){
         vecRotX = vecX;
         vecRotY = vecY * cos(angleRad) - vecZ * sin(angleRad);
         vecRotZ = vecY * sin(angleRad) + vecZ * cos(angleRad);
         x = 0;
     } 
-    else if(y > 0){
+    else if(y != 0){
         vecRotX = vecX * cos(angleRad) + vecZ * sin(angleRad);
         vecRotY = vecY;
         vecRotZ = -vecX * sin(angleRad) + vecZ * cos(angleRad);
         y = 0;
     }
-    else if(z > 0){
+    else if(z != 0){
         vecRotX = vecX * cos(angleRad) - vecY * sin(angleRad);
         vecRotY = vecX * sin(angleRad) + vecY * cos(angleRad);
         vecRotZ = vecZ;
@@ -119,3 +108,17 @@ void rodarPonto(Ponto p, float angle, float x, float y, float z){
         rodarPonto(p, angle, x, y, z);
     }
 }
+
+Ponto normalize(Ponto a){
+    float length = sqrt(a->x * a->x + a->y * a->y + a->z * a->z);
+    return novoPonto(a->x / length, a->y / length, a->z / length);
+}
+
+float innerProduct(Ponto a, Ponto b){
+    return a->x * b->x + a->y * b->y + a->z * b->z;
+}
+
+Ponto cross(Ponto a, Ponto b){
+    //vec1.y * vec2.z - vec1.z * vec2.y, vec1.z * vec2.x - vec1.x * vec2.z, vec1.x * vec2.y - vec1.y * vec2.x
+    return novoPonto(a->y * b->z - a->z * b->y, a->z * b->x - a->x * b->z, a->x * b->y - a->y * b->x);
+} 

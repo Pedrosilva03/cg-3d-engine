@@ -4,6 +4,6 @@
 #ifndef CATMULL_HPP
 #define CATMULL_HPP
 
-Ponto getCatmullRomPoint(float t, std::list<Ponto> pontosControl);
+std::vector<Ponto> getCatmullRomPoint(float t, std::list<Ponto> pontosList);
 
 #endif

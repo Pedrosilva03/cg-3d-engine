@@ -17,7 +17,7 @@ std::vector<Ponto> reorganizeControlPoints(float t, std::vector<Ponto> pontosLis
     return pontosOrganizados;
 }
 
-Ponto getCatmullRomPoint(float t, std::list<Ponto> pontosList){
+std::vector<Ponto> getCatmullRomPoint(float t, std::list<Ponto> pontosList){
     std::vector<Ponto> pontosControlNotOrganized(pontosList.begin(), pontosList.end());
 
     std::vector<Ponto> pontosControl = reorganizeControlPoints(t, pontosControlNotOrganized);
@@ -37,5 +37,24 @@ Ponto getCatmullRomPoint(float t, std::list<Ponto> pontosList){
     float py = c0 * getY(pontosControl[0]) + c1 * getY(pontosControl[1]) + c2 * getY(pontosControl[2]) + c3 * getY(pontosControl[3]);
     float pz = c0 * getZ(pontosControl[0]) + c1 * getZ(pontosControl[1]) + c2 * getZ(pontosControl[2]) + c3 * getZ(pontosControl[3]);
 
-    return novoPonto(px, py, pz);
+    // Derivada dos coeficientes
+    float dc0 = -1.5f * t2 + 2.0f * newT - 0.5f;
+    float dc1 = 4.5f * t2 - 5.0f * newT;
+    float dc2 = -4.5f * t2 + 4.0f * newT + 0.5f;
+    float dc3 = 1.5f * t2 - 1.0f * newT;
+
+    // Tangente é a derivada da posição
+    float tx = dc0 * getX(pontosControl[0]) + dc1 * getX(pontosControl[1]) + dc2 * getX(pontosControl[2]) + dc3 * getX(pontosControl[3]);
+    float ty = dc0 * getY(pontosControl[0]) + dc1 * getY(pontosControl[1]) + dc2 * getY(pontosControl[2]) + dc3 * getY(pontosControl[3]);
+    float tz = dc0 * getZ(pontosControl[0]) + dc1 * getZ(pontosControl[1]) + dc2 * getZ(pontosControl[2]) + dc3 * getZ(pontosControl[3]);
+
+    // Normalizar a tangente
+    float length = sqrt(tx * tx + ty * ty + tz * tz);
+    if (length != 0.0f) {
+        tx /= length;
+        ty /= length;
+        tz /= length;
+    }
+
+    return {novoPonto(px, py, pz), novoPonto(tx, ty, tz)};
 }

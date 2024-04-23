@@ -96,7 +96,7 @@ void drawCatmullCurve(){
 	glBegin(GL_LINE_LOOP);
 	float t = 0.0f;
 	for (int i = 0; i <= 100; i++, t+= 0.01f) {
-		p = getCatmullRomPoint(t, pontosControl);
+		//p = getCatmullRomPoint(t, pontosControl);
 		glVertex3f(getX(p), getY(p), getZ(p));
 	}
 	glEnd();

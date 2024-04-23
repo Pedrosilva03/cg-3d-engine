@@ -60,8 +60,8 @@ void extrair_transform(Group node, TiXmlElement* transform_element, std::list<Tr
                 std::list<Ponto> pontosCatCalc = std::list<Ponto>();
                 float tt = 0.0f;
                 for(int i = 0; i < 1000; i++, tt+=0.001){
-                    Ponto pCat = getCatmullRomPoint(tt, pontos);
-                    pontosCatCalc.push_back(pCat);
+                    std::vector<Ponto> pCat = getCatmullRomPoint(tt, pontos);
+                    pontosCatCalc.push_back(pCat[0]);
                 }
                 Figura f = novaFigura();
                 setCurva(f, true);
@@ -70,6 +70,7 @@ void extrair_transform(Group node, TiXmlElement* transform_element, std::list<Tr
                 }
                 push_file(node, f);
                 add_pontosCat(t, pontosCatCalc);
+                add_pontosControlCat(t, pontosCatCalc);
             }
             else{
                 add_transformX(t, atof(transform_attribute->Attribute("x")));

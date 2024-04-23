@@ -178,10 +178,28 @@ void applyTransforms(std::list<Figura>& figuras, std::list<Transform>& transform
                     float difY = getY(catmullAtual) - getY(pivo);
                     float difZ = getZ(catmullAtual) - getZ(pivo);
                     
+                    float angulo;
+                    Ponto rotationAxis;
+                    if(get_align(t) && elapsedTime > 0){
+                        std::vector<Ponto> derivBefore = getCatmullRomPoint(((float)instantBefore) / (get_time(t) * 1000.0f), get_pontosControlCat(t));
+                        std::vector<Ponto> derivInstant = getCatmullRomPoint(tNormalized, get_pontosControlCat(t));
+
+                        Ponto normalizeBefore = normalize(derivBefore[1]);
+                        Ponto normalizeInstant = normalize(derivInstant[1]);
+                        float produtoInterno = innerProduct(normalizeInstant, normalizeBefore);
+
+                        angulo = acos(produtoInterno) * 180.0f / M_PI;
+                        rotationAxis = cross(derivInstant[1], derivBefore[1]);
+                    }
+                    
                     for(Ponto p: pontos){
                         setX(p, getX(p) + difX);
                         setY(p, getY(p) + difY);
                         setZ(p, getZ(p) + difZ);
+
+                        if(get_align(t) && elapsedTime > 0){
+                            rodarPonto(p, angulo, getX(rotationAxis), getY(rotationAxis), getZ(rotationAxis));
+                        }
                     }
                 }
             }
