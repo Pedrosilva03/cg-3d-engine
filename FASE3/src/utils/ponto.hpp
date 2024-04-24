@@ -15,6 +15,12 @@ float getY(Ponto p);
 
 float getZ(Ponto p);
 
+float* getXPointer(Ponto p);
+
+float* getYPointer(Ponto p);
+
+float* getZPointer(Ponto p);
+
 void setX(Ponto p, float x);
 
 void setY(Ponto p, float y);

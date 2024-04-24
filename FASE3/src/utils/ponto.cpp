@@ -34,6 +34,21 @@ float getZ(Ponto p)
     return p->z;
 }
 
+float* getXPointer(Ponto p)
+{
+    return &(p->x);
+}
+
+float* getYPointer(Ponto p)
+{
+    return &(p->y);
+}
+
+float* getZPointer(Ponto p)
+{
+    return &(p->z);
+}
+
 void setX(Ponto p, float x)
 {
     p->x = x;

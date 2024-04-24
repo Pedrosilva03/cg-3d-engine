@@ -2,6 +2,7 @@
 #ifdef __APPLE__
 #include <GLUT/glut.h>
 #else
+#include <GL/glew.h>
 #include <GL/glut.h>
 #endif
 
@@ -41,13 +42,66 @@ Group listafiguras;
 list<Figura> figuras;
 
 Leitor leitor = nullptr;
+int elapsedTime = 0;
 
 // FPS counter variables
 std::chrono::time_point<std::chrono::steady_clock> lastTime;
 int frameCount = 0;
 float fps = 0.0f;
 
+//VBOs
+vector<GLuint> buffers;
+vector<vector<float*>> figurasVertices;
+bool VBOstate = false;
+
 int instantBefore = 0;
+
+void loadBuffersData(){
+    if(elapsedTime == 0){
+        vector<GLuint> loader(figuras.size());
+        buffers = loader;
+        glGenBuffers(buffers.size(), buffers.data());
+
+        std::vector<Figura> figurasVec = std::vector<Figura>(figuras.begin(), figuras.end());
+        for(size_t i = 0; i < figuras.size(); i++){
+            const auto& figura = figurasVec[i];
+            list<Ponto> pontos = getPontos(figura);
+
+            vector<float*> verticesPointer = vector<float*>();
+            vector<float> vertices;
+            int index = 0;
+            for(Ponto p: pontos){
+                verticesPointer.push_back(getXPointer(p));
+                verticesPointer.push_back(getYPointer(p));
+                verticesPointer.push_back(getZPointer(p));
+
+                vertices.push_back(*verticesPointer[index]);
+                index++;
+                vertices.push_back(*verticesPointer[index]);
+                index++;
+                vertices.push_back(*verticesPointer[index]);
+                index++;
+            }
+            glBindBuffer(GL_ARRAY_BUFFER, buffers[i]);
+            glBufferData(GL_ARRAY_BUFFER, vertices.size() * sizeof(float), vertices.data(), GL_STATIC_DRAW);
+            figurasVertices.push_back(verticesPointer);
+        }
+    }
+    else{
+        int i = 0;
+        for(vector<float*> vertices: figurasVertices){
+            vector<float> verticess(vertices.size());
+            int index = 0;
+            for(float* vertice: vertices){
+                verticess[index] = *vertice;
+                index++;
+            }
+            glBindBuffer(GL_ARRAY_BUFFER, buffers[i]);
+            glBufferData(GL_ARRAY_BUFFER, verticess.size() * sizeof(float), verticess.data(), GL_STATIC_DRAW);
+            i++;
+        }
+    }
+}
 
 void changeSize(int w, int h)
 {
@@ -75,17 +129,28 @@ void changeSize(int w, int h)
     glMatrixMode(GL_MODELVIEW);
 }
 
-void drawFiguras(const list<Figura>& lista) {
+void drawFiguras() {
     glColor3f(1.0f, 1.0f, 1.0f);
-    
-    for (const auto& figura : lista) {
-        list<Ponto> pontos = getPontos(figura);
-        glBegin(GL_TRIANGLES);
-        for (const auto& ponto : pontos) {
-            //cout << "(" << getX(ponto) << "," << getY(ponto) << "," << getZ(ponto) << ")";
-            glVertex3f(getX(ponto), getY(ponto), getZ(ponto));
+
+    if(VBOstate){
+        int index = 0;
+        for (const auto& figura : figuras) {
+            glBindBuffer(GL_ARRAY_BUFFER, buffers[index]);
+            glVertexPointer(3, GL_FLOAT, 0, 0);
+            glDrawArrays(GL_TRIANGLES, 0, getPontos(figura).size());
+            index++;
         }
-        glEnd();
+    }
+    else{
+        for (const auto& figura : figuras) {
+            list<Ponto> pontos = getPontos(figura);
+            glBegin(GL_TRIANGLES);
+            for (const auto& ponto : pontos) {
+                //cout << "(" << getX(ponto) << "," << getY(ponto) << "," << getZ(ponto) << ")";
+                glVertex3f(getX(ponto), getY(ponto), getZ(ponto));
+            }
+            glEnd();
+        }
     }
 }
 
@@ -116,7 +181,7 @@ void fpsCounter(void){
 
 void renderScene(void)
 {
-    int elapsedTime = glutGet(GLUT_ELAPSED_TIME);
+    elapsedTime = glutGet(GLUT_ELAPSED_TIME);
 
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
     glLoadIdentity();
@@ -140,10 +205,12 @@ void renderScene(void)
 
     figuras = criarListaFiguras(listafiguras, elapsedTime, instantBefore);
     instantBefore = elapsedTime;
-    drawFiguras(figuras);
+    drawFiguras();
     //drawCatmullCurve();
 
     fpsCounter();
+
+    if(VBOstate) loadBuffersData();
 
     glutSwapBuffers();
 }
@@ -208,11 +275,16 @@ void processKeys(unsigned char key, int x, int y)
             break;
         
         case '+':
-            radius -= 0.1f; // Zoom in
+            radius -= 1.0f; // Zoom in
             break;
 
         case '-':
-            radius += 0.1f; // Zoom out
+            radius += 1.0f; // Zoom out
+            break;
+
+        case 'v':
+            VBOstate = !VBOstate;
+            loadBuffersData();
             break;
     }
 
@@ -263,6 +335,11 @@ int main(int argc, char **argv)
     //  OpenGL settings
     glEnable(GL_DEPTH_TEST);
     glEnable(GL_CULL_FACE);
+
+    glewInit();
+    glEnableClientState(GL_VERTEX_ARRAY);
+
+    loadBuffersData();
 
     // enter GLUT's main cycle
     glutMainLoop();
