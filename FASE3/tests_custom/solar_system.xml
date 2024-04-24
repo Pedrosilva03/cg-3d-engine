@@ -13,7 +13,7 @@
         <!--Sol-->
         <group>
             <models>
-                <model file="../out/planet.3d" />
+                <model file="../out/sun.3d" />
             </models>
         </group>
 

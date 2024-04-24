@@ -26,5 +26,7 @@ build_f3:
 	cmake -B FASE3/build -S FASE3/src -A Win32
 	cmake --build FASE3/build/ --config Release
 	@echo "Build FASE3 done"
+	./FASE3/build/Release/generator.exe patch FASE3/patches/teapot.patch 10 FASE3/out/bezier_10.3d
+	@echo "Bezier done"
 
 	

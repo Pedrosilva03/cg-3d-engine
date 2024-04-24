@@ -42,7 +42,6 @@ Group listafiguras;
 list<Figura> figuras;
 
 Leitor leitor = nullptr;
-int elapsedTime = 0;
 
 // FPS counter variables
 std::chrono::time_point<std::chrono::steady_clock> lastTime;
@@ -54,6 +53,8 @@ vector<GLuint> buffers;
 vector<vector<float*>> figurasVertices;
 bool VBOstate = false;
 
+bool desenhaCurvas = true;
+int elapsedTime = 0;
 int instantBefore = 0;
 
 void loadBuffersData(){
@@ -143,13 +144,24 @@ void drawFiguras() {
     }
     else{
         for (const auto& figura : figuras) {
-            list<Ponto> pontos = getPontos(figura);
-            glBegin(GL_TRIANGLES);
-            for (const auto& ponto : pontos) {
-                //cout << "(" << getX(ponto) << "," << getY(ponto) << "," << getZ(ponto) << ")";
-                glVertex3f(getX(ponto), getY(ponto), getZ(ponto));
+            if(!getCurva(figura)){
+                list<Ponto> pontos = getPontos(figura);
+                glBegin(GL_TRIANGLES);
+                for (const auto& ponto : pontos) {
+                    //cout << "(" << getX(ponto) << "," << getY(ponto) << "," << getZ(ponto) << ")";
+                    glVertex3f(getX(ponto), getY(ponto), getZ(ponto));
+                }
+                glEnd();
             }
-            glEnd();
+            else if(desenhaCurvas){
+                list<Ponto> pontos = getPontos(figura);
+                glBegin(GL_LINE_LOOP);
+                for (const auto& ponto : pontos) {
+                    //cout << "(" << getX(ponto) << "," << getY(ponto) << "," << getZ(ponto) << ")";
+                    glVertex3f(getX(ponto), getY(ponto), getZ(ponto));
+                }
+                glEnd();
+            }
         }
     }
 }
@@ -285,6 +297,10 @@ void processKeys(unsigned char key, int x, int y)
         case 'v':
             VBOstate = !VBOstate;
             loadBuffersData();
+            break;
+        
+        case 'c':
+            desenhaCurvas = !desenhaCurvas;
             break;
     }
 
