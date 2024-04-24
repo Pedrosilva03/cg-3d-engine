@@ -136,9 +136,16 @@ void drawFiguras() {
     if(VBOstate){
         int index = 0;
         for (const auto& figura : figuras) {
-            glBindBuffer(GL_ARRAY_BUFFER, buffers[index]);
-            glVertexPointer(3, GL_FLOAT, 0, 0);
-            glDrawArrays(GL_TRIANGLES, 0, getPontos(figura).size());
+            if(!getCurva(figura)){
+                glBindBuffer(GL_ARRAY_BUFFER, buffers[index]);
+                glVertexPointer(3, GL_FLOAT, 0, 0);
+                glDrawArrays(GL_TRIANGLES, 0, getPontos(figura).size());
+            }
+            else if(desenhaCurvas){
+                glBindBuffer(GL_ARRAY_BUFFER, buffers[index]);
+                glVertexPointer(3, GL_FLOAT, 0, 0);
+                glDrawArrays(GL_LINE_LOOP, 0, getPontos(figura).size());
+            }
             index++;
         }
     }
