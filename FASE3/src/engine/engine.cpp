@@ -173,29 +173,59 @@ void drawFiguras() {
     }
 }
 
-//Debug
-void drawCatmullCurve(){
-    std::list<Ponto> pontosControl = {novoPonto(0,0,4), novoPonto(4,0,0), novoPonto(0,0,-4), novoPonto(-4,10,0)};
-    Ponto p;
-	glBegin(GL_LINE_LOOP);
-	float t = 0.0f;
-	for (int i = 0; i <= 100; i++, t+= 0.01f) {
-		//p = getCatmullRomPoint(t, pontosControl);
-		glVertex3f(getX(p), getY(p), getZ(p));
-	}
-	glEnd();
-}
-
 void fpsCounter(void){
     frameCount++;
     auto currentTime = std::chrono::steady_clock::now();
     auto elapsedTime = std::chrono::duration_cast<std::chrono::milliseconds>(currentTime - lastTime).count() / 1000.0;
     if (elapsedTime >= 1.0) {
         fps = frameCount / elapsedTime;
-        std::cout << "FPS: " << fps << std::endl;
         frameCount = 0;
         lastTime = currentTime;
     }
+}
+
+void drawTexts(const std::string& text, float x, float y, void* font){
+    glMatrixMode(GL_PROJECTION);
+    glPushMatrix();
+    glLoadIdentity();
+    glOrtho(0, glutGet(GLUT_WINDOW_WIDTH), 0, glutGet(GLUT_WINDOW_HEIGHT), -1, 1);
+
+    glMatrixMode(GL_MODELVIEW);
+    glPushMatrix();
+    glLoadIdentity();
+
+    glColor3f(1.0f, 1.0f, 1.0f);
+    glRasterPos2f(x, y);
+    for (char c: text){
+        glutBitmapCharacter(font, c);
+    }
+
+    glMatrixMode(GL_MODELVIEW);
+    glPopMatrix();
+
+    glMatrixMode(GL_PROJECTION);
+    glPopMatrix();
+
+    glMatrixMode(GL_MODELVIEW);
+}
+
+void drawStats(){
+    std::stringstream ssFPS;
+    std::string vbos;
+    std::string curves;
+
+    ssFPS << "FPS: " << fps;
+    std::string fps = ssFPS.str();
+
+    if(VBOstate) vbos = "VBO: ON";
+    else  vbos = "VBO: OFF";
+
+    if(desenhaCurvas) curves = "Curves: ON";
+    else curves = "Curves: OFF";
+
+    drawTexts(fps, 10.0f, 10.0f, GLUT_BITMAP_9_BY_15);
+    drawTexts(vbos, 10.0f, 30.0f, GLUT_BITMAP_9_BY_15);
+    drawTexts(curves, 10.0f, 50.0f, GLUT_BITMAP_9_BY_15);
 }
 
 void renderScene(void)
@@ -225,9 +255,9 @@ void renderScene(void)
     figuras = criarListaFiguras(listafiguras, elapsedTime, instantBefore);
     instantBefore = elapsedTime;
     drawFiguras();
-    //drawCatmullCurve();
 
     fpsCounter();
+    drawStats();
 
     if(VBOstate) loadBuffersData();
 
