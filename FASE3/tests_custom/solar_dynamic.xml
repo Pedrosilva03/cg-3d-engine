@@ -35,11 +35,10 @@
                     <point x="2.85316955" y="0.0000000" z="0.46352549"/>
                     <point x="3.00000000" y="0.0000000" z="0.00000000"/>
                 </translate>
-                <scale x="0.025" y="0.025" z="0.025" />
-                <rotate angle="-90" x = "1" y="0" z = "0" /> 
+                <scale x="0.05" y="0.05" z="0.05" />
             </transform>
             <models>
-                <model file="../out/bezier_10.3d" />
+                <model file="../out/comet_10.3d" />
             </models>
         </group>
 
