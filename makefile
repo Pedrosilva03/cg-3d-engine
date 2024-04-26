@@ -17,8 +17,10 @@ build_f2:
 	@echo "Build FASE2 done"
 	./FASE2/build/Release/generator.exe sphere 1 8 8 FASE2/out/sphere_1_8_8.3d
 	@echo "Sphere_1_8_8 done"
-	./FASE2/build/Release/generator.exe sphere 1 25 25 FASE2/out/planet.3d
+	./FASE2/build/Release/generator.exe sphere 1 10 10 FASE2/out/planet.3d
 	@echo "Planet done"
+	./FASE2/build/Release/generator.exe sphere 1 25 25 FASE2/out/sun.3d
+	@echo "Sun done"
 	./FASE2/build/Release/generator.exe ring 1.5 2 40 FASE2/out/ring.3d
 	@echo "Ring done"
 
@@ -28,5 +30,7 @@ build_f3:
 	@echo "Build FASE3 done"
 	./FASE3/build/Release/generator.exe patch FASE3/patches/teapot.patch 10 FASE3/out/bezier_10.3d
 	@echo "Bezier done"
+	./FASE3/build/Release/generator.exe patch FASE3/patches/comet.patch 2 FASE3/out/comet_2.3d
+	@echo "Comet done"
 
 	

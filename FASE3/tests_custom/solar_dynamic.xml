@@ -38,7 +38,7 @@
                 <scale x="0.05" y="0.05" z="0.05" />
             </transform>
             <models>
-                <model file="../out/comet_10.3d" />
+                <model file="../out/comet_2.3d" /> <!-- generator patch comet.patch 2 comet_2.3d -->
             </models>
         </group>
 
@@ -49,7 +49,7 @@
                 <scale x = '0.8' y = '0.8' z = '0.8' />
             </transform>
             <models>
-                <model file="../out/sun.3d" />
+                <model file="../out/sun.3d" /> <!-- generator sphere 1 25 25 sun.3d -->
             </models>
         </group>
 
@@ -72,7 +72,7 @@
                 <rotate angle="21" x="0" y="1" z="0" />
             </transform>
             <models>
-                <model file="../out/planet.3d" /> <!-- generator sphere 1 25 25 planet.3d -->
+                <model file="../out/planet.3d" /> <!-- generator sphere 1 10 10 planet.3d -->
             </models>
         </group>
 
@@ -95,7 +95,7 @@
                 <rotate angle="225" x="0" y="1" z="0" />
             </transform>
             <models>
-                <model file="../out/planet.3d" /> <!-- generator sphere 1 25 25 planet.3d -->
+                <model file="../out/planet.3d" /> <!-- generator sphere 1 10 10 planet.3d -->
             </models>
         </group>
 
@@ -119,7 +119,7 @@
             </transform>
             
             <models>
-                <model file="../out/planet.3d" /> <!-- generator sphere 1 25 25 planet.3d -->
+                <model file="../out/planet.3d" /> <!-- generator sphere 1 10 10 planet.3d -->
             </models>
         </group>
 
@@ -142,7 +142,7 @@
                 <rotate angle="343" x="0" y="1" z="0" />
             </transform>
             <models>
-                <model file="../out/planet.3d" /> <!-- generator sphere 1 25 25 planet.3d -->
+                <model file="../out/planet.3d" /> <!-- generator sphere 1 10 10 planet.3d -->
             </models>
         </group>
 
@@ -165,7 +165,7 @@
                 <rotate angle="259" x="0" y="1" z="0" />
             </transform>
             <models>
-                <model file="../out/planet.3d" /> <!-- generator sphere 1 25 25 planet.3d -->
+                <model file="../out/planet.3d" /> <!-- generator sphere 1 10 10 planet.3d -->
             </models>
         </group>
 
@@ -195,7 +195,7 @@
             </transform>
             <group>
                 <models>
-                    <model file="../out/planet.3d" /> <!-- generator sphere 1 25 25 planet.3d -->
+                    <model file="../out/planet.3d" /> <!-- generator sphere 1 10 10 planet.3d -->
                 </models>
             </group>
             <group>
@@ -234,7 +234,7 @@
             </transform>
             <group>
                 <models>
-                    <model file="../out/planet.3d" /> <!-- generator sphere 1 25 25 planet.3d -->
+                    <model file="../out/planet.3d" /> <!-- generator sphere 1 10 10 planet.3d -->
                 </models>
             </group>
             <group>
@@ -266,7 +266,7 @@
                 <rotate angle="100" x="0" y="1" z="0" />
             </transform>
             <models>
-                <model file="../out/planet.3d" /> <!-- generator sphere 1 25 25 planet.3d -->
+                <model file="../out/planet.3d" /> <!-- generator sphere 1 10 10 planet.3d -->
             </models>
         </group>
     </group>
