@@ -59,18 +59,19 @@ void extrair_transform(Group node, TiXmlElement* transform_element, std::list<Tr
                 // Calcula os pontos de Catmull-Rom previamente no parse como uma figura para poder aplicar transforms
                 std::list<Ponto> pontosCatCalc = std::list<Ponto>();
                 float tt = 0.0f;
-                for(int i = 0; i < 1000; i++, tt+=0.001){
+                for(int i = 0; i < 50; i++, tt+=0.02){
                     std::vector<Ponto> pCat = getCatmullRomPoint(tt, pontos);
                     pontosCatCalc.push_back(pCat[0]);
                 }
                 Figura f = novaFigura();
                 setCurva(f, true);
+                addPontosControlFigura(f, pontos);
                 for(Ponto p: pontosCatCalc){
                     adicionarPonto(f, p);
                 }
                 push_file(node, f);
                 add_pontosCat(t, pontosCatCalc);
-                add_pontosControlCat(t, pontosCatCalc);
+                add_pontosControlCat(t, pontos);
             }
             else{
                 add_transformX(t, atof(transform_attribute->Attribute("x")));

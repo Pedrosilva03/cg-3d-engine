@@ -57,6 +57,18 @@ bool desenhaCurvas = true;
 int elapsedTime = 0;
 int instantBefore = 0;
 
+void onExit(){
+    for(GLuint buffer: buffers){
+        glDeleteBuffers(1, &buffer);
+    }
+    for(vector<float*> vetor: figurasVertices){
+        vetor.clear();
+    }
+    figurasVertices.clear();
+    figuras.clear();
+    deleteLeitor(leitor);
+}
+
 void loadBuffersData(){
     if(elapsedTime == 0){
         vector<GLuint> loader(figuras.size());
@@ -130,6 +142,19 @@ void changeSize(int w, int h)
     glMatrixMode(GL_MODELVIEW);
 }
 
+void pontosCatmullParaDesenho(Figura f){
+    std::list<Ponto> pontos = getPontos(f);
+    std::list<Ponto> pontosCat = getPontosControlFigura(f);
+    float t = 0.0f;
+    for(Ponto p: pontos){
+        std::vector<Ponto> pontosCatCalc = getCatmullRomPoint(t, pontosCat);
+        setX(p, getX(pontosCatCalc[0]));
+        setY(p, getY(pontosCatCalc[0]));
+        setZ(p, getZ(pontosCatCalc[0]));
+        t+=0.02;
+    }
+}
+
 void drawFiguras() {
     glColor3f(1.0f, 1.0f, 1.0f);
 
@@ -142,6 +167,7 @@ void drawFiguras() {
                 glDrawArrays(GL_TRIANGLES, 0, getPontos(figura).size());
             }
             else if(desenhaCurvas){
+                pontosCatmullParaDesenho(figura);
                 glBindBuffer(GL_ARRAY_BUFFER, buffers[index]);
                 glVertexPointer(3, GL_FLOAT, 0, 0);
                 glDrawArrays(GL_LINE_LOOP, 0, getPontos(figura).size());
@@ -161,6 +187,7 @@ void drawFiguras() {
                 glEnd();
             }
             else if(desenhaCurvas){
+                pontosCatmullParaDesenho(figura);
                 list<Ponto> pontos = getPontos(figura);
                 glBegin(GL_LINE_LOOP);
                 for (const auto& ponto : pontos) {
@@ -394,11 +421,10 @@ int main(int argc, char **argv)
 
     loadBuffersData();
 
+    atexit(onExit);
+
     // enter GLUT's main cycle
     glutMainLoop();
-
-    figuras.clear();
-    deleteLeitor(leitor);
 
     return 1;
 }

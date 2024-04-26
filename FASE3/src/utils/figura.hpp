@@ -11,6 +11,10 @@ bool getCurva(Figura f);
 
 void setCurva(Figura f, bool curva);
 
+void addPontosControlFigura(Figura f, std::list<Ponto> pontosControl);
+
+std::list<Ponto> getPontosControlFigura(Figura f);
+
 std::list<Ponto> getPontos(Figura f);
 
 Figura novaFigura();
