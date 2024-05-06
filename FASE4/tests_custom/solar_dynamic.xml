@@ -1,0 +1,273 @@
+<world>
+    <window width="512" height="512" />
+    <camera> 
+	    <position x="3" y="2" z="3" />
+	    <lookAt x="0" y="0" z="0" />
+	    <up x="0" y="1" z="0" /> <!-- optional, use these values as default-->
+        <projection fov="60" near="1" far="1000" /> <!-- optional, use these values as default-->
+    </camera>
+    <!--Planetas estão na escala de tamanho x2 (Mercurio é 0.003x o sol logo a escala é 0.006)-->
+    <!--Planetas estão 0.5 de cada um-->
+    <group>
+
+        <!--Cometa-->
+        <group>
+            <transform>
+                <translate time = "10" align = "false">
+                    <point x="2.85316955" y="0.0000000" z="-0.46352549"/>
+                    <point x="2.42705098" y="0.0000000" z="-0.88167788"/>
+                    <point x="1.76335576" y="0.0000000" z="-1.21352549"/>
+                    <point x="0.92705098" y="0.0000000" z="-1.42658478"/>
+                    <point x="0.0000000" y="0.0000000" z="-1.5000000"/>
+                    <point x="-0.92705098" y="0.0000000" z="-1.42658478"/>
+                    <point x="-1.76335576" y="0.0000000" z="-1.21352549"/>
+                    <point x="-2.42705098" y="0.0000000" z="-0.88167788"/>
+                    <point x="-2.85316955" y="0.0000000" z="-0.46352549"/>
+                    <point x="-3.00000000" y="0.0000000" z="0.0000000"/>
+                    <point x="-2.85316955" y="0.0000000" z="0.46352549"/>
+                    <point x="-2.42705098" y="0.0000000" z="0.88167788"/>
+                    <point x="-1.76335576" y="0.0000000" z="1.21352549"/>
+                    <point x="-0.92705098" y="0.0000000" z="1.42658478"/>
+                    <point x="0.00000000" y="0.0000000" z="1.50000000"/>
+                    <point x="0.92705098" y="0.0000000" z="1.42658478"/>
+                    <point x="1.76335576" y="0.0000000" z="1.21352549"/>
+                    <point x="2.42705098" y="0.0000000" z="0.88167788"/>
+                    <point x="2.85316955" y="0.0000000" z="0.46352549"/>
+                    <point x="3.00000000" y="0.0000000" z="0.00000000"/>
+                </translate>
+                <scale x="0.05" y="0.05" z="0.05" />
+            </transform>
+            <models>
+                <model file="../out/comet_2.3d" /> <!-- generator patch comet.patch 2 comet_2.3d -->
+            </models>
+        </group>
+
+        <!--Sol-->
+        <group>
+            <transform>
+                <rotate time = "5" x="0" y="1" z="0" />
+                <scale x = '0.8' y = '0.8' z = '0.8' />
+            </transform>
+            <models>
+                <model file="../out/sun.3d" /> <!-- generator sphere 1 25 25 sun.3d -->
+            </models>
+        </group>
+
+        <!--Mercurio-->
+        <group>
+            <transform>
+                <translate time = "1.205" align = "false">
+                    <point x="0.0" y="0.0" z="1.6" />
+                    <point x="0.9641814145298089" y="0.0" z="1.2490666646784672" />
+                    <point x="1.477211629518312" y="0.0" z="0.36047226650039565" />
+                    <point x="1.299038105676658" y="0.0" z="-0.6499999999999997" />
+                    <point x="0.5130302149885033" y="0.0" z="-1.3095389311788623" />
+                    <point x="-0.513030214988503" y="0.0" z="-1.3095389311788626" />
+                    <point x="-1.2990381056766578" y="0.0" z="-0.6500000000000007" />
+                    <point x="-1.4772116295183122" y="0.0" z="0.360472266500395" />
+                    <point x="-0.9641814145298093" y="0.0" z="1.2490666646784667" />
+                </translate>
+                <scale x="0.006" y="0.006" z="0.006" />
+                <translate x="1.5" y="0" z="0" />
+                <rotate angle="21" x="0" y="1" z="0" />
+            </transform>
+            <models>
+                <model file="../out/planet.3d" /> <!-- generator sphere 1 10 10 planet.3d -->
+            </models>
+        </group>
+
+        <!--Venus-->
+        <group>
+            <transform>
+                <translate time = "3.07" align = "false">
+                    <point x="0.0" y="0.0" z="2.1" />
+                    <point x="1.2855752193730785" y="0.0" z="1.6320888862379561" />
+                    <point x="1.969615506024416" y="0.0" z="0.4472963553338608" />
+                    <point x="1.7320508075688774" y="0.0" z="-0.8999999999999996" />
+                    <point x="0.6840402866513378" y="0.0" z="-1.7793852415718165" />
+                    <point x="-0.6840402866513373" y="0.0" z="-1.7793852415718168" />
+                    <point x="-1.732050807568877" y="0.0" z="-0.9000000000000009" />
+                    <point x="-1.9696155060244163" y="0.0" z="0.4472963553338599" />
+                    <point x="-1.2855752193730792" y="0.0" z="1.6320888862379557" />
+                </translate>
+                <scale x="0.016" y="0.016" z="0.016" />
+                <translate x="2" y="0" z="0" />
+                <rotate angle="225" x="0" y="1" z="0" />
+            </transform>
+            <models>
+                <model file="../out/planet.3d" /> <!-- generator sphere 1 10 10 planet.3d -->
+            </models>
+        </group>
+
+        <!--Terra-->
+        <group>
+            <transform>
+                <translate time = "5" align = "false">
+                    <point x="0.1" y="0.0" z="2.5" />
+                    <point x="1.7069690242163482" y="0.0" z="1.915111107797445" />
+                    <point x="2.56201938253052" y="0.0" z="0.43412044416732604" />
+                    <point x="2.265063509461097" y="0.0" z="-1.2499999999999996" />
+                    <point x="0.9550503583141722" y="0.0" z="-2.349231551964771" />
+                    <point x="-0.7550503583141717" y="0.0" z="-2.3492315519647713" />
+                    <point x="-2.0650635094610963" y="0.0" z="-1.250000000000001" />
+                    <point x="-2.3620193825305202" y="0.0" z="0.4341204441673249" />
+                    <point x="-1.506969024216349" y="0.0" z="1.9151111077974445" />
+                </translate>
+                <scale x="0.018" y="0.018" z="0.018" />
+                <translate x="2.5" y="0" z="0" />
+                <rotate angle="320" x="0" y="1" z="0" />
+            </transform>
+            
+            <models>
+                <model file="../out/planet.3d" /> <!-- generator sphere 1 10 10 planet.3d -->
+            </models>
+        </group>
+
+        <!--Marte-->
+        <group>
+            <transform>
+                <translate time = "9.395" align = "false">
+                    <point x="0.1" y="0.0" z="3.0" />
+                    <point x="2.028362829059618" y="0.0" z="2.298133329356934" />
+                    <point x="3.054423259036624" y="0.0" z="0.5209445330007912" />
+                    <point x="2.698076211353316" y="0.0" z="-1.4999999999999993" />
+                    <point x="1.1260604299770067" y="0.0" z="-2.819077862357725" />
+                    <point x="-0.926060429977006" y="0.0" z="-2.8190778623577253" />
+                    <point x="-2.4980762113533155" y="0.0" z="-1.5000000000000013" />
+                    <point x="-2.8544232590366243" y="0.0" z="0.5209445330007899" />
+                    <point x="-1.8283628290596186" y="0.0" z="2.2981333293569333" />
+                </translate>
+                <scale x="0.008" y="0.008" z="0.008" />
+                <translate x="3" y="0" z="0" />
+                <rotate angle="343" x="0" y="1" z="0" />
+            </transform>
+            <models>
+                <model file="../out/planet.3d" /> <!-- generator sphere 1 10 10 planet.3d -->
+            </models>
+        </group>
+
+        <!--Jupiter-->
+        <group>
+            <transform>
+                <translate time = "59.29" align = "false">
+                    <point x="0.0" y="0.0" z="3.6" />
+                    <point x="2.2483861429479037" y="0.0785153742263235" z="2.781155550916423" />
+                    <point x="3.444727421581908" y="0.1202925322509643" z="0.7077686218342564" />
+                    <point x="3.029242455776868" y="0.1057834775327998" z="-1.649999999999999" />
+                    <point x="1.1963412786340046" y="0.04177715802464081" z="-3.188924172750679" />
+                    <point x="-1.1963412786340037" y="-0.041777158024640784" z="-3.188924172750679" />
+                    <point x="-3.029242455776867" y="-0.10578347753279978" z="-1.6500000000000015" />
+                    <point x="-3.4447274215819084" y="-0.12029253225096431" z="0.7077686218342548" />
+                    <point x="-2.2483861429479046" y="-0.07851537422632354" z="2.7811555509164223" />
+                </translate>
+                <scale x="0.2" y="0.2" z="0.2" />
+                <translate x="3.5" y="0" z="0" />
+                <rotate angle="259" x="0" y="1" z="0" />
+            </transform>
+            <models>
+                <model file="../out/planet.3d" /> <!-- generator sphere 1 10 10 planet.3d -->
+            </models>
+        </group>
+
+        <group> <!-- Trajetoria de saturno -->
+            <transform>
+                <translate time = "147.29" align = "false">
+                    <point x="0.0" y="0.0" z="4.0" />
+                    <point x="2.571150438746157" y="0.0" z="3.064177772475912" />
+                    <point x="3.939231012048832" y="0.0" z="0.6945927106677217" />
+                    <point x="3.464101615137755" y="0.0" z="-1.9999999999999991" />
+                    <point x="1.3680805733026755" y="0.0" z="-3.7587704831436333" />
+                    <point x="-1.3680805733026746" y="0.0" z="-3.7587704831436337" />
+                    <point x="-3.464101615137754" y="0.0" z="-2.0000000000000018" />
+                    <point x="-3.9392310120488325" y="0.0" z="0.6945927106677199" />
+                    <point x="-2.5711504387461583" y="0.0" z="3.064177772475911" />
+                </translate>
+            </transform>
+        </group>
+
+        <!--Saturno-->
+        <group>
+            <transform>
+                <rotate time = "147.29" x="0" y="1" z="0" />
+                <scale x="0.16" y="0.16" z="0.16" />
+                <translate x="4" y="0" z="0" />
+                <rotate angle="217" x="0" y="1" z="0" />
+            </transform>
+            <group>
+                <models>
+                    <model file="../out/planet.3d" /> <!-- generator sphere 1 10 10 planet.3d -->
+                </models>
+            </group>
+            <group>
+                <transform>
+                    <rotate angle="23" x="0" y="" z="1" />
+                </transform>
+                <models>
+                    <model file="../out/ring.3d" /> <!-- generator ring 1.5 2 40 ../out/ring.3d -->
+                </models>
+            </group>
+        </group>
+
+        <group> <!-- Trajetoria de urano -->
+            <transform>
+                <translate time = "420.04" align = "false">
+                    <point x="0.0" y="0.0" z="4.5" />
+                    <point x="2.892544243589427" y="0.0" z="3.447199994035401" />
+                    <point x="4.431634888554936" y="0.0" z="0.7814167995011869" />
+                    <point x="3.897114317029974" y="0.0" z="-2.249999999999999" />
+                    <point x="1.53909064496551" y="0.0" z="-4.228616793536587" />
+                    <point x="-1.5390906449655088" y="0.0" z="-4.228616793536588" />
+                    <point x="-3.897114317029973" y="0.0" z="-2.2500000000000018" />
+                    <point x="-4.431634888554937" y="0.0" z="0.7814167995011849" />
+                    <point x="-2.892544243589428" y="0.0" z="3.4471999940354" />
+                </translate>
+            </transform>
+        </group>
+
+        <!--Urano-->
+        <group>
+            <transform>
+                <rotate time = "420.04" x="0" y="1" z="0" />
+                <scale x="0.06" y="0.06" z="0.06" />
+                <translate x="4.5" y="0" z="0" />
+                <rotate angle="45" x="0" y="1" z="0" />
+            </transform>
+            <group>
+                <models>
+                    <model file="../out/planet.3d" /> <!-- generator sphere 1 10 10 planet.3d -->
+                </models>
+            </group>
+            <group>
+                <transform>
+                    <rotate angle="93" x="0" y="0" z="1" />
+                </transform>
+                <models>
+                    <model file="../out/ring.3d" /> <!-- generator ring 1.5 2 40 ../out/ring.3d -->
+                </models>
+            </group>
+        </group>
+
+        <!--Neptuno-->
+        <group>
+            <transform>
+                <translate time = "823.945" align = "false">
+                    <point x="0.1" y="0.0" z="5.0" />
+                    <point x="3.3119802042112907" y="0.11216482032331929" z="3.83022221559489" />
+                    <point x="5.021039173688439" y="0.17184647464423472" z="0.8682408883346521" />
+                    <point x="4.427489222538382" y="0.15111925361828546" z="-2.499999999999999" />
+                    <point x="1.8090589694771495" y="0.059681654320915455" z="-4.698463103929542" />
+                    <point x="-1.6090589694771482" y="-0.05968165432091541" z="-4.698463103929543" />
+                    <point x="-4.227489222538382" y="-0.1511192536182854" z="-2.500000000000002" />
+                    <point x="-4.82103917368844" y="-0.17184647464423475" z="0.8682408883346499" />
+                    <point x="-3.1119802042112923" y="-0.11216482032331934" z="3.830222215594889" />
+                </translate> 
+                <scale x="0.07" y="0.07" z="0.07" />
+                <translate x="5" y="0" z="0" />
+                <rotate angle="100" x="0" y="1" z="0" />
+            </transform>
+            <models>
+                <model file="../out/planet.3d" /> <!-- generator sphere 1 10 10 planet.3d -->
+            </models>
+        </group>
+    </group>
+</world>

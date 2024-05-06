@@ -33,4 +33,9 @@ build_f3:
 	./FASE3/build/Release/generator.exe patch FASE3/patches/comet.patch 2 FASE3/out/comet_2.3d
 	@echo "Comet done"
 
+build_f4:
+	cmake -B FASE4/build -S FASE4/src -A Win32
+	cmake --build FASE4/build/ --config Release
+	@echo "Build FASE4 done"
+
 	
