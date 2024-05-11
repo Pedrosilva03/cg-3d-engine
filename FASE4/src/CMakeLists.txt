@@ -22,6 +22,8 @@ add_library(
     ./utils/groups.hpp
     ./utils/catmull.cpp
     ./utils/catmull.hpp
+    ./utils/lights.cpp
+    ./utils/lights.hpp
 )
 
 # Biblioteca de parsing de XML

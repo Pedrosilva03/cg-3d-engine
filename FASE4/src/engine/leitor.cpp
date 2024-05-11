@@ -2,6 +2,7 @@
 #include "../utils/groups.hpp"
 #include "../utils/figura.hpp"
 #include "../utils/catmull.hpp"
+#include "../utils/lights.hpp"
 #include "../tinyxml/tinyxml.h"
 #include <iostream>
 #include <list>
@@ -13,6 +14,7 @@ struct leitor {
     float lookAt[3];
     float up[3];
     float projection[3]; // fov, near, far
+    std::vector<Lights> lights;
     Group group;
 };
 
@@ -27,6 +29,7 @@ Leitor novoLeitor() {
             l->projection[i] = 0.0f;
         }
 
+        l->lights = std::vector<Lights>();
         l->group = novoGrupo();
     } else {
         std::cout << "Erro na construção do leitor!" << std::endl;
@@ -121,6 +124,26 @@ void extrair_grupo(TiXmlElement* group_element, Group node){
     }
 }
 
+void extrair_lights(TiXmlElement* lights_node, std::vector<Lights>& lights){
+    if(!lights_node) return;
+    for(TiXmlElement* light = lights_node->FirstChildElement("light"); light; light = light->NextSiblingElement("light")){
+        Lights l = novaLight();
+        if(const char* type = light->Attribute("type")) setType(l, type);
+
+        if(const char* posX = light->Attribute("posx")) setPosX(l, atof(posX));
+        if(const char* posY = light->Attribute("posy")) setPosY(l, atof(posY));
+        if(const char* posZ = light->Attribute("posz")) setPosZ(l, atof(posZ));
+
+        if(const char* dirX = light->Attribute("dirx")) setDirX(l, atof(dirX));
+        if(const char* dirY = light->Attribute("diry")) setDirY(l, atof(dirY));
+        if(const char* dirZ = light->Attribute("dirz")) setDirZ(l, atof(dirZ));
+
+        if(const char* cutoff = light->Attribute("cutoff")) setCutoff(l, atof(cutoff));
+
+        lights.push_back(l);
+    }
+}
+
 Leitor extrair_XML(const char* filePath) {
     Leitor l = novoLeitor();
 
@@ -146,6 +169,9 @@ Leitor extrair_XML(const char* filePath) {
             l->projection[0] = atof(camera->FirstChildElement("projection")->Attribute("fov"));
             l->projection[1] = atof(camera->FirstChildElement("projection")->Attribute("near"));
             l->projection[2] = atof(camera->FirstChildElement("projection")->Attribute("far"));
+
+            TiXmlElement* lights_node = root->FirstChildElement("lights");
+            extrair_lights(lights_node, l->lights);
 
             // Extrair o nome do arquivo do modelo
             TiXmlElement* main_node = root->FirstChildElement("group");

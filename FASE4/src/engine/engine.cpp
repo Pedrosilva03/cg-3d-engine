@@ -416,6 +416,11 @@ int main(int argc, char **argv)
     glEnable(GL_DEPTH_TEST);
     glEnable(GL_CULL_FACE);
 
+    glEnable(GL_RESCALE_NORMAL);
+
+    float amb[4] = { 1.0f, 1.0f, 1.0f, 1.0f };
+	glLightModelfv(GL_LIGHT_MODEL_AMBIENT, amb);
+
     glewInit();
     glEnableClientState(GL_VERTEX_ARRAY);
 
