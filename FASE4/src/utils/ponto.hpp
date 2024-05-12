@@ -31,12 +31,14 @@ float calcularDistanciaOrigem(Ponto p);
 
 float calcularDistanciaEntrePontos(Ponto p1, Ponto p2);
 
-void rodarPonto(Ponto p, float angle, float x = 0.0f, float y = 0.0f, float z = 0.0f);
+void rodarPonto(Ponto p, Ponto centro, float angle, float x = 0.0f, float y = 0.0f, float z = 0.0f);
 
 Ponto normalize(Ponto a);
 
 float innerProduct(Ponto a, Ponto b);
 
 Ponto cross(Ponto a, Ponto b);
+
+void escalarPonto(Ponto p, Ponto centro, float x, float y, float z);
 
 #endif

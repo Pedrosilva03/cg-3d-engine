@@ -12,6 +12,7 @@ struct figura
     bool curva; // Indica se uma figura é uma curva de Catmull-Rom
     std::list<Ponto> pontosControl; // Se for uma curva, guarda os pontos de control
     std::list<Ponto> pontos;
+    Ponto centroAbs;
 };
 
 bool getCurva(Figura f){
@@ -40,6 +41,7 @@ std::list<Ponto> getPontos(Figura f)
 Figura novaFigura()
 {
     Figura f = new struct figura;
+    f->centroAbs = novoPonto(0.0f, 0.0f, 0.0f);
     return f; // Retorna uma nova instância de Figura vazia
 }
 
@@ -107,6 +109,19 @@ Figura criarFigura(const char *path)
     return f;
 }
 
+Ponto centroFigura(std::list<Ponto> pontos){
+    Ponto centro = novoPonto(0.0f, 0.0f, 0.0f);
+    for(Ponto p : pontos){
+        setX(centro, getX(centro) + getX(p));
+        setY(centro, getY(centro) + getY(p));
+        setZ(centro, getZ(centro) + getZ(p));
+    }
+    setX(centro, getX(centro) / pontos.size());
+    setY(centro, getY(centro) / pontos.size());
+    setZ(centro, getZ(centro) / pontos.size());
+    return centro;
+}
+
 void apagarFigura(Figura f)
 {
     f->pontos.clear(); // Limpa a lista de pontos da figura
@@ -133,6 +148,7 @@ std::list<Figura> criarListaFiguras(Group group, int elapsedTime, int instantBef
 }
 
 void applyTransforms(std::list<Figura>& figuras, std::list<Transform>& transforms, int elapsedTime, int instantBefore){
+    applyScalesToTransforms(transforms);
     for(Figura figura: figuras){
         int rotated = 0; // Marca se a figura foi rodada anteriormente ou não
         Transform rotation; // Rotação feita
@@ -140,24 +156,24 @@ void applyTransforms(std::list<Figura>& figuras, std::list<Transform>& transform
         for(Transform t: transforms){
             if(strcmp(get_transformType(t), "scale") == 0){
                 if(elapsedTime == 0 && get_time(t) == 0 && !getCurva(figura)){ // Escalas estáticas
+                    // Determinar o centro da figura
                     for(Ponto p: pontos){
                         if(rotated == 0){
-                            setX(p, getX(p) * get_transformX(t));
-                            setY(p, getY(p) * get_transformY(t));
-                            setZ(p, getZ(p) * get_transformZ(t));
+                            escalarPonto(p, figura->centroAbs, get_transformX(t), get_transformY(t), get_transformZ(t));
                         }
                         else{
                             Ponto aux = novoPonto(get_transformX(t), get_transformY(t), get_transformZ(t));
-                            rodarPonto(aux, get_transformAngle(rotation), get_transformX(rotation), get_transformY(rotation), get_transformZ(rotation));
-                            setX(p, getX(p) * getX(aux));
-                            setY(p, getY(p) * getY(aux));
-                            setZ(p, getZ(p) * getZ(aux));
+                            rodarPonto(aux, novoPonto(0.0f, 0.0f, 0.0f), get_transformAngle(rotation), get_transformX(rotation), get_transformY(rotation), get_transformZ(rotation));
+                            escalarPonto(p, figura->centroAbs, getX(aux), getY(aux), getZ(aux));
                         }
                     }
                 }
             }
             else if(strcmp(get_transformType(t), "translate") == 0){
                 if(elapsedTime == 0 && get_time(t) == 0 && !getCurva(figura)){ // Translações estáticas
+                    setX(figura->centroAbs, getX(figura->centroAbs) + get_transformX(t));
+                    setY(figura->centroAbs, getY(figura->centroAbs) + get_transformY(t));
+                    setZ(figura->centroAbs, getZ(figura->centroAbs) + get_transformZ(t));
                     for(Ponto p: pontos){
                         if(rotated == 0){
                             setX(p, getX(p) + get_transformX(t));
@@ -166,7 +182,7 @@ void applyTransforms(std::list<Figura>& figuras, std::list<Transform>& transform
                         }
                         else{
                             Ponto aux = novoPonto(get_transformX(t), get_transformY(t), get_transformZ(t));
-                            rodarPonto(aux, get_transformAngle(rotation), get_transformX(rotation), get_transformY(rotation), get_transformZ(rotation));
+                            rodarPonto(aux, novoPonto(0.0f, 0.0f, 0.0f), get_transformAngle(rotation), get_transformX(rotation), get_transformY(rotation), get_transformZ(rotation));
                             setX(p, getX(p) + getX(aux));
                             setY(p, getY(p) + getY(aux));
                             setZ(p, getZ(p) + getZ(aux));
@@ -180,8 +196,8 @@ void applyTransforms(std::list<Figura>& figuras, std::list<Transform>& transform
                     std::vector<Ponto> derivInstant = getCatmullRomPoint(tNormalized, get_pontosControlCat(t));
 
                     // Guarda o primeiro ponto para determinar a direção para ser aplicada aos outros pontos
-                    std::list<Ponto>::iterator it = pontos.begin();
-                    Ponto pivo = *it;
+                    Ponto centro = centroFigura(pontos);
+                    Ponto pivo = novoPonto(getX(centro), getY(centro), getZ(centro));
 
                     Ponto catmullAtual = derivInstant[0];
                     float difX = getX(catmullAtual) - getX(pivo); 
@@ -207,7 +223,7 @@ void applyTransforms(std::list<Figura>& figuras, std::list<Transform>& transform
                         setZ(p, getZ(p) + difZ);
 
                         if(get_align(t) && elapsedTime > 0){
-                            rodarPonto(p, angulo, getX(rotationAxis), getY(rotationAxis), getZ(rotationAxis));
+                            rodarPonto(p, novoPonto(0.0f, 0.0f, 0.0f), angulo, getX(rotationAxis), getY(rotationAxis), getZ(rotationAxis));
                         }
                     }
                 }
@@ -217,24 +233,36 @@ void applyTransforms(std::list<Figura>& figuras, std::list<Transform>& transform
                     rotated = 1;
                     rotation = t;
                     for(Ponto p: pontos){
-                        rodarPonto(p, get_transformAngle(t), get_transformX(t), get_transformY(t), get_transformZ(t));
+                        rodarPonto(p, figura->centroAbs, get_transformAngle(t), get_transformX(t), get_transformY(t), get_transformZ(t));
                     }
                 }
                 else if(get_time(t) != 0 /*&& (float)elapsedTime / 1000.0f < get_time(t)*/){ // Rotações dinâmicas
                     float angleTime = ((float)(elapsedTime - instantBefore)) * (360.0f / (get_time(t) * 1000.0f));
                     if(!getCurva(figura)){
                         for(Ponto p: pontos){
-                            rodarPonto(p, angleTime, get_transformX(t), get_transformY(t), get_transformZ(t));
+                            rodarPonto(p, figura->centroAbs, angleTime, get_transformX(t), get_transformY(t), get_transformZ(t));
                         }
                     }
                     else if(getCurva(figura)){
                         std::list<Ponto> pontosControl = getPontosControlFigura(figura);
                         for(Ponto pp: pontosControl){
-                            rodarPonto(pp, angleTime, get_transformX(t), get_transformY(t), get_transformZ(t));
+                            rodarPonto(pp, figura->centroAbs, angleTime, get_transformX(t), get_transformY(t), get_transformZ(t));
                         }
                     }
                 }
             }
+        }
+    }
+}
+
+void applyScalesToTransforms(std::list<Transform>& transforms){
+    std::vector<Transform> vecTransform(transforms.begin(), transforms.end());
+
+    for(int i = 0; i < vecTransform.size(); i++){
+        if(i + 1 < vecTransform.size() && strcmp(get_transformType(vecTransform[i]), "scale") == 0 && strcmp(get_transformType(vecTransform[i + 1]), "rotate") != 0 && get_time(vecTransform[i + 1]) == 0){
+            add_transformX(vecTransform[i + 1], get_transformX(vecTransform[i + 1]) * get_transformX(vecTransform[i]));
+            add_transformY(vecTransform[i + 1], get_transformY(vecTransform[i + 1]) * get_transformY(vecTransform[i]));
+            add_transformZ(vecTransform[i + 1], get_transformZ(vecTransform[i + 1]) * get_transformZ(vecTransform[i]));
         }
     }
 }

@@ -74,15 +74,15 @@ float calcularDistanciaEntrePontos(Ponto p1, Ponto p2)
     return (float)sqrt(pow(p2->x - p1->x, 2) + pow(p2->y - p1->y, 2) + pow(p2->z - p1->z, 2));
 }
 
-void rodarPonto(Ponto p, float angle, float x, float y, float z){
+void rodarPonto(Ponto p, Ponto centro, float angle, float x, float y, float z){
     float angleRad = angle * M_PI/180;
     float pontox = getX(p);
     float pontoy = getY(p);
     float pontoz = getZ(p);
 
-    float pontoRotX = x;
-    float pontoRotY = y;
-    float pontoRotZ = z;
+    float pontoRotX = x + getX(centro);
+    float pontoRotY = y + getY(centro);
+    float pontoRotZ = z + getZ(centro);
 
     float vecX = pontox - pontoRotX;
     float vecY = pontoy - pontoRotY;
@@ -120,7 +120,7 @@ void rodarPonto(Ponto p, float angle, float x, float y, float z){
     setZ(p, newPontoZ);
 
     if(x != 0 || y != 0 || z != 0){
-        rodarPonto(p, angle, x, y, z);
+        rodarPonto(p, centro, angle, x, y, z);
     }
 }
 
@@ -137,3 +137,28 @@ Ponto cross(Ponto a, Ponto b){
     //vec1.y * vec2.z - vec1.z * vec2.y, vec1.z * vec2.x - vec1.x * vec2.z, vec1.x * vec2.y - vec1.y * vec2.x
     return novoPonto(a->y * b->z - a->z * b->y, a->z * b->x - a->x * b->z, a->x * b->y - a->y * b->x);
 } 
+
+void escalarPonto(Ponto p, Ponto centro, float x, float y, float z){
+    float px = getX(p);
+    float cx = getX(centro);
+    float py = getY(p);
+    float cy = getY(centro);
+    float pz = getZ(p);
+    float cz = getZ(centro);
+
+    px -= cx;
+    py -= cy;
+    pz -= cz;
+
+    px *= x;
+    py *= y;
+    pz *= z;
+
+    px += cx;
+    py += cy;
+    pz += cz;
+
+    setX(p, px);
+    setY(p, py);
+    setZ(p, pz);
+}

@@ -33,4 +33,6 @@ std::list<Figura> criarListaFiguras(Group group, int elapsedTime, int instantBef
 
 void applyTransforms(std::list<Figura>& figuras, std::list<Transform>& transforms, int elapsedTime, int instantBefore);
 
+void applyScalesToTransforms(std::list<Transform>& transforms);
+
 #endif
