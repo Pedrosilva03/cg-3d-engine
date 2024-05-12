@@ -3,6 +3,7 @@
 #include "../utils/figura.hpp"
 #include "../utils/catmull.hpp"
 #include "../utils/lights.hpp"
+#include "../utils/colors.hpp"
 #include "../tinyxml/tinyxml.h"
 #include <iostream>
 #include <list>
@@ -36,6 +37,20 @@ Leitor novoLeitor() {
     }
 
     return l;
+}
+
+void extrair_colors(TiXmlElement* colors_node, Color c){
+    TiXmlElement* diffuse_node = colors_node->FirstChildElement("diffuse");
+    TiXmlElement* ambient_node = colors_node->FirstChildElement("ambient");
+    TiXmlElement* specular_node = colors_node->FirstChildElement("specular");
+    TiXmlElement* emissive_node = colors_node->FirstChildElement("emissive");
+    TiXmlElement* shininess_node = colors_node->FirstChildElement("shininess");
+
+    add_diffuse(c, atoi(diffuse_node->Attribute("R")), atoi(diffuse_node->Attribute("G")), atoi(diffuse_node->Attribute("B")));
+    add_ambient(c, atoi(ambient_node->Attribute("R")), atoi(ambient_node->Attribute("G")), atoi(ambient_node->Attribute("B")));
+    add_specular(c, atoi(specular_node->Attribute("R")), atoi(specular_node->Attribute("G")), atoi(specular_node->Attribute("B")));
+    add_emissive(c, atoi(emissive_node->Attribute("R")), atoi(emissive_node->Attribute("G")), atoi(emissive_node->Attribute("B")));
+    add_shininess(c, atoi(shininess_node->Attribute("value")));
 }
 
 void extrair_transform(Group node, TiXmlElement* transform_element, std::list<Transform>& transform_node){
@@ -120,6 +135,16 @@ void extrair_grupo(TiXmlElement* group_element, Group node){
             Figura f = criarFigura(file_name);
             setCurva(f, false);
             push_file(node, (void*)f);
+
+            TiXmlElement* color_node = models->FirstChildElement("color");
+            if(color_node){
+                Color c = novaColor();
+                extrair_colors(color_node, c);
+                add_color(f, c);
+            }
+
+            TiXmlElement* texture_node = models->FirstChildElement("texture");
+            if(texture_node) add_texture(f, texture_node->Attribute("file"));
         }
     }
 }

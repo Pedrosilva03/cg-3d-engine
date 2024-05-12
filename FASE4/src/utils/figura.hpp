@@ -1,5 +1,6 @@
 #include "ponto.hpp"
 #include "groups.hpp"
+#include "colors.hpp"
 #include <list>
 #include <string> 
 #ifndef FIGURA_HPP
@@ -22,6 +23,10 @@ Figura novaFigura();
 void adicionarPonto(Figura f, const Ponto novoPonto);
 
 void adicionarVariosPontos(Figura f, Figura f2);
+
+void add_color(Figura f, Color c);
+
+void add_texture(Figura f, const char* file);
 
 void criarFile(const Figura f, const char* path);
 

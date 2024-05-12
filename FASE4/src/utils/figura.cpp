@@ -2,6 +2,7 @@
 #include "ponto.hpp"
 #include "groups.hpp"
 #include "catmull.hpp"
+#include "colors.hpp"
 #include <iostream>
 #include <cstdio>
 #include <string>
@@ -13,6 +14,8 @@ struct figura
     std::list<Ponto> pontosControl; // Se for uma curva, guarda os pontos de control
     std::list<Ponto> pontos;
     Ponto centroAbs;
+    Color color;
+    const char* texture;
 };
 
 bool getCurva(Figura f){
@@ -56,6 +59,14 @@ void adicionarVariosPontos(Figura f, Figura f2)
     {
         f->pontos.push_back(ponto); // Adiciona o novo ponto à lista de pontos da figura
     }
+}
+
+void add_color(Figura f, Color c){
+    f->color = c;
+}
+
+void add_texture(Figura f, const char* file){
+    f->texture = file;
 }
 
 void criarFile(const Figura f, const char *path)
