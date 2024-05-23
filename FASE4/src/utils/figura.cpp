@@ -65,6 +65,10 @@ void add_color(Figura f, Color c){
     f->color = c;
 }
 
+Color get_color(Figura f){
+    return f->color;
+}
+
 void add_texture(Figura f, const char* file){
     f->texture = file;
 }

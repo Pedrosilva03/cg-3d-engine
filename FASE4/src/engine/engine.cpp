@@ -10,6 +10,7 @@
 #include "../utils/ponto.hpp"
 #include "../utils/groups.hpp"
 #include "../utils/catmull.hpp"
+#include "../utils/lights.hpp"
 #include "../tinyxml/tinyxml.h"
 #include "leitor.hpp"
 #define _USE_MATH_DEFINES
@@ -19,6 +20,7 @@
 #include <string>
 #include <sstream>
 #include <chrono>
+#include <vector>
 
 using namespace std;
 
@@ -372,11 +374,31 @@ void processKeys(unsigned char key, int x, int y)
     glutPostRedisplay();
 }
 
+void setupLights(std::vector<Lights> luzes){
+    int i = GL_LIGHT0;
+    for(Lights l: luzes){
+        glEnable(i);
+
+        GLfloat pos[4] = {getPosX(l), getPosY(l), getPosZ(l), 1.0f};
+        glLightfv(i, GL_POSITION, pos);
+
+        GLfloat dir[4] = {getDirX(l), getDirY(l), getDirZ(l), 1.0f};
+        glLightfv(i, GL_POSITION, dir);
+
+        GLfloat cutoff = getCutoff(l);
+        glLightfv(i, GL_SPOT_CUTOFF, &cutoff);
+
+        i++;
+    }
+}
+
 
 int main(int argc, char **argv)
 {
     leitor = extrair_XML(argv[1]);
     listafiguras = getNode(leitor);
+
+    setupLights(getLights(leitor));
     
     if(listafiguras) figuras = criarListaFiguras(listafiguras, 0, instantBefore);
 
@@ -415,6 +437,7 @@ int main(int argc, char **argv)
     //  OpenGL settings
     glEnable(GL_DEPTH_TEST);
     glEnable(GL_CULL_FACE);
+    glEnable(GL_LIGHTING);
 
     glEnable(GL_RESCALE_NORMAL);
 

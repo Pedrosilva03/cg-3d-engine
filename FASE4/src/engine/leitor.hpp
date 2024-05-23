@@ -2,7 +2,9 @@
 #define LEITOR
 #include "../tinyxml/tinyxml.h"
 #include "../utils/groups.hpp"
+#include "../utils/lights.hpp"
 #include <list>
+#include <vector>
 #include <string>
 
 typedef struct leitor* Leitor;
@@ -46,5 +48,7 @@ void setProjection(Leitor l, float x, float y, float z);
 Group getNode(Leitor l);
 
 void deleteLeitor(Leitor l);
+
+std::vector<Lights> getLights(Leitor l);
 
 #endif

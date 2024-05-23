@@ -26,6 +26,8 @@ void adicionarVariosPontos(Figura f, Figura f2);
 
 void add_color(Figura f, Color c);
 
+Color get_color(Figura f);
+
 void add_texture(Figura f, const char* file);
 
 void criarFile(const Figura f, const char* path);

@@ -2,7 +2,6 @@
 #include "../utils/groups.hpp"
 #include "../utils/figura.hpp"
 #include "../utils/catmull.hpp"
-#include "../utils/lights.hpp"
 #include "../utils/colors.hpp"
 #include "../tinyxml/tinyxml.h"
 #include <iostream>
@@ -142,6 +141,7 @@ void extrair_grupo(TiXmlElement* group_element, Group node){
                 extrair_colors(color_node, c);
                 add_color(f, c);
             }
+            else add_color(f, NULL);
 
             TiXmlElement* texture_node = models->FirstChildElement("texture");
             if(texture_node) add_texture(f, texture_node->Attribute("file"));
@@ -304,4 +304,8 @@ void deleteLeitor(Leitor l){
     if(l){
         free(l);
     }
+}
+
+std::vector<Lights> getLights(Leitor l){
+    return l->lights;
 }
