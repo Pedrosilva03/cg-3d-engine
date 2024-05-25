@@ -250,8 +250,8 @@ void drawFiguras() {
                 int i = 0;
                 for (const auto& ponto : pontos) {
                     //cout << "(" << getX(ponto) << "," << getY(ponto) << "," << getZ(ponto) << ")";
-                    glVertex3f(getX(ponto), getY(ponto), getZ(ponto));
                     if(getLights(leitor).size() > 0) glNormal3f(getX(normais[i]), getY(normais[i]), getZ(normais[i]));
+                    glVertex3f(getX(ponto), getY(ponto), getZ(ponto));
                     i++;
                 }
                 glEnd();

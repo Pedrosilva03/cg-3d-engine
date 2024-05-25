@@ -114,42 +114,19 @@ std::vector<Ponto> calculateSphereNormals(std::list<Ponto> vertices) {
     centerY /= vertices.size();
     centerZ /= vertices.size();
 
-    for(size_t i = 0; i < vertices.size(); i += 6){
-        Ponto p1 = vertVec[i];
-        Ponto p2 = vertVec[i+1];
-        Ponto p3 = vertVec[i+2];
-        Ponto p4 = vertVec[i+3];
+    for (const auto& ponto : vertices) {
+        float vetorX = getX(ponto) - centerX;
+        float vetorY = getY(ponto) - centerY;
+        float vetorZ = getZ(ponto) - centerZ;
 
-        float vetorX1 = getX(p1) - centerX;
-        float vetorY1 = getY(p1) - centerY;
-        float vetorZ1 = getZ(p1) - centerZ;
+        float comprimento = std::sqrt(vetorX * vetorX + vetorY * vetorY + vetorZ * vetorZ);
 
-        float comprimento1 = std::sqrt(vetorX1 * vetorX1 + vetorY1 * vetorY1 + vetorZ1 * vetorZ1);
+        // Normalize the vector to get the normal
+        float normalX = vetorX / comprimento;
+        float normalY = vetorY / comprimento;
+        float normalZ = vetorZ / comprimento;
 
-        float vetorX2 = getX(p2) - centerX;
-        float vetorY2 = getY(p2) - centerY;
-        float vetorZ2 = getZ(p2) - centerZ;
-
-        float comprimento2 = std::sqrt(vetorX2 * vetorX2 + vetorY2 * vetorY2 + vetorZ2 * vetorZ2);
-
-        float vetorX3 = getX(p3) - centerX;
-        float vetorY3 = getY(p3) - centerY;
-        float vetorZ3 = getZ(p3) - centerZ;
-
-        float comprimento3 = std::sqrt(vetorX3 * vetorX3 + vetorY3 * vetorY3 + vetorZ3 * vetorZ3);
-
-        float vetorX4 = getX(p4) - centerX;
-        float vetorY4 = getY(p4) - centerY;
-        float vetorZ4 = getZ(p4) - centerZ;
-
-        float comprimento4 = std::sqrt(vetorX4 * vetorX4 + vetorY4 * vetorY4 + vetorZ4 * vetorZ4);
-
-        normals.push_back(novoPonto(vetorX1 / comprimento1, vetorY1 / comprimento1, vetorZ1 / comprimento1));
-        normals.push_back(novoPonto(vetorX2 / comprimento2, vetorY2 / comprimento2, vetorZ2 / comprimento2));
-        normals.push_back(novoPonto(vetorX3 / comprimento3, vetorY3 / comprimento3, vetorZ3 / comprimento3));
-        normals.push_back(novoPonto(vetorX2 / comprimento2, vetorY2 / comprimento2, vetorZ2 / comprimento2));
-        normals.push_back(novoPonto(vetorX4 / comprimento4, vetorY4 / comprimento4, vetorZ4 / comprimento4));
-        normals.push_back(novoPonto(vetorX3 / comprimento3, vetorY3 / comprimento3, vetorZ3 / comprimento3));
+        normals.push_back(novoPonto(normalX, normalY, normalZ));
     }
     return normals;
 }
