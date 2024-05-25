@@ -417,7 +417,7 @@ int main(int argc, char *argv[])
             file_path = argv[4];
 
             figura = generateFromPatch(patchFile, tesselation);
-            criarFile(figura, file_path);
+            criarFile(figura, file_path, argv[1]);
             apagarFigura(figura);
         }
 
@@ -428,7 +428,7 @@ int main(int argc, char *argv[])
             file_path = argv[5];
 
             figura = generateRing(innerRadius, outerRadius, divisions);
-            criarFile(figura, file_path);
+            criarFile(figura, file_path, argv[1]);
             apagarFigura(figura);
         }
 
@@ -440,7 +440,7 @@ int main(int argc, char *argv[])
 
             figura = generatePlane(length, divisions, 'x', 'z');
             adicionarVariosPontos(figura, generatePlane(length, divisions, 'x', 'z', 0, 0, 0, 1));
-            criarFile(figura, file_path);
+            criarFile(figura, file_path, argv[1]);
             apagarFigura(figura);
         }
 
@@ -451,7 +451,7 @@ int main(int argc, char *argv[])
             file_path = argv[4];
 
             figura = generateBox(length, divisions);
-            criarFile(figura, file_path);
+            criarFile(figura, file_path, argv[1]);
             apagarFigura(figura);
         }
 
@@ -463,7 +463,7 @@ int main(int argc, char *argv[])
             file_path = argv[5];
 
             figura = generateSphere(radius, slices, stacks);
-            criarFile(figura, file_path);
+            criarFile(figura, file_path, argv[1]);
             apagarFigura(figura);
         }
 
@@ -476,7 +476,7 @@ int main(int argc, char *argv[])
             file_path = argv[6];
 
             figura = generateCone(radius, height, slices, stacks);
-            criarFile(figura, file_path);
+            criarFile(figura, file_path, argv[1]);
             apagarFigura(figura);
         }
         else{

@@ -10,6 +10,7 @@
 
 struct figura
 {
+    std::string type;
     bool curva; // Indica se uma figura é uma curva de Catmull-Rom
     std::list<Ponto> pontosControl; // Se for uma curva, guarda os pontos de control
     std::list<Ponto> pontos;
@@ -17,6 +18,14 @@ struct figura
     Color color;
     const char* texture;
 };
+
+void setTypeFig(Figura f, const char* type){
+    f->type = type;
+}
+
+std::string getTypeFig(Figura f){
+    return f->type;
+}
 
 bool getCurva(Figura f){
     return f->curva;
@@ -45,6 +54,7 @@ Figura novaFigura()
 {
     Figura f = new struct figura;
     f->centroAbs = novoPonto(0.0f, 0.0f, 0.0f);
+    f->type = std::string();
     return f; // Retorna uma nova instância de Figura vazia
 }
 
@@ -73,11 +83,12 @@ void add_texture(Figura f, const char* file){
     f->texture = file;
 }
 
-void criarFile(const Figura f, const char *path)
+void criarFile(const Figura f, const char *path, const char* type)
 {
     FILE *file = fopen(path, "w");
     if (file)
     {
+        fprintf(file, "%s\n", type);
         fprintf(file, "%lu\n", static_cast<unsigned long>(f->pontos.size())); // Corrigindo o tipo de dados
         for (const auto &ponto : f->pontos)
         {
@@ -94,6 +105,14 @@ Figura criarFigura(const char *path)
     FILE *file = fopen(path, "r");
     if (file)
     {
+        char buffer[12];
+        if(fscanf(file, "%s", buffer) != 1){
+            std::cout << "Erro ao ler o tipo do arquivo: " << path << std::endl;
+            fclose(file);
+            return f; // Retorna a figura vazia
+        }
+        setTypeFig(f, buffer);
+
         int vertices;
         if (fscanf(file, "%d", &vertices) != 1)
         {

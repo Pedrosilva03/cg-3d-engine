@@ -86,6 +86,7 @@ void extrair_transform(Group node, TiXmlElement* transform_element, std::list<Tr
                 for(Ponto p: pontosCatCalc){
                     adicionarPonto(f, p);
                 }
+                add_color(f, NULL);
                 push_file(node, f);
                 add_pontosCat(t, pontosCatCalc);
                 add_pontosControlCat(t, pontos);

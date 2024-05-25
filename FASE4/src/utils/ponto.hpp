@@ -41,4 +41,6 @@ Ponto cross(Ponto a, Ponto b);
 
 void escalarPonto(Ponto p, Ponto centro, float x, float y, float z);
 
+void normalizeVector(float a[]);
+
 #endif

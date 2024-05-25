@@ -7,6 +7,7 @@
 #endif
 
 #include "../utils/figura.hpp"
+#include "../utils/normals.hpp"
 #include "../utils/ponto.hpp"
 #include "../utils/groups.hpp"
 #include "../utils/catmull.hpp"
@@ -157,12 +158,66 @@ void pontosCatmullParaDesenho(Figura f){
     }
 }
 
+void applyColor(Color c) {
+    RGB diffuse = get_diffuse(c);
+    RGB ambient = get_ambient(c);
+    RGB specular = get_specular(c);
+    RGB emissive = get_emissive(c);
+    int shininess = get_shininess(c);
+
+    GLfloat diffuse_vals[] = { getR(diffuse) / 255.0f, getG(diffuse) / 255.0f, getB(diffuse) / 255.0f, 1.0f };
+    GLfloat ambient_vals[] = { getR(ambient) / 255.0f, getG(ambient) / 255.0f, getB(ambient) / 255.0f, 1.0f };
+    GLfloat specular_vals[] = { getR(specular) / 255.0f, getG(specular) / 255.0f, getB(specular) / 255.0f, 1.0f };
+    GLfloat emissive_vals[] = { getR(emissive) / 255.0f, getG(emissive) / 255.0f, getB(emissive) / 255.0f, 1.0f };
+    GLfloat shininess_val = shininess;
+
+    glMaterialfv(GL_FRONT, GL_DIFFUSE, diffuse_vals);
+    glMaterialfv(GL_FRONT, GL_AMBIENT, ambient_vals);
+    glMaterialfv(GL_FRONT, GL_SPECULAR, specular_vals);
+    glMaterialfv(GL_FRONT, GL_EMISSION, emissive_vals);
+    glMaterialf(GL_FRONT, GL_SHININESS, shininess_val);
+}
+
+void applyLight(std::vector<Lights> luzes) {
+    GLenum light = GL_LIGHT0;
+    
+    for (Lights l : luzes) { 
+        glEnable(light);
+        
+        float amb[4] = { 1.0f, 1.0f, 1.0f, 1.0f };
+        float white[4] = { 1.0f, 1.0f, 1.0f, 1.0f };
+	    glLightModelfv(GL_LIGHT_MODEL_AMBIENT, amb);
+        glLightfv(light, GL_DIFFUSE, white);
+        glLightfv(light, GL_SPECULAR, white);
+
+        GLfloat position[] = {getPosX(l), getPosY(l), getPosZ(l), 1.0f };
+        GLfloat direction[] = { getDirX(l), getDirY(l), getDirZ(l), 0.0f };
+        normalizeVector(direction);
+
+        if (getType(l) == "directional") {
+            glLightfv(light, GL_POSITION, direction);
+        } else if (getType(l) == "point") {
+            glLightfv(light, GL_POSITION, position);
+        } else if (getType(l) == "spot"){
+            glLightfv(light, GL_POSITION, position);
+            glLightfv(light, GL_SPOT_DIRECTION, direction);
+            glLightf(light, GL_SPOT_CUTOFF, getCutoff(l));
+            glLightf(light, GL_SPOT_EXPONENT, 0.0);
+        }
+
+        light++;
+    }
+}
+
 void drawFiguras() {
     glColor3f(1.0f, 1.0f, 1.0f);
 
     if(VBOstate){
         int index = 0;
         for (const auto& figura : figuras) {
+            glPushMatrix();
+            Color c = get_color(figura);
+            if(c != NULL) applyColor(c);
             if(!getCurva(figura)){
                 glBindBuffer(GL_ARRAY_BUFFER, buffers[index]);
                 glVertexPointer(3, GL_FLOAT, 0, 0);
@@ -175,16 +230,29 @@ void drawFiguras() {
                 glDrawArrays(GL_LINE_LOOP, 0, getPontos(figura).size());
             }
             index++;
+            glPopMatrix();
         }
     }
     else{
         for (const auto& figura : figuras) {
+            glPushMatrix();
+            Color c = get_color(figura);
+            if(c != NULL) applyColor(c);
             if(!getCurva(figura)){
                 list<Ponto> pontos = getPontos(figura);
+
+                std::vector<Ponto> normais;
+                if(getLights(leitor).size() > 0){
+                    normais = normalsHandler(getTypeFig(figura), pontos);
+                }
+                
                 glBegin(GL_TRIANGLES);
+                int i = 0;
                 for (const auto& ponto : pontos) {
                     //cout << "(" << getX(ponto) << "," << getY(ponto) << "," << getZ(ponto) << ")";
                     glVertex3f(getX(ponto), getY(ponto), getZ(ponto));
+                    if(getLights(leitor).size() > 0) glNormal3f(getX(normais[i]), getY(normais[i]), getZ(normais[i]));
+                    i++;
                 }
                 glEnd();
             }
@@ -198,6 +266,7 @@ void drawFiguras() {
                 }
                 glEnd();
             }
+            glPopMatrix();
         }
     }
 }
@@ -214,6 +283,7 @@ void fpsCounter(void){
 }
 
 void drawTexts(const std::string& text, float x, float y, void* font){
+    glDisable(GL_LIGHTING);
     glMatrixMode(GL_PROJECTION);
     glPushMatrix();
     glLoadIdentity();
@@ -236,6 +306,7 @@ void drawTexts(const std::string& text, float x, float y, void* font){
     glPopMatrix();
 
     glMatrixMode(GL_MODELVIEW);
+    if(getLights(leitor).size() > 0) glEnable(GL_LIGHTING);
 }
 
 void drawStats(){
@@ -265,6 +336,7 @@ void renderScene(void)
     glLoadIdentity();
     gluLookAt(radius * cos(beta1) * sin(alpha), radius * sin(beta1), radius * cos(beta1) * cos(alpha), lookAtX, lookAtY, lookAtZ, upX, upY, upZ);
 
+    glDisable(GL_LIGHTING);
     glBegin(GL_LINES);
     glColor3f(1.0f, 0.0f, 0.0f);
     glVertex3f(-100.0f, 0.0f, 0.0f);
@@ -278,11 +350,15 @@ void renderScene(void)
     glVertex3f(0.0f, 0.0f, -100.0f);
     glVertex3f(0.0f, 0.0f, 100.0f);
     glEnd();
+    if(getLights(leitor).size() > 0) glEnable(GL_LIGHTING);
 
     glPolygonMode(GL_FRONT_AND_BACK, mode);
 
     figuras = criarListaFiguras(listafiguras, elapsedTime, instantBefore);
     instantBefore = elapsedTime;
+
+    if(getLights(leitor).size() > 0) applyLight(getLights(leitor));
+
     drawFiguras();
 
     fpsCounter();
@@ -374,7 +450,7 @@ void processKeys(unsigned char key, int x, int y)
     glutPostRedisplay();
 }
 
-void setupLights(std::vector<Lights> luzes){
+/*void setupLights(std::vector<Lights> luzes){
     int i = GL_LIGHT0;
     for(Lights l: luzes){
         glEnable(i);
@@ -390,15 +466,13 @@ void setupLights(std::vector<Lights> luzes){
 
         i++;
     }
-}
+}*/
 
 
 int main(int argc, char **argv)
 {
     leitor = extrair_XML(argv[1]);
     listafiguras = getNode(leitor);
-
-    setupLights(getLights(leitor));
     
     if(listafiguras) figuras = criarListaFiguras(listafiguras, 0, instantBefore);
 
@@ -437,12 +511,10 @@ int main(int argc, char **argv)
     //  OpenGL settings
     glEnable(GL_DEPTH_TEST);
     glEnable(GL_CULL_FACE);
-    glEnable(GL_LIGHTING);
+    if(getLights(leitor).size() > 0) glEnable(GL_LIGHTING);
 
     glEnable(GL_RESCALE_NORMAL);
-
-    float amb[4] = { 1.0f, 1.0f, 1.0f, 1.0f };
-	glLightModelfv(GL_LIGHT_MODEL_AMBIENT, amb);
+    glPolygonMode(GL_FRONT, GL_LINE);
 
     glewInit();
     glEnableClientState(GL_VERTEX_ARRAY);

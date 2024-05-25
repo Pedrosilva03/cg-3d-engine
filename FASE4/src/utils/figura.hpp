@@ -8,6 +8,10 @@
 
 typedef struct figura* Figura;
 
+void setTypeFig(Figura f, std::string type);
+
+std::string getTypeFig(Figura f);
+
 bool getCurva(Figura f);
 
 void setCurva(Figura f, bool curva);
@@ -30,7 +34,7 @@ Color get_color(Figura f);
 
 void add_texture(Figura f, const char* file);
 
-void criarFile(const Figura f, const char* path);
+void criarFile(const Figura f, const char* path, const char* type);
 
 Figura criarFigura(const char* path);
 

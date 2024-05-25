@@ -36,6 +36,30 @@ build_f3:
 build_f4:
 	cmake -B FASE4/build -S FASE4/src -A Win32
 	cmake --build FASE4/build/ --config Release
+
+	./FASE4/build/Release/generator.exe plane 2 3 FASE4/out/plane_2_3.3d
+	@echo "Plane done"
+	./FASE4/build/Release/generator.exe box 2 3 FASE4/out/box_2_3.3d
+	@echo "Box done"
+	./FASE4/build/Release/generator.exe cone 1 2 4 3 FASE4/out/cone_1_2_4_3.3d
+	@echo "Cone done"
+	./FASE4/build/Release/generator.exe sphere 1 10 10 FASE4/out/sphere_1_10_10.3d
+	@echo "Sphere done"
+
+	./FASE4/build/Release/generator.exe sphere 1 8 8 FASE4/out/sphere_1_8_8.3d
+	@echo "Sphere_1_8_8 done"
+	./FASE4/build/Release/generator.exe sphere 1 10 10 FASE4/out/planet.3d
+	@echo "Planet done"
+	./FASE4/build/Release/generator.exe sphere 1 25 25 FASE4/out/sun.3d
+	@echo "Sun done"
+	./FASE4/build/Release/generator.exe ring 1.5 2 40 FASE4/out/ring.3d
+	@echo "Ring done"
+
+	./FASE4/build/Release/generator.exe patch FASE4/patches/teapot.patch 10 FASE4/out/bezier_10.3d
+	@echo "Bezier done"
+	./FASE4/build/Release/generator.exe patch FASE4/patches/comet.patch 2 FASE4/out/comet_2.3d
+	@echo "Comet done"
+
 	@echo "Build FASE4 done"
 
 	

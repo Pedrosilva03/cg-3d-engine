@@ -26,6 +26,8 @@ add_library(
     ./utils/lights.hpp
     ./utils/colors.cpp
     ./utils/colors.hpp
+    ./utils/normals.cpp
+    ./utils/normals.hpp
 )
 
 # Biblioteca de parsing de XML
