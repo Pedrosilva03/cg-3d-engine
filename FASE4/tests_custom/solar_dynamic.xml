@@ -9,8 +9,7 @@
     <!--Planetas estão na escala de tamanho x2 (Mercurio é 0.003x o sol logo a escala é 0.006)-->
     <!--Planetas estão 0.5 de cada um-->
     <lights> 
-		<light type="point" posx="2" posy="2" posz="-2" />
-		<light type="point" posx="-2" posy="2" posz="2" />
+		<light type="point" posx="0" posy="0" posz="0" />
 	</lights>
     <group>
 
@@ -55,12 +54,12 @@
             <models>
                 <model file="../out/sun.3d" >
                     <color>
-						<diffuse R="254" G="221" B="0" />
-						<ambient R="0" G="0" B="0" />
-						<specular R="0" G="0" B="0" />
-						<emissive R="0" G="0" B="0" />
-						<shininess value="0" />
-					</color>
+                        <diffuse R="255" G="215" B="0" />
+                        <ambient R="255" G="215" B="0" />
+                        <specular R="255" G="255" B="255" />
+                        <emissive R="255" G="255" B="0" />
+                        <shininess value="50" />
+                    </color>
                 </model> <!-- generator sphere 1 25 25 sun.3d -->
             </models>
         </group>
@@ -84,7 +83,15 @@
                 <rotate angle="21" x="0" y="1" z="0" />
             </transform>
             <models>
-                <model file="../out/planet.3d" /> <!-- generator sphere 1 10 10 planet.3d -->
+                <model file="../out/planet.3d" >
+                    <color>
+                        <diffuse R="169" G="169" B="169" />
+                        <ambient R="169" G="169" B="169" />
+                        <specular R="255" G="255" B="255" />
+                        <emissive R="0" G="0" B="0" />
+                        <shininess value="20" />
+                    </color> 
+                </model><!-- generator sphere 1 10 10 planet.3d -->
             </models>
         </group>
 
@@ -107,7 +114,15 @@
                 <rotate angle="225" x="0" y="1" z="0" />
             </transform>
             <models>
-                <model file="../out/planet.3d" /> <!-- generator sphere 1 10 10 planet.3d -->
+                <model file="../out/planet.3d" >
+                    <color>
+                        <diffuse R="255" G="200" B="124" />
+                        <ambient R="255" G="200" B="124" />
+                        <specular R="255" G="255" B="255" />
+                        <emissive R="0" G="0" B="0" />
+                        <shininess value="30" />
+                    </color>
+                </model> <!-- generator sphere 1 10 10 planet.3d -->
             </models>
         </group>
 
@@ -131,7 +146,15 @@
             </transform>
             
             <models>
-                <model file="../out/planet.3d" /> <!-- generator sphere 1 10 10 planet.3d -->
+                <model file="../out/planet.3d" >
+                    <color>
+                        <diffuse R="65" G="105" B="225" />
+                        <ambient R="65" G="105" B="225" />
+                        <specular R="255" G="255" B="255" />
+                        <emissive R="0" G="0" B="0" />
+                        <shininess value="50" />
+                    </color>
+                </model> <!-- generator sphere 1 10 10 planet.3d -->
             </models>
         </group>
 
@@ -154,7 +177,15 @@
                 <rotate angle="343" x="0" y="1" z="0" />
             </transform>
             <models>
-                <model file="../out/planet.3d" /> <!-- generator sphere 1 10 10 planet.3d -->
+                <model file="../out/planet.3d" >
+                    <color>
+                        <diffuse R="210" G="105" B="30" />
+                        <ambient R="210" G="105" B="30" />
+                        <specular R="255" G="255" B="255" />
+                        <emissive R="0" G="0" B="0" />
+                        <shininess value="30" />
+                    </color>
+                </model> <!-- generator sphere 1 10 10 planet.3d -->
             </models>
         </group>
 
@@ -177,7 +208,15 @@
                 <rotate angle="259" x="0" y="1" z="0" />
             </transform>
             <models>
-                <model file="../out/planet.3d" /> <!-- generator sphere 1 10 10 planet.3d -->
+                <model file="../out/planet.3d" >
+                    <color>
+                        <diffuse R="228" G="189" B="131" />
+                        <ambient R="228" G="189" B="131" />
+                        <specular R="255" G="255" B="255" />
+                        <emissive R="0" G="0" B="0" />
+                        <shininess value="40" />
+                    </color>
+                </model> <!-- generator sphere 1 10 10 planet.3d -->
             </models>
         </group>
 
@@ -217,7 +256,15 @@
             </transform>
             <group>
                 <models>
-                    <model file="../out/planet.3d" /> <!-- generator sphere 1 10 10 planet.3d -->
+                    <model file="../out/planet.3d" >
+                        <color>
+                            <diffuse R="224" G="204" B="179" />
+                            <ambient R="224" G="204" B="179" />
+                            <specular R="255" G="255" B="255" />
+                            <emissive R="0" G="0" B="0" />
+                            <shininess value="30" />
+                        </color>
+                    </model> <!-- generator sphere 1 10 10 planet.3d -->
                 </models>
             </group>
             <group>
@@ -250,7 +297,15 @@
             </transform>
             <group>
                 <models>
-                    <model file="../out/planet.3d" /> <!-- generator sphere 1 10 10 planet.3d -->
+                    <model file="../out/planet.3d" >
+                        <color>
+                            <diffuse R="176" G="224" B="230" />
+                            <ambient R="176" G="224" B="230" />
+                            <specular R="255" G="255" B="255" />
+                            <emissive R="0" G="0" B="0" />
+                            <shininess value="40" />
+                        </color>
+                    </model> <!-- generator sphere 1 10 10 planet.3d -->
                 </models>
             </group>
             <group>
@@ -282,7 +337,15 @@
                 <rotate angle="100" x="0" y="1" z="0" />
             </transform>
             <models>
-                <model file="../out/planet.3d" /> <!-- generator sphere 1 10 10 planet.3d -->
+                <model file="../out/planet.3d" >
+                    <color>
+                        <diffuse R="30" G="144" B="255" />
+                        <ambient R="30" G="144" B="255" />
+                        <specular R="255" G="255" B="255" />
+                        <emissive R="0" G="0" B="0" />
+                        <shininess value="50" />
+                    </color>
+                </model> <!-- generator sphere 1 10 10 planet.3d -->
             </models>
         </group>
     </group>
