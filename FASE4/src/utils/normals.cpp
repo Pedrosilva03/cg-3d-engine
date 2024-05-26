@@ -75,30 +75,6 @@ std::vector<Ponto> calculatePlaneNormals(std::list<Ponto> vertices) {
     return normalVec;
 }
 
-/*std::vector<Ponto> calculateSphereNormals(std::list<Ponto> vertices) {
-    std::vector<Ponto> vertVec(vertices.begin(), vertices.end());
-    std::vector<Ponto> normals(vertVec.size());
-
-    for (size_t i = 0; i < vertVec.size(); i += 3) {
-        Ponto p1 = vertVec[i];
-        Ponto p2 = vertVec[i + 1];
-        Ponto p3 = vertVec[i + 2];
-
-        Ponto v1 = novoPonto(getX(p2) - getX(p1), getY(p2) - getY(p1), getZ(p2) - getZ(p1));
-        Ponto v2 = novoPonto(getX(p3) - getX(p1), getY(p3) - getY(p1), getZ(p3) - getZ(p1));
-        Ponto normal = cross(v1, v2);
-        normal = normalize(normal);
-
-        std::cout << i << "\n";
-
-        normals[i] = normalize(novoPonto(getX(p1) + getX(normal), getY(p1) + getY(normal), getZ(p1) + getZ(normal)));
-        normals[i + 1] = normalize(novoPonto(getX(p2) + getX(normal), getY(p2) + getY(normal), getZ(p2) + getZ(normal)));
-        normals[i + 2] = normalize(novoPonto(getX(p3) + getX(normal), getY(p3) + getY(normal), getZ(p3) + getZ(normal)));
-    }
-
-    return normals;
-}*/
-
 std::vector<Ponto> calculateSphereNormals(std::list<Ponto> vertices) {
     std::vector<Ponto> vertVec(vertices.begin(), vertices.end());
     std::vector<Ponto> normals = std::vector<Ponto>();

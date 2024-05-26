@@ -495,23 +495,6 @@ void processKeys(unsigned char key, int x, int y)
     glutPostRedisplay();
 }
 
-/*void setupLights(std::vector<Lights> luzes){
-    int i = GL_LIGHT0;
-    for(Lights l: luzes){
-        glEnable(i);
-
-        GLfloat pos[4] = {getPosX(l), getPosY(l), getPosZ(l), 1.0f};
-        glLightfv(i, GL_POSITION, pos);
-
-        GLfloat dir[4] = {getDirX(l), getDirY(l), getDirZ(l), 1.0f};
-        glLightfv(i, GL_POSITION, dir);
-
-        GLfloat cutoff = getCutoff(l);
-        glLightfv(i, GL_SPOT_CUTOFF, &cutoff);
-
-        i++;
-    }
-}*/
 
 
 int main(int argc, char **argv)
