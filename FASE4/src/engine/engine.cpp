@@ -53,7 +53,13 @@ float fps = 0.0f;
 
 //VBOs
 vector<GLuint> buffers;
-vector<vector<float*>> figurasVertices;
+vector<unsigned int> buffersSizes;
+vector<vector<float*>> figurasVertices; // Dar load aos novos pontos após transformações
+//Normais
+vector<GLuint> buffersN;
+vector<vector<Ponto>> normaisFiguras;
+vector<vector<float>> normaisFigurasFloat;
+
 bool VBOstate = false;
 
 bool desenhaCurvas = true;
@@ -78,8 +84,20 @@ void loadBuffersData(){
         buffers = loader;
         glGenBuffers(buffers.size(), buffers.data());
 
+        if(getLights(leitor).size() > 0){
+            vector<GLuint> loaderN(figuras.size());
+            buffersN = loaderN;
+            glGenBuffers(buffersN.size(), buffersN.data());
+        }
+
         std::vector<Figura> figurasVec = std::vector<Figura>(figuras.begin(), figuras.end());
         for(size_t i = 0; i < figuras.size(); i++){
+            //Normais
+            if(getLights(leitor).size() > 0){
+                glBindBuffer(GL_ARRAY_BUFFER, buffersN[i]);
+                glBufferData(GL_ARRAY_BUFFER, normaisFigurasFloat[i].size() * sizeof(float), normaisFigurasFloat[i].data(), GL_STATIC_DRAW);
+            }
+            //Vertices
             const auto& figura = figurasVec[i];
             list<Ponto> pontos = getPontos(figura);
 
@@ -100,12 +118,19 @@ void loadBuffersData(){
             }
             glBindBuffer(GL_ARRAY_BUFFER, buffers[i]);
             glBufferData(GL_ARRAY_BUFFER, vertices.size() * sizeof(float), vertices.data(), GL_STATIC_DRAW);
+            buffersSizes.push_back(vertices.size()/3);
             figurasVertices.push_back(verticesPointer);
         }
     }
     else{
         int i = 0;
         for(vector<float*> vertices: figurasVertices){
+            //Normais
+            if(getLights(leitor).size() > 0){
+                glBindBuffer(GL_ARRAY_BUFFER, buffersN[i]);
+                glBufferData(GL_ARRAY_BUFFER, normaisFigurasFloat[i].size() * sizeof(float), normaisFigurasFloat[i].data(), GL_STATIC_DRAW);
+            }
+
             vector<float> verticess(vertices.size());
             int index = 0;
             for(float* vertice: vertices){
@@ -156,6 +181,20 @@ void pontosCatmullParaDesenho(Figura f){
         setZ(p, getZ(pontosCatCalc[0]));
         t+=0.02;
     }
+}
+
+void resetColor(){
+    GLfloat default_diffuse[] = {0.8f, 0.8f, 0.8f, 1.0f};
+    GLfloat default_ambient[] = {0.2f, 0.2f, 0.2f, 1.0f};
+    GLfloat default_specular[] = {0.0f, 0.0f, 0.0f, 1.0f};
+    GLfloat default_emissive[] = {0.0f, 0.0f, 0.0f, 1.0f};
+    GLfloat default_shininess = 0.0f;
+
+    glMaterialfv(GL_FRONT, GL_DIFFUSE, default_diffuse);
+    glMaterialfv(GL_FRONT, GL_AMBIENT, default_ambient);
+    glMaterialfv(GL_FRONT, GL_SPECULAR, default_specular);
+    glMaterialfv(GL_FRONT, GL_EMISSION, default_emissive);
+    glMaterialf(GL_FRONT, GL_SHININESS, default_shininess);
 }
 
 void applyColor(Color c) {
@@ -219,38 +258,42 @@ void drawFiguras() {
             Color c = get_color(figura);
             if(c != NULL) applyColor(c);
             if(!getCurva(figura)){
+                //Normais
+                if(getLights(leitor).size() > 0){
+                    glEnableClientState(GL_NORMAL_ARRAY);
+                    glBindBuffer(GL_ARRAY_BUFFER, buffersN[index]);
+                    glNormalPointer(GL_FLOAT, 0, nullptr);
+                }
+                //Vertices
                 glBindBuffer(GL_ARRAY_BUFFER, buffers[index]);
                 glVertexPointer(3, GL_FLOAT, 0, 0);
-                glDrawArrays(GL_TRIANGLES, 0, getPontos(figura).size());
+                glDrawArrays(GL_TRIANGLES, 0, buffersSizes[index]);
+                glDisableClientState(GL_NORMAL_ARRAY);
             }
             else if(desenhaCurvas){
                 pontosCatmullParaDesenho(figura);
                 glBindBuffer(GL_ARRAY_BUFFER, buffers[index]);
                 glVertexPointer(3, GL_FLOAT, 0, 0);
-                glDrawArrays(GL_LINE_LOOP, 0, getPontos(figura).size());
+                glDrawArrays(GL_LINE_LOOP, 0, buffersSizes[index]);
             }
             index++;
+            resetColor();
             glPopMatrix();
         }
     }
     else{
+        int j = 0;
         for (const auto& figura : figuras) {
             glPushMatrix();
             Color c = get_color(figura);
             if(c != NULL) applyColor(c);
             if(!getCurva(figura)){
                 list<Ponto> pontos = getPontos(figura);
-
-                std::vector<Ponto> normais;
-                if(getLights(leitor).size() > 0){
-                    normais = normalsHandler(getTypeFig(figura), pontos);
-                }
-                
                 glBegin(GL_TRIANGLES);
                 int i = 0;
                 for (const auto& ponto : pontos) {
                     //cout << "(" << getX(ponto) << "," << getY(ponto) << "," << getZ(ponto) << ")";
-                    if(getLights(leitor).size() > 0) glNormal3f(getX(normais[i]), getY(normais[i]), getZ(normais[i]));
+                    if(getLights(leitor).size() > 0) glNormal3f(getX(normaisFiguras[j][i]), getY(normaisFiguras[j][i]), getZ(normaisFiguras[j][i]));
                     glVertex3f(getX(ponto), getY(ponto), getZ(ponto));
                     i++;
                 }
@@ -267,6 +310,8 @@ void drawFiguras() {
                 glEnd();
             }
             glPopMatrix();
+            resetColor();
+            j++;
         }
     }
 }
@@ -475,6 +520,25 @@ int main(int argc, char **argv)
     listafiguras = getNode(leitor);
     
     if(listafiguras) figuras = criarListaFiguras(listafiguras, 0, instantBefore);
+
+    if(getLights(leitor).size() > 0){
+        normaisFiguras = std::vector<vector<Ponto>>();
+        normaisFigurasFloat = std::vector<vector<float>>();
+        for(Figura figura: figuras){
+            list<Ponto> pontos = getPontos(figura);
+            std::vector<Ponto> normais;
+            normais = normalsHandler(getTypeFig(figura), pontos);
+            normaisFiguras.push_back(normais);
+
+            std::vector<float> normaisFloat;
+            for(Ponto normal: normais){
+                normaisFloat.push_back(getX(normal));
+                normaisFloat.push_back(getY(normal));
+                normaisFloat.push_back(getZ(normal));
+            }
+            normaisFigurasFloat.push_back(normaisFloat);
+        }
+    }
 
     cameraPosX = getXPosCam(leitor);
     cameraPosY = getYPosCam(leitor);

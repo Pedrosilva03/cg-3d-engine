@@ -8,6 +8,10 @@
     </camera>
     <!--Planetas estão na escala de tamanho x2 (Mercurio é 0.003x o sol logo a escala é 0.006)-->
     <!--Planetas estão 0.5 de cada um-->
+    <lights> 
+		<light type="point" posx="2" posy="2" posz="-2" />
+		<light type="point" posx="-2" posy="2" posz="2" />
+	</lights>
     <group>
 
         <!--Cometa-->
@@ -49,7 +53,15 @@
                 <scale x = '0.8' y = '0.8' z = '0.8' />
             </transform>
             <models>
-                <model file="../out/sun.3d" /> <!-- generator sphere 1 25 25 sun.3d -->
+                <model file="../out/sun.3d" >
+                    <color>
+						<diffuse R="254" G="221" B="0" />
+						<ambient R="0" G="0" B="0" />
+						<specular R="0" G="0" B="0" />
+						<emissive R="0" G="0" B="0" />
+						<shininess value="0" />
+					</color>
+                </model> <!-- generator sphere 1 25 25 sun.3d -->
             </models>
         </group>
 
