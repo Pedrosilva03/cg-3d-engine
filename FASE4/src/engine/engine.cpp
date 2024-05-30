@@ -49,7 +49,7 @@ Leitor leitor = nullptr;
 // FPS counter variables
 std::chrono::time_point<std::chrono::steady_clock> lastTime;
 int frameCount = 0;
-float fps = 0.0f;
+int fps = 0;
 
 //VBOs
 vector<GLuint> buffers;
@@ -571,6 +571,7 @@ int main(int argc, char **argv)
     atexit(onExit);
 
     // enter GLUT's main cycle
+    lastTime = std::chrono::steady_clock::now();
     glutMainLoop();
 
     return 1;
