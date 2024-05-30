@@ -234,7 +234,7 @@ void applyLight(std::vector<Lights> luzes) {
         normalizeVector(direction);
 
         if (getType(l) == "directional") {
-            glLightfv(light, GL_POSITION, direction);
+            glLightfv(light, GL_SPOT_DIRECTION, direction);
         } else if (getType(l) == "point") {
             glLightfv(light, GL_POSITION, position);
         } else if (getType(l) == "spot"){
@@ -446,19 +446,19 @@ void processKeys(unsigned char key, int x, int y)
     switch (key) 
     {
         case 'w':
-            beta1 -= 1.0f; // Move the camera forward
+            beta1 -= 0.1f; // Move the camera forward
             break;
 
         case 's':
-            beta1 += 1.0f; // Move the camera backward
+            beta1 += 0.1f; // Move the camera backward
             break;
 
         case 'a':
-            alpha -= 1.0f; // Move the camera left (along the x-axis)
+            alpha -= 0.1f; // Move the camera left (along the x-axis)
             break;
 
         case 'd':
-            alpha += 1.0f; // Move the camera right (along the x-axis)
+            alpha += 0.1f; // Move the camera right (along the x-axis)
             break;
 
         case 'f':
