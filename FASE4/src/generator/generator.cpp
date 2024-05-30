@@ -105,12 +105,12 @@ Figura generateFromPatch(const char* patchFile, int tesselation){
                 float v0 = (float)j / tesselation;
 
                 adicionarPonto(patch, calculateBezierPoint(patchPointsCalculatedVector, u0, v0));
-                adicionarPonto(patch, calculateBezierPoint(patchPointsCalculatedVector, u0 + divisionSize, v0));
                 adicionarPonto(patch, calculateBezierPoint(patchPointsCalculatedVector, u0 + divisionSize, v0 + divisionSize));
+                adicionarPonto(patch, calculateBezierPoint(patchPointsCalculatedVector, u0 + divisionSize, v0));
 
                 adicionarPonto(patch, calculateBezierPoint(patchPointsCalculatedVector, u0, v0));
-                adicionarPonto(patch, calculateBezierPoint(patchPointsCalculatedVector, u0 + divisionSize, v0 + divisionSize));
                 adicionarPonto(patch, calculateBezierPoint(patchPointsCalculatedVector, u0, v0 + divisionSize));
+                adicionarPonto(patch, calculateBezierPoint(patchPointsCalculatedVector, u0 + divisionSize, v0 + divisionSize));
             }
         }
     }
