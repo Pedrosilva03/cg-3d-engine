@@ -33,7 +33,9 @@ cd build
 Onde ```N``` representa o número da fase.
 
 ### Compilação
-Nota: Este projeto utiliza o CMake para compilação pelo que deve ser instalado.
+Notas:
+  - Este projeto utiliza o CMake para compilação pelo que deve ser instalado.
+  - Para além disso deve ser colocado no [CMakeLists.txt](https://github.com/Pedrosilva03/cg-3d-engine/blob/main/FASE4/src/CMakeLists.txt) da fase a ser executada o caminho para os toolkits (linha 77).
 - Cada fase pode ser compilada individualmente com o comando
 ```console
 make build_fN
@@ -47,6 +49,10 @@ make
 - Este comando também gera automaticamente as primitivas necessárias para os testes dessa fase.
 - As pastas ```build``` podem ser apagadas.
 - Porém e recomendado fazer isso apenas quando necessário visto que contém ficheiros de cache que aceleram o processo de compilação.
+- Para fazer isso basta executar o comando
+```console
+make clean
+```
 
 ### Generator
 Este programa gera as primitivas em formato ```.3d``` para serem lidos pela engine.
