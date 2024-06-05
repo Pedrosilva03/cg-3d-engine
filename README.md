@@ -100,6 +100,13 @@ Este programa gera as primitivas em formato ```.3d``` para serem lidos pela engi
 ```
 
 ### Engine
+Este programa cria cenas visuais com as primitivas geradas pelo gerador.
+- Para executar a engine basta executar o comando no [diretório de execução](#diretórios):
+```console
+./Release/engine "xml_teste"
+```
+#### Ficheiros XML
+As cenas devem ser escritas num ficheiro XML com um formato específico onde são dadas informações sobre a camera, luz, possíveis transformações nas figuras e cor.
 
 ## Conclusão
 Trabalho realizado por Pedro Silva, António Silva, Diogo Barros e Duarte Leitão no âmbito da UC de Computação Gráfica.
