@@ -45,6 +45,8 @@ make
 ```
 - Será criada a pasta ```build``` dentro da fase compilada com todos os artifactos da compilação (incluindo os executáveis).
 - Este comando também gera automaticamente as primitivas necessárias para os testes dessa fase.
+- As pastas ```build``` podem ser apagadas.
+- Porém e recomendado fazer isso apenas quando necessário visto que contém ficheiros de cache que aceleram o processo de compilação.
 
 ### Generator
 Este programa gera as primitivas em formato ```.3d``` para serem lidos pela engine.
@@ -107,6 +109,43 @@ Este programa cria cenas visuais com as primitivas geradas pelo gerador.
 ```
 #### Ficheiros XML
 As cenas devem ser escritas num ficheiro XML com um formato específico onde são dadas informações sobre a camera, luz, possíveis transformações nas figuras e cor.
+- Os ficheiros de teste foram evoluindo ao longo das fases, logo não existir retrocompatibilidade entre as fases.
+- A fase 4 contém todos os ficheiros de teste XML onde pode ser analisada a sua estrutura (pastas ```test```).
+- Na fase 4 qualquer teste pode ser executado, tendo que ser o caminho para ele especificado.
+- Por exemplo:
+```console
+./Release/engine ../test_files_4/test_4_3.xml
+```
+- A engine abrirá com a cena visual correspondente ao teste.
+
+#### Controlos da engine
+É possível interagir com a engine através de binds implementadas para isso:
+  - Rodar a camera:
+    - ```W```: Mover a camera para baixo
+    - ```S```: Mover a camera para cima
+    - ```A```: Mover a camera para direita
+    - ```D```: Mover a camera para esquerda
+  
+  - Modo de visualização:
+    - ```F```: Alterar para modo fill
+    - ```L```: Alterar para o modo line (visualizar os triângulos)
+    - ```P```: Alterar para o modo ponto (visualizar os pontos individuais)
+   
+  - Modo de desenho:
+    - ```V```: Ativar/Desativar modo [VBO](#vbo)
+
+  - Extra:
+    - ```C```: Ativar/Desativar visualização das curvas de Catmull-Rom
+
+#### VBO
+A engine suporta dois modos de desenho das cenas:
+- VBO Off:
+  - Também conhecido como "modo clássico", desenha os pontos guardados em memória.
+  - Performance reduzida, pois precisa de processamento para aceder à memória para ler os pontos.
+
+- VBO On:
+  - Carrega os pontos para a GPU (permite rápido acesso visto que as funcionalidades de desenho acontecem lá).
+  - Considerável aumento da performance.
 
 ## Conclusão
 Trabalho realizado por Pedro Silva, António Silva, Diogo Barros e Duarte Leitão no âmbito da UC de Computação Gráfica.
