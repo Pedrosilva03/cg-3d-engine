@@ -62,4 +62,17 @@ build_f4:
 
 	@echo "Build FASE4 done"
 
+clean:
+ifeq ($(OS),Windows_NT)
+	@if exist "FASE1/build" rmdir /S /Q "FASE1/build"
+	@if exist "FASE2/build" rmdir /S /Q "FASE2/build"
+	@if exist "FASE3/build" rmdir /S /Q "FASE3/build"
+	@if exist "FASE4/build" rmdir /S /Q "FASE4/build"
+else
+	@if [ -d "FASE1/build" ]; then rm -rf FASE1/build; fi
+	@if [ -d "FASE2/build" ]; then rm -rf FASE2/build; fi
+	@if [ -d "FASE3/build" ]; then rm -rf FASE3/build; fi
+	@if [ -d "FASE4/build" ]; then rm -rf FASE4/build; fi
+endif
+
 	
